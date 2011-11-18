@@ -26,8 +26,19 @@ var Clocking = (function() {
       var selectedProjectId = $('#project option:selected').val();
       var searchTerm = $('#issue_search').val();
       debugLog('Searching project "' + selectedProjectId + '" for "' + searchTerm + '"');
+
       var matches = search(selectedProjectId, searchTerm);
       debugLog('Found ' + matches.length + ' matches');
+
+      showSearchResults(matches);
+    });
+  };
+
+  var showSearchResults = function(results) {
+    var resultList = $('#search-results').html($('<ul>'));
+    _.each(results, function(issue) {
+      var issueString = "#" + issue.id + ": " + issue.subject;
+      resultList.append($('<li>').html(issueString).attr('data-issue-id', issue.id));
     });
   };
 
