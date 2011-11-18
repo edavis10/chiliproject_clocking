@@ -14,7 +14,7 @@ def to_magic_hash(project)
     acc << {
             'id' => issue.id.to_s,
             'subject' => issue.subject.to_s,
-            'search' => "#{issue.id}|#{issue.subject}|#{issue.category.try(:name)}|Deliverable One|#{issue.assigned_to.try(:name)}|#{issue.description}"
+            'searchData' => "#{issue.id}|#{issue.subject}|#{issue.category.try(:name)}|Deliverable One|#{issue.assigned_to.try(:name)}|#{issue.description}"
            }
     acc
   end
@@ -24,3 +24,9 @@ end
 
 # 3 projects
 # 102, 107, 82 issues
+
+data = projects.inject([]) {|a,p| a << to_magic_hash(p); a}
+
+full_data = {"projects" => data, "options" => {}, "recent" => []}
+
+File.open('data.json', 'w') {|f| f.puts JSON.pretty_generate(full_data) }
