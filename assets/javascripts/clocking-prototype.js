@@ -10,6 +10,13 @@ var Clocking = (function() {
     data = window.data; // Using script to parse this in global scope already
   };
 
+  var populateProjectSelect = function() {
+    _.each(data.projects, function (project) {
+      var optionElement = $('<option>').attr('value', project.id).html(project.name);
+      $('#project').append(optionElement);
+    });
+  };
+
   var projectNames = function() {
     return _.map(data.projects, function (project) { return project.name });
   };
@@ -36,6 +43,7 @@ var Clocking = (function() {
 
   var initializeAfterDomLoaded = function() {
     loadData();
+    populateProjectSelect();
   };
 
   // Public API

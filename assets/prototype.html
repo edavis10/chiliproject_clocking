@@ -13,6 +13,11 @@
   <div role="main">
 
     <form action="/projects/redmine/timelog/create" class="tabular" method="post">
+      <p><label for="project">Project</label><select id="project" name="project"></select></p>
+
+
+      <p>Stuff below is part of the ChiliProject time form. Some elements will be used but others will be hidden in the actual app.</p>
+      <hr>
       <p><label for="time_entry_issue_id">Issue</label><input id="time_entry_issue_id" name="time_entry[issue_id]" size="6" type="text"> <em></em></p>
       <p><label for="time_entry_spent_on">Date<span class="required"> *</span></label><input id="time_entry_spent_on" name="time_entry[spent_on]" size="10" type="text" value="2011-11-18"></p>
       <p><label for="time_entry_hours">Hours<span class="required"> *</span></label><input id="time_entry_hours" name="time_entry[hours]" size="6" type="text"></p>
