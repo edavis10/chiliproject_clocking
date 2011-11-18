@@ -34,12 +34,31 @@ var Clocking = (function() {
     });
   };
 
+  var bindSelectingSearchResult = function() {
+    $('#search-results li').live('click', function () {
+      var issueId = $(this).data('issue-id');
+      debugLog('Clicked issue #' + issueId);
+      clearSearchResults();
+
+      setForm(issueId);
+    });
+  };
+
+  var clearSearchResults = function() {
+    $('#search-results').html('');
+  };
+
   var showSearchResults = function(results) {
     var resultList = $('#search-results').html($('<ul>'));
     _.each(results, function(issue) {
       var issueString = "#" + issue.id + ": " + issue.subject;
       resultList.append($('<li>').html(issueString).attr('data-issue-id', issue.id));
     });
+  };
+
+  var setForm = function(issueId) {
+    debugLog("Setting issue id in form to " + issueId);
+    $('#time_entry_issue_id').val(issueId);
   };
 
   var projectNames = function() {
@@ -70,6 +89,7 @@ var Clocking = (function() {
     loadData();
     populateProjectSelect();
     bindIssueSearch();
+    bindSelectingSearchResult();
   };
 
   // Public API
