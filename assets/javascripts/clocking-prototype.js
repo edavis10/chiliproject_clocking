@@ -21,6 +21,14 @@ var Clocking = (function() {
     });
   };
 
+  var bindIssueSearch = function() {
+    $('#issue_search').live('keyup', function() {
+      var selectedProjectId = $('#project option:selected').val();
+      var searchTerm = $('#issue_search').val();
+      debugLog('Searching project "' + selectedProjectId + '" for "' + searchTerm + '"');
+    });
+  };
+
   var projectNames = function() {
     return _.map(data.projects, function (project) { return project.name });
   };
@@ -48,6 +56,7 @@ var Clocking = (function() {
   var initializeAfterDomLoaded = function() {
     loadData();
     populateProjectSelect();
+    bindIssueSearch();
   };
 
   // Public API
