@@ -8,9 +8,40 @@
 
 <body>
   <header>
-His
+    Clocking tool prototype
   </header>
   <div role="main">
+
+    <form action="/projects/redmine/timelog/create" class="tabular" method="post">
+      <p><label for="time_entry_issue_id">Issue</label><input id="time_entry_issue_id" name="time_entry[issue_id]" size="6" type="text"> <em></em></p>
+      <p><label for="time_entry_spent_on">Date<span class="required"> *</span></label><input id="time_entry_spent_on" name="time_entry[spent_on]" size="10" type="text" value="2011-11-18"></p>
+      <p><label for="time_entry_hours">Hours<span class="required"> *</span></label><input id="time_entry_hours" name="time_entry[hours]" size="6" type="text"></p>
+      <p><label for="time_entry_comments">Comment</label><input id="time_entry_comments" name="time_entry[comments]" size="100" type="text"></p>
+      <p><label for="time_entry_activity_id">Activity<span class="required"> *</span></label>
+        <select id="time_entry_activity_id" name="time_entry[activity_id]">
+          <option value="">--- Please select ---</option>
+          <option value="29">Account Management</option>
+          <option value="25">Internal</option>
+          <option value="375">Marketing</option>
+          <option value="323">Support</option>
+          <option value="356">Discount</option>
+          <option value="95">Architect</option>
+          <option value="96">Design</option>
+          <option value="97">Multimedia</option>
+          <option value="98">Art Direction</option>
+          <option value="99">Development</option>
+          <option value="100">Consultation</option>
+          <option value="101">Project Management</option>
+          <option value="102">Quality Assurance</option>
+          <option value="103">Content</option>
+          <option value="104">Front End Development</option>
+          <option value="105">System Administration</option>
+        </select>
+      </p>
+
+      <input name="commit" type="submit" value="Save">
+
+    </form>
 
   </div>
   <footer>
