@@ -26,6 +26,8 @@ var Clocking = (function() {
       var selectedProjectId = $('#project option:selected').val();
       var searchTerm = $('#issue_search').val();
       debugLog('Searching project "' + selectedProjectId + '" for "' + searchTerm + '"');
+      var matches = search(selectedProjectId, searchTerm);
+      debugLog('Found ' + matches.length + ' matches');
     });
   };
 
@@ -33,9 +35,9 @@ var Clocking = (function() {
     return _.map(data.projects, function (project) { return project.name });
   };
 
-  var search = function(projectName, query) {
+  var search = function(projectId, query) {
     var selectedProject = _.find(data.projects, function (project) {
-      return project.name == projectName;
+      return String(project.id) == String(projectId);
     });
     var projectIssues = selectedProject.issues;
 
