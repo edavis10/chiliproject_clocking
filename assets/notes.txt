@@ -1,0 +1,26 @@
+#Converting an array of issues into json
+
+def to_magic_hash(project)
+  result = {}
+  result["id"] = project.id.to_s
+  result["name"] = project.name.to_s
+  result["loadedAt"] = ""
+  result["activities"] = project.activities.inject([]) do |acc, activity|
+    acc << {'id' => activity.id.to_s, 'name' => activity.name.to_s}
+    acc
+  end
+  
+  result["issues"] = project.issues.inject([]) do |acc, issue|
+    acc << {
+            'id' => issue.id.to_s,
+            'subject' => issue.subject.to_s,
+            'search' => "#{issue.id}|#{issue.subject}|#{issue.category.try(:name)}|Deliverable One|#{issue.assigned_to.try(:name)}|#{issue.description}"
+           }
+    acc
+  end
+
+  result
+end
+
+# 3 projects
+# 102, 107, 82 issues
