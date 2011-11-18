@@ -44,6 +44,13 @@ var Clocking = (function() {
     });
   };
 
+  var blockFormSubmission = function() {
+    $('form').live('submit', function() {
+      alert('Form submitted');
+      return false;
+    });
+  };
+
   var clearSearchResults = function() {
     $('#search-results').html('');
   };
@@ -90,6 +97,7 @@ var Clocking = (function() {
     populateProjectSelect();
     bindIssueSearch();
     bindSelectingSearchResult();
+    blockFormSubmission();
   };
 
   // Public API
