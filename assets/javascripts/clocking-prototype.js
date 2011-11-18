@@ -10,6 +10,24 @@ var Clocking = (function() {
     data = window.data; // Using script to parse this in global scope already
   };
 
+  var projectNames = function() {
+    return _.map(data.projects, function (project) { return project.name });
+  };
+
+  var search = function(projectName, query) {
+    var selectedProject = _.find(data.projects, function (project) {
+      return project.name == projectName;
+    });
+    var projectIssues = selectedProject.issues;
+
+    return _.filter(projectIssues, function (issues) {
+      // #search is native code in Chrome
+      // return issues.searchData.search(new RegExp(query, "i")) != -1;
+      // #match is native code in Chrome
+      return issues.searchData.match(new RegExp(query, "i"));
+    });
+  };
+
   var initialize = function() {
     $(document).ready(function() {
       initializeAfterDomLoaded();
@@ -23,7 +41,9 @@ var Clocking = (function() {
   // Public API
   return {
     initialize: initialize,
-    getData: getData
+    getData: getData,
+    projectNames: projectNames,
+    search: search
   }
 })();
 
