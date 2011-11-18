@@ -10,6 +10,10 @@ var Clocking = (function() {
     data = window.data; // Using script to parse this in global scope already
   };
 
+  var debugLog = function(message) {
+    $('#debug-log').append('<pre>' + message + '</pre>');
+  };
+
   var populateProjectSelect = function() {
     _.each(data.projects, function (project) {
       var optionElement = $('<option>').attr('value', project.id).html(project.name);
@@ -51,7 +55,8 @@ var Clocking = (function() {
     initialize: initialize,
     getData: getData,
     projectNames: projectNames,
-    search: search
+    search: search,
+    log: debugLog
   }
 })();
 
