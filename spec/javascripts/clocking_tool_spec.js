@@ -73,6 +73,14 @@ describe("ClockingTool", function() {
 
     });
 
+    it("should add a blank option to the Activity field", function() {
+      clockingTool.draw();
+
+      expect($('.form-container #time_entry_activity_id option').length).toEqual(1);
+      expect($('.form-container #time_entry_activity_id option:first')).toHaveValue('');
+      expect($('.form-container #time_entry_activity_id option:first')).toHaveText('Activity');
+    });
+
     xit("should draw pretty stuff");
   });
 });

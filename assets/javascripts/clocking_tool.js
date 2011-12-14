@@ -22,4 +22,8 @@ ClockingTool.prototype.draw = function() {
     today: todayString
   }).appendTo(this.container);
   this.addStubData();
+  this.addActivity();
+}
+ClockingTool.prototype.addActivity = function() {
+  $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
 }
