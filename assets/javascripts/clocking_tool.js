@@ -23,10 +23,15 @@ ClockingTool.prototype.draw = function() {
   this.addStubData();
   this.addActivity();
   this.addWelcomeMessage();
+  this.disableFormFields();
 }
 ClockingTool.prototype.addActivity = function() {
   $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
 }
 ClockingTool.prototype.addWelcomeMessage = function() {
   $(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
+}
+ClockingTool.prototype.disableFormFields = function() {
+  $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
+
 }

@@ -88,9 +88,20 @@ describe("ClockingTool", function() {
       expect($('.message-box')).toHaveText('Hi demo user, please clock your time below');
     });
 
+    it("should disable the fields", function() {
+      clockingTool.draw();
+
+      expect($('#project_id')).toBeDisabled();
+      expect($('#issue_search')).toBeDisabled();
+      expect($('#time_entry_activity_id')).toBeDisabled();
+      expect($('#time_entry_hours')).toBeDisabled();
+      expect($('#time_entry_spent_on')).toBeDisabled();
+      expect($('#time_entry_comments')).toBeDisabled();
+    });
+
+
     xit("should add event handling for the popup element");
     xit("should clear out the 'Go to issue' link");
-    xit("should disable the fields");
     xit("should contact the server for the project data");
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
