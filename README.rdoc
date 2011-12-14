@@ -27,3 +27,11 @@ This plugin is licensed under the GNU GPL v2.  See COPYRIGHT.txt and GPL.txt for
 
 If you need help you can contact the maintainer at the Bug Tracker.  The bug tracker is located at  https://projects.littlestreamsoftware.com
 
+== Running Jasmine
+
+Running `rake jasmine` will start a browser for the Jasmine tests.
+
+You might need to load the main ChiliProject Gemfile with bundler and bundle exec though:
+
+    BUNDLE_GEMFILE=../../../Gemfile bundle exec rake jasmine
+
