@@ -1,7 +1,8 @@
 describe("ClockingTool", function() {
   var clockingTool;
   var configuration = {
-    createUrl: "/time_entries.json"
+    createUrl: "/time_entries.json",
+    currentUserName: "demo user"
   }
 
   beforeEach(function() {
@@ -81,7 +82,12 @@ describe("ClockingTool", function() {
       expect($('.form-container #time_entry_activity_id option:first')).toHaveText('Activity');
     });
 
-    xit("should populate the message with a welcome message");
+    it("should populate the message with a welcome message", function() {
+      clockingTool.draw();
+
+      expect($('.message-box')).toHaveText('Hi demo user, please clock your time below');
+    });
+
     xit("should add event handling for the popup element");
     xit("should clear out the 'Go to issue' link");
     xit("should disable the fields");

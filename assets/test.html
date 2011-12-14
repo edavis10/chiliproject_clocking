@@ -70,7 +70,8 @@ div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
   </script>
   <script type="text/javascript">
     var clockingConfig = {
-    createUrl: 'http://localhost:3000/time_entries.json'
+    createUrl: 'http://localhost:3000/time_entries.json',
+    currentUserName: "Test user"
     };
     var clockingTool = new ClockingTool(clockingConfig);
     clockingTool.init();
