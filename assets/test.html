@@ -21,7 +21,7 @@ div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
 div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
 div.clocking-tool-inner .header .message-box { background: #DDDDDD; margin: 5px; padding: 5px; width: auto; }
 div.clocking-tool-inner .header .popout { float: right; position: relative; left: -10px; top: -30px; }
-div.clocking-tool-inner .form-container { float: left;}
+div.clocking-tool-inner .form-container { float: left; margin: 0 5px;}
 div.clocking-tool-inner .recent-container {float: right; width: 50%; }
 div.clocking-tool-inner .recent-container ul {padding-left: 0; list-style: none; background: #DDDDDD; }
 div.clocking-tool-inner .recent-container ul li { padding: 2px 5px; border-bottom: 1px solid #BBBBBB; }
@@ -29,6 +29,7 @@ div.clocking-tool-inner select { width: 100%; }
 div.clocking-tool-inner .issue-fields, div.clocking-tool-inner #time_entry_comments { width: 100%; }
 div.clocking-tool-inner #time_entry_hours { font-size: 40px; text-align:center;float:left; }
 div.clocking-tool-inner a.jump-to-issue { float:right; }
+div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
 </style>
 </head>
 <body>
@@ -67,14 +68,13 @@ div.clocking-tool-inner a.jump-to-issue { float:right; }
           <p>
             <input name="commit" type="submit" value="Save">
             <a class="jump-to-issue" href="#{ issueUrl }">Go to this issue...</a>
-
+          </p>
         </form>
 
       </div>
       <div class="recent-container">
+        <h3>Recent Issues</h3>
         <ul class="recent-issues">
-          <li>1</li>
-          <li>2</li>
         </ul>
       </div>
     </div>
