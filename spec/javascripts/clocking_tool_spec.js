@@ -1,8 +1,11 @@
 describe("ClockingTool", function() {
   var clockingTool;
+  var configuration = {
+    createUrl: "/time_entries.json"
+  }
 
   beforeEach(function() {
-    clockingTool = new ClockingTool();
+    clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
   });
@@ -53,6 +56,13 @@ describe("ClockingTool", function() {
       clockingTool.draw();
 
       expect($('#clocking-tool')).toContain('.recent-container');
+    });
+
+    it("should populate the form action with the configured url", function() {
+      clockingTool.draw();
+
+      expect($('.form-container form')).toHaveAttr("action", "/time_entries.json");
+
     });
 
     xit("should draw pretty stuff");
