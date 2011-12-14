@@ -65,6 +65,14 @@ describe("ClockingTool", function() {
 
     });
 
+    it("should populate the field of spent on with today's date (YYYY-mm-dd format)", function() {
+      today = new Date();
+      clockingTool.draw();
+
+      expect($('.form-container #time_entry_spent_on')).toHaveValue(formatDateToISO(today));
+
+    });
+
     xit("should draw pretty stuff");
   });
 });

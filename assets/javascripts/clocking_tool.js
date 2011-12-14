@@ -14,8 +14,12 @@ ClockingTool.prototype.addStubData = function() {
   $(this.container + " .header .popout").html("[O]");
 }
 ClockingTool.prototype.draw = function() {
+  var today = new Date();
+  todayString = formatDateToISO(today);
+
   $('#clocking-tool-template').tmpl({
-    formUrl: this.createUrl
+    formUrl: this.createUrl,
+    today: todayString
   }).appendTo(this.container);
   this.addStubData();
 }
