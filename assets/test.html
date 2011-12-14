@@ -2,6 +2,7 @@
 <head>
 <script type="text/javascript" src="javascripts/jquery.js"></script>
 <script type="text/javascript" src="javascripts/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="javascripts/helpers.js"></script>
 <script type="text/javascript" src="javascripts/clocking_tool.js"></script>
 <style type="text/css">
 /* TODO: set height dynamically, set width dynamically. */
@@ -68,7 +69,10 @@ div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
     </div>
   </script>
   <script type="text/javascript">
-    var clockingConfig = {};
+    var clockingConfig = {
+    createUrl: 'http://localhost:3000/time_entries.json',
+    currentUserName: "Test user"
+    };
     var clockingTool = new ClockingTool(clockingConfig);
     clockingTool.init();
     clockingTool.draw();
