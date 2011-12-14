@@ -1,3 +1,29 @@
-= clocking
+= Clocking Tool
 
-Description goes here
+A modular clocking tool for ChiliProject to make entering time fast and easy
+
+== Features
+
+TODO: fill in features
+
+== Getting the plugin
+
+A copy of the plugin can be downloaded from {Little Stream Software}[https://projects.littlestreamsoftware.com/projects/chiliproject_clocking/files] or from {GitHub}[http://github.com/edavis10/chiliproject_clocking]
+
+
+== Installation and Setup
+
+1. Follow the ChiliProject plugin installation steps at: https://www.chiliproject.org/projects/chiliproject/wiki/Plugin_Install
+
+== Usage
+
+TODO: Add usage
+
+== License
+
+This plugin is licensed under the GNU GPL v2.  See COPYRIGHT.txt and GPL.txt for details.
+
+== Project help
+
+If you need help you can contact the maintainer at the Bug Tracker.  The bug tracker is located at  https://projects.littlestreamsoftware.com
+
