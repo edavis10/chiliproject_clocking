@@ -81,6 +81,12 @@ describe("ClockingTool", function() {
       expect($('.form-container #time_entry_activity_id option:first')).toHaveText('Activity');
     });
 
+    xit("should populate the message with a welcome message");
+    xit("should add event handling for the popup element");
+    xit("should clear out the 'Go to issue' link");
+    xit("should disable the fields");
+    xit("should contact the server for the project data");
+    xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });
 });
