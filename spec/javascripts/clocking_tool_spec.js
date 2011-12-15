@@ -174,4 +174,27 @@ describe("ClockingTool", function() {
     });
   });
 
+  describe("issueChange()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+    });
+
+    it("should search the project's issue", function() {
+      spyOn(clockingTool, 'searchIssues')
+      $('#issue_search').val('search term');
+
+      clockingTool.issueChange();
+
+      expect(clockingTool.searchIssues).toHaveBeenCalledWith('search term');
+    });
+
+    xit("should display a search results box");
+    xit("should bind to the search results's click to select an issue");
+  });
+
+
 });

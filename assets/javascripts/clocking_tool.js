@@ -69,4 +69,8 @@ ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
 }
 ClockingTool.prototype.issueChange = function() {
+  this.searchIssues($('#issue_search').val());
+}
+ClockingTool.prototype.searchIssues = function(query) {
+  return "";
 }
