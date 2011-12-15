@@ -72,11 +72,14 @@ div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
   </script>
   <script type="text/javascript">
     var clockingConfig = {
-    createUrl: 'http://localhost:3000/time_entries.json',
-    currentUserName: "Test user"
+    createUrl: '/time_entries.json',
+    rootUrl: '/',
+    currentUserName: "Test user",
+    apiKey: '5d319712650b4e30c7e3162064263bae4902ce8c'
     };
     var clockingTool = new ClockingTool(clockingConfig);
     clockingTool.draw();
+    clockingTool.getProjects();
   </script>
 </body>
 </html>
