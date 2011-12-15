@@ -9,6 +9,8 @@ describe("ClockingTool", function() {
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
+
+    jasmine.Ajax.useMock();
   });
 
   it("should have a var", function() {

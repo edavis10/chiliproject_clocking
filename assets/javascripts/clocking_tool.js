@@ -3,8 +3,12 @@ function ClockingTool(configuration) {
   this.test = 42;
   this.container = '#clocking-tool';
   this.createUrl = '';
+  this.rootUrl = '/';
   this.currentUserName = '';
+  this.apiKey = '';
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
+
+  this.projects = [];
 }
 ClockingTool.prototype.init = function() {
 }
@@ -34,4 +38,7 @@ ClockingTool.prototype.addWelcomeMessage = function() {
 ClockingTool.prototype.disableFormFields = function() {
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
 
+}
+ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
+  return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
