@@ -69,7 +69,15 @@ ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
 }
 ClockingTool.prototype.issueChange = function() {
-  this.searchIssues($('#issue_search').val());
+  var results = this.searchIssues($('#issue_search').val());
+  var searchContainer = $("<div class='search-results'></div>").html($("<ul>"));
+
+  _.each(results, function(issue) {
+    var issueString = "#" + issue.id + ": " + issue.subject;
+    searchContainer.find("ul").append($("<li>").html(issueString).attr("data-issue-id", issue.id));
+  });
+
+  $(this.container).append(searchContainer);
 }
 ClockingTool.prototype.searchIssues = function(query) {
   var projectId = $('#project_id').val();

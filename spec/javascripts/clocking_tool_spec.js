@@ -181,6 +181,9 @@ describe("ClockingTool", function() {
       clockingTool.addProject(10, "Project10");
       clockingTool.loadProjectsInForm();
       $('#project_id').val(10);
+      $('#issue_search').val('evil');
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
     });
 
     it("should search the project's issue", function() {
@@ -192,7 +195,19 @@ describe("ClockingTool", function() {
       expect(clockingTool.searchIssues).toHaveBeenCalledWith('search term');
     });
 
-    xit("should display a search results box");
+    it("should display a search results box", function() {
+      clockingTool.issueChange();
+
+      expect($('#clocking-tool')).toContain('.search-results');
+      expect($('.search-results')).toBeVisible();
+    });
+
+    it("should populate the search results with the issues", function() {
+      clockingTool.issueChange();
+      expect($('.search-results')).toContain("ul");
+      expect($('.search-results ul li').length).toEqual(59);
+    });
+
     xit("should bind to the search results's click to select an issue");
   });
 
