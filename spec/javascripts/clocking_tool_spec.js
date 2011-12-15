@@ -119,4 +119,19 @@ describe("ClockingTool", function() {
       expect($('#project_id')).not.toBeDisabled();
     });
   });
+
+  describe("#project_id.change() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+    });
+
+    it("should trigger projectChange()", function() {
+      spyOnEvent($('#project_id'), 'change');
+
+      $('#project_id').val(1).change();
+
+      expect('change').toHaveBeenTriggeredOn($('#project_id'));
+    });
+  });
 });

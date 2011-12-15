@@ -25,6 +25,14 @@ ClockingTool.prototype.draw = function() {
   this.addActivity();
   this.addWelcomeMessage();
   this.disableFormFields();
+  this.setupEventBindings();
+}
+// Sets up all the event bindings on the tool's widget
+ClockingTool.prototype.setupEventBindings = function() {
+  var clockingTool = this;
+  $('#project_id').change(function() {
+    clockingTool.projectChange();
+  });
 }
 ClockingTool.prototype.addActivity = function() {
   $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
@@ -54,3 +62,7 @@ ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
 ClockingTool.prototype.findProject = function(projectId) {
   return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
 }
+ClockingTool.prototype.projectChange = function() {
+  console.log("Project is now " + $('#project_id').val());
+}
+
