@@ -63,6 +63,6 @@ ClockingTool.prototype.findProject = function(projectId) {
   return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
 }
 ClockingTool.prototype.projectChange = function() {
-  console.log("Project is now " + $('#project_id').val());
+  this.getIssues($('#project_id').val());
 }
 

@@ -134,4 +134,22 @@ describe("ClockingTool", function() {
       expect('change').toHaveBeenTriggeredOn($('#project_id'));
     });
   });
+
+  describe("projectChange()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(1);
+    });
+
+    it("should load issues", function() {
+      spyOn(clockingTool, 'getIssues');
+
+      clockingTool.projectChange();
+
+      expect(clockingTool.getIssues).toHaveBeenCalledWith('1');
+    });
+  });
 });
