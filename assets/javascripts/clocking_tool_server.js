@@ -10,6 +10,17 @@ ClockingTool.prototype.getProjects = function() {
   });
 }
 
+ClockingTool.prototype.getIssues = function(projectId) {
+  var clockingTool = this;
+
+  $.ajax({
+    url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
+    success: function(data) {
+      clockingTool.processIssuesFromServer(data);
+    }
+  });
+}
+
 ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   var clockingTool = this;
 
@@ -28,4 +39,7 @@ ClockingTool.prototype.addProject = function(id, name) {
     activities: [],
     issues: []
   });
+}
+
+ClockingTool.prototype.processIssuesFromServer = function(jsonData) {
 }

@@ -48,4 +48,17 @@ describe("ClockingTool server functions", function() {
     });
   });
 
+  // NOTE: Ajax mocking
+  describe("getIssues()", function() {
+    it("should load issues for the project from the server", function() {
+      spyOn(clockingTool, 'processIssuesFromServer');
+
+      clockingTool.getIssues(10);
+
+      request = mostRecentAjaxRequest();
+      request.response(TestResponses.issues.project10.success);
+
+      expect(clockingTool.processIssuesFromServer).toHaveBeenCalled();
+    });
+  });
 });
