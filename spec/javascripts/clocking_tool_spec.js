@@ -108,4 +108,44 @@ describe("ClockingTool", function() {
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });
+
+  describe("loadProjectsInForm()", function() {
+    beforeEach(function() {
+      clockingTool.init();
+      clockingTool.draw();
+    });
+
+    it("should add the default option", function() {
+      clockingTool.loadProjectsInForm();
+
+      expect($('.form-container #project_id option').length).toEqual(1);
+      expect($('.form-container #project_id option:first')).toHaveValue('');
+      expect($('.form-container #project_id option:first')).toHaveText('Project');
+
+    });
+    it("should add an option for each project", function() {
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+
+      clockingTool.loadProjectsInForm();
+
+      expect($('.form-container #project_id option').length).toEqual(3);
+      expect($('.form-container #project_id option:nth(1)')).toHaveValue('1');
+      expect($('.form-container #project_id option:nth(1)')).toHaveText('Project1');
+      expect($('.form-container #project_id option:nth(2)')).toHaveValue('2');
+      expect($('.form-container #project_id option:nth(2)')).toHaveText('Project2');
+
+    });
+
+    it("should clear and reset the field each time", function() {
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+
+      clockingTool.loadProjectsInForm();
+      expect($('.form-container #project_id option').length).toEqual(3);
+
+      clockingTool.loadProjectsInForm();
+      expect($('.form-container #project_id option').length).toEqual(3);
+    });
+  });
 });

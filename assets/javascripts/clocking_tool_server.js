@@ -18,6 +18,7 @@ ClockingTool.prototype.processProjectsFromServer = function(data) {
   _.each(serverProjects.projects, function(project) {
     clockingTool.addProject(project.id, project.name);
   });
+  this.loadProjectsInForm();
 }
 
 ClockingTool.prototype.addProject = function(id, name) {

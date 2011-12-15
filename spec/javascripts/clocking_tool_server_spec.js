@@ -42,6 +42,11 @@ describe("ClockingTool server functions", function() {
       expect(clockingTool.projects).toContain({id: 10, name: "Balanced 24/7 paradigm", loadedAt: "", activities: [], issues: []});
     });
 
+    it("should load the project data into the form", function() {
+      clockingTool.processProjectsFromServer(TestResponses.projects.success.responseText);
+
+      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
+    });
   });
 
 });
