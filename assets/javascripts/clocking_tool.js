@@ -40,7 +40,7 @@ ClockingTool.prototype.disableFormFields = function() {
 ClockingTool.prototype.loadProjectsInForm = function() {
   var options =  $("<option value=''>Project</option>");
   _.each(this.projects, function(project) {
-    options.append("<option value='" + project.id + "'>" + project.name + "</option>");
+    options = options.add("<option value='" + project.id + "'>" + project.name + "</option>");
   });
   $(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
 }
