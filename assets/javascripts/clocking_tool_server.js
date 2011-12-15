@@ -10,12 +10,11 @@ ClockingTool.prototype.getProjects = function() {
   });
 }
 
-ClockingTool.prototype.processProjectsFromServer = function(data) {
-  var serverProjects = $.parseJSON(data);
+ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   var clockingTool = this;
 
   // TODO: check total_count, limit, and offset for > 100 projects
-  _.each(serverProjects.projects, function(project) {
+  _.each(jsonData.projects, function(project) {
     clockingTool.addProject(project.id, project.name);
   });
   this.loadProjectsInForm();

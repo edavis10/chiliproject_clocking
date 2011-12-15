@@ -34,7 +34,7 @@ describe("ClockingTool server functions", function() {
 
   describe("processProjectsFromServer()", function(){
     it("should store projects data locally in projects", function() {
-      clockingTool.processProjectsFromServer(TestResponses.projects.success.responseText);
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
 
       expect(clockingTool.projects.length).toEqual(10);
       // TODO: refactor to matcher toContainEmptyProject ?
@@ -42,7 +42,7 @@ describe("ClockingTool server functions", function() {
     });
 
     it("should load the project data into the form", function() {
-      clockingTool.processProjectsFromServer(TestResponses.projects.success.responseText);
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
 
       expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
     });
