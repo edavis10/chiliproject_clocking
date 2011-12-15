@@ -128,10 +128,12 @@ describe("ClockingTool", function() {
 
     it("should trigger projectChange()", function() {
       spyOnEvent($('#project_id'), 'change');
+      spyOn(clockingTool, 'projectChange');
 
       $('#project_id').val(1).change();
 
       expect('change').toHaveBeenTriggeredOn($('#project_id'));
+      expect(clockingTool.projectChange).toHaveBeenCalled();
     });
   });
 
@@ -152,4 +154,24 @@ describe("ClockingTool", function() {
       expect(clockingTool.getIssues).toHaveBeenCalledWith('1');
     });
   });
+
+  describe("#issue_search.keyup() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(1);
+    });
+
+    it("should trigger issueChange()", function() {
+      spyOnEvent($('#issue_search'), 'keyup');
+      spyOn(clockingTool, 'issueChange');
+
+      $('#issue_search').keyup();
+
+      expect('keyup').toHaveBeenTriggeredOn($('#issue_search'));
+      expect(clockingTool.issueChange).toHaveBeenCalled();
+    });
+  });
+
 });

@@ -33,6 +33,9 @@ ClockingTool.prototype.setupEventBindings = function() {
   $('#project_id').change(function() {
     clockingTool.projectChange();
   });
+  $('#issue_search').keyup(function() {
+    clockingTool.issueChange();
+  });
 }
 ClockingTool.prototype.addActivity = function() {
   $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
@@ -65,4 +68,5 @@ ClockingTool.prototype.findProject = function(projectId) {
 ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
 }
-
+ClockingTool.prototype.issueChange = function() {
+}
