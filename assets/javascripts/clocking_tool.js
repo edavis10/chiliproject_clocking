@@ -72,5 +72,11 @@ ClockingTool.prototype.issueChange = function() {
   this.searchIssues($('#issue_search').val());
 }
 ClockingTool.prototype.searchIssues = function(query) {
-  return "";
+  var projectId = $('#project_id').val();
+  var selectedProject = this.findProject(projectId);
+  var queryRegex = new RegExp(query, "i");
+
+  return _.filter(selectedProject.issues, function (issue) {
+    return issue.searchData.match(queryRegex);
+  });
 }

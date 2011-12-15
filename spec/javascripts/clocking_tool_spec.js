@@ -196,5 +196,33 @@ describe("ClockingTool", function() {
     xit("should bind to the search results's click to select an issue");
   });
 
+  describe("searchIssues()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+    });
 
+    it("should look for issues with a matching search term", function() {
+      expect(clockingTool.findProject(10).issues.length).toEqual(106); // 106 issues
+      
+      var results = clockingTool.searchIssues("evil");
+
+      expect(results.length).toEqual(59);
+    });
+
+    it("should only search the specific project", function() {
+      var results = clockingTool.searchIssues("evil");
+      var project10 = clockingTool.findProject(10);
+
+      _.each(results, function(issue) {
+        expect(_.indexOf(project10.issues, issue) >= 0)
+      });
+
+    });
+  });
 });
