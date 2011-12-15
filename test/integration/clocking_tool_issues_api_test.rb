@@ -28,7 +28,7 @@ class ClockingToolIssuesApiTest < ActionController::IntegrationTest
 
   context "for a project with permission to create time entries" do
     setup do
-      @role = Role.generate!(:permissions => [:log_time])
+      @role = Role.generate!(:permissions => [:view_issues, :log_time])
       User.add_to_project(@user, @project, @role)
       get("/clocking_tool/issues.json?key=#{@user.api_key}&project_id=#{@project.id}")
     end
@@ -45,12 +45,28 @@ class ClockingToolIssuesApiTest < ActionController::IntegrationTest
       end
       
       should "be a list of issue hashes" do
-        puts @json.inspect
+        assert_equal 3, @json.length
+        assert @json.first.is_a?(Hash), "Not an issue hash"
+        assert @json.second.is_a?(Hash), "Not an issue hash"
+        assert @json.third.is_a?(Hash), "Not an issue hash"
       end
       
-      should "have an id"
-      should "have a subject"
-      should "have searchData"
+      should "have an id" do
+        assert @json.all? {|issue| issue["id"].present? }, "Missing id field"
+      end
+      
+      should "have a subject" do
+        assert @json.all? {|issue| issue["subject"].present? }, "Missing subject field"
+      end
+
+      should "have searchData" do
+        assert @json.all? {|issue| issue["searchData"].present? }, "Missing searchData field"
+      end
+
+      should "have searchData be pipe (|) separated" do
+        assert @json.all? {|issue| issue["searchData"].include?("|") }, "searchData format is invalid"
+      end
+      
     end
   end
 
