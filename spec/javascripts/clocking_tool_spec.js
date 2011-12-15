@@ -147,5 +147,11 @@ describe("ClockingTool", function() {
       clockingTool.loadProjectsInForm();
       expect($('.form-container #project_id option').length).toEqual(3);
     });
+
+    it("should enable the project field", function() {
+      expect($('#project_id')).toBeDisabled();
+      clockingTool.loadProjectsInForm();
+      expect($('#project_id')).not.toBeDisabled();
+    });
   });
 });

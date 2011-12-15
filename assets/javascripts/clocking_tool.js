@@ -45,7 +45,7 @@ ClockingTool.prototype.loadProjectsInForm = function() {
   _.each(this.projects, function(project) {
     options.append("<option value='" + project.id + "'>" + project.name + "</option>");
   });
-  $(this.container + ' #project_id').empty().append(options);
+  $(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
 }
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
