@@ -61,4 +61,17 @@ describe("ClockingTool server functions", function() {
       expect(clockingTool.processIssuesFromServer).toHaveBeenCalled();
     });
   });
+
+  describe("processIssuesFromServer()", function() {
+    it("should store the issues locally inside of the project data", function() {
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.issues.length).toEqual(106); // 106 issues
+    });
+
+    xit("should enable the issue field on the form");
+  });
 });

@@ -47,3 +47,6 @@ ClockingTool.prototype.loadProjectsInForm = function() {
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
+ClockingTool.prototype.findProject = function(projectId) {
+  return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
+}
