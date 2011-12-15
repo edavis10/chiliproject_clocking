@@ -12,7 +12,6 @@ describe("ClockingTool server functions", function() {
   beforeEach(function() {
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
-    clockingTool.init();
     clockingTool.draw();
 
     jasmine.Ajax.useMock();

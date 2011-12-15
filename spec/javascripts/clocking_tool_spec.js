@@ -17,21 +17,7 @@ describe("ClockingTool", function() {
     xit("should allow setting options via a config object");
   });
 
-  describe("init()", function() {
-    it("should not raise an exception", function() {
-      expect(function() {
-        clockingTool.init();
-      }).not.toThrow("anything");
-    });
-
-    xit("should configure the tool");
-  });
-
   describe("draw()", function() {
-    beforeEach(function() {
-      clockingTool.init();
-    });
-
     it("should create a div inside the container", function() {
       clockingTool.draw();
 
@@ -107,7 +93,6 @@ describe("ClockingTool", function() {
 
   describe("loadProjectsInForm()", function() {
     beforeEach(function() {
-      clockingTool.init();
       clockingTool.draw();
     });
 

@@ -9,8 +9,6 @@ function ClockingTool(configuration) {
 
   this.projects = [];
 }
-ClockingTool.prototype.init = function() {
-}
 // Add some stub data during development
 ClockingTool.prototype.addStubData = function() {
   $(this.container + " .header .popout").html("[O]");
