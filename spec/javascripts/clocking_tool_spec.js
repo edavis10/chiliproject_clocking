@@ -13,10 +13,6 @@ describe("ClockingTool", function() {
     jasmine.Ajax.useMock();
   });
 
-  it("should have a var", function() {
-    expect(clockingTool.test).toEqual(42);
-  });
-
   describe("constructor", function() {
     xit("should allow setting options via a config object");
   });

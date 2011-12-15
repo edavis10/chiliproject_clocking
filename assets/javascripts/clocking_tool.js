@@ -1,6 +1,5 @@
 // Clocking Tool Application
 function ClockingTool(configuration) {
-  this.test = 42;
   this.container = '#clocking-tool';
   this.createUrl = '';
   this.rootUrl = '/';
