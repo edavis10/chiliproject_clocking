@@ -72,6 +72,14 @@ describe("ClockingTool server functions", function() {
       expect(currentProject.issues.length).toEqual(106); // 106 issues
     });
 
-    xit("should enable the issue field on the form");
+    it("should enable the issue field on the form", function() {
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      expect($('#issue_search')).toBeDisabled();
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+
+      expect($('#issue_search')).not.toBeDisabled();
+      
+    });
   });
 });

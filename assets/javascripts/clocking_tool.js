@@ -44,6 +44,10 @@ ClockingTool.prototype.loadProjectsInForm = function() {
   });
   $(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
 }
+ClockingTool.prototype.loadIssuesInForm = function() {
+  // Issues are not shown, only the search field is
+  $(this.container + ' #issue_search').removeAttr('disabled');
+}
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
