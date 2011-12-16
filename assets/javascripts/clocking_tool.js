@@ -22,7 +22,6 @@ ClockingTool.prototype.draw = function() {
     today: todayString
   }).appendTo(this.container);
   this.addStubData();
-  this.addActivity();
   this.addWelcomeMessage();
   this.disableFormFields();
   this.setupEventBindings();
@@ -39,9 +38,6 @@ ClockingTool.prototype.setupEventBindings = function() {
   $('a.issue-search-result').live('click', function() {
     clockingTool.selectIssue($(this).data('issueId'));
   });
-}
-ClockingTool.prototype.addActivity = function() {
-  $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
 }
 ClockingTool.prototype.addWelcomeMessage = function() {
   $(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
@@ -62,6 +58,19 @@ ClockingTool.prototype.loadIssuesInForm = function() {
   // Issues are not shown, only the search field is
   $(this.container + ' #issue_search').removeAttr('disabled');
 }
+ClockingTool.prototype.loadActivitiesInForm = function() {
+  var projectId = $('#project_id').val() || '';
+  var selectedProject = this.findProject(projectId);
+
+  if (selectedProject) {
+    var options =  $("<option value=''>Activity</option>");
+    _.each(selectedProject.activities, function(activity) {
+      options = options.add("<option value='" + activity.id + "'>" + activity.name + "</option>");
+    });
+    $(this.container + ' #time_entry_activity_id').empty().append(options).removeAttr('disabled');
+  }
+  
+}
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
@@ -75,6 +84,7 @@ ClockingTool.prototype.findIssueInProject = function(project, issueId) {
 }
 ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
+  this.getActivities($('#project_id').val());
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
 }
 ClockingTool.prototype.issueChange = function() {

@@ -82,4 +82,42 @@ describe("ClockingTool server functions", function() {
       
     });
   });
+
+  // NOTE: Ajax mocking
+  describe("getActivities()", function() {
+    it("should load activities for the project from the server", function() {
+      spyOn(clockingTool, 'processActivitiesFromServer');
+
+      clockingTool.getActivities(10);
+
+      request = mostRecentAjaxRequest();
+      request.response(TestResponses.activities.project10.success);
+
+      expect(clockingTool.processActivitiesFromServer).toHaveBeenCalled();
+    });
+  });
+
+  describe("processActivitiesFromServer()", function() {
+    beforeEach(function() {
+      spyOn(clockingTool, 'loadActivitiesInForm');
+    });
+
+    it("should store the activities locally inside of the project data", function() {
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
+
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.activities.length).toEqual(3);
+    });
+
+    it("should load the activities into the form", function() {
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
+
+      expect(clockingTool.loadActivitiesInForm).toHaveBeenCalled();
+      
+    });
+  });
 });

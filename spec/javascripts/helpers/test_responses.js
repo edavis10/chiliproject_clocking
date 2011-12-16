@@ -5,6 +5,14 @@ var TestResponses = {
       responseText: '{"total_count":10,"limit":100,"offset":0,"projects":[{"identifier":"luettgen0","updated_on":"2011-02-05T18:45:09-08:00","description":"reinvent user-centric systems","name":"Multi-tiered responsive Graphi","id":1,"created_on":"2011-02-05T18:45:09-08:00"},{"identifier":"buckridge1","updated_on":"2011-02-05T18:45:10-08:00","description":"facilitate leading-edge interfaces","name":"Optimized modular data-warehou","id":2,"created_on":"2011-02-05T18:45:10-08:00"},{"parent":{"name":"Optimized modular data-warehou","id":2},"identifier":"sengerdickens3","updated_on":"2011-11-15T11:54:29-08:00","description":"unleash real-time deliverables","name":"Z Customizable bandwidth-monitor","id":4,"created_on":"2011-02-05T18:45:11-08:00"},{"parent":{"name":"Optimized modular data-warehou","id":2},"identifier":"macejkovic2","updated_on":"2011-02-05T18:45:10-08:00","description":"empower compelling web services","name":"Fully-configurable grid-enable","id":3,"created_on":"2011-02-05T18:45:10-08:00"},{"parent":{"name":"Fully-configurable grid-enable","id":3},"identifier":"gaylord4","updated_on":"2011-02-05T18:45:12-08:00","description":"harness collaborative communities","name":"Mandatory hybrid capacity","id":5,"created_on":"2011-02-05T18:45:12-08:00"},{"identifier":"bosco5","updated_on":"2011-02-05T18:45:12-08:00","description":"reintermediate B2C infrastructures","name":"Phased modular neural-net","id":6,"created_on":"2011-02-05T18:45:12-08:00"},{"identifier":"wehnerparisian6","updated_on":"2011-02-05T18:45:13-08:00","description":"reintermediate leading-edge systems","name":"Compatible object-oriented arc","id":7,"created_on":"2011-02-05T18:45:13-08:00"},{"identifier":"wymanmetz7","updated_on":"2011-02-05T18:45:14-08:00","description":"transform world-class platforms","name":"Future-proofed 3rd generation ","id":8,"created_on":"2011-02-05T18:45:14-08:00"},{"identifier":"king8","updated_on":"2011-02-05T18:45:14-08:00","description":"revolutionize user-centric ROI","name":"Realigned exuding solution","id":9,"created_on":"2011-02-05T18:45:14-08:00"},{"identifier":"watsicamorissette9","updated_on":"2011-02-05T18:45:15-08:00","description":"transition next-generation action-items","name":"Balanced 24/7 paradigm","id":10,"created_on":"2011-02-05T18:45:15-08:00"}]}'
     }
   },
+  activities: {
+    project10: {
+      success: {
+        status: 200,
+        responseText: JSON.stringify([{"name":"Design","id":8},{"name":"Development","id":9},{"name":"Paperwork","id":17}])
+      }
+    }
+  },
   issues: {
     project10: {
       success: {
