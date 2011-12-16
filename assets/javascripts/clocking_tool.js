@@ -68,6 +68,11 @@ ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
 ClockingTool.prototype.findProject = function(projectId) {
   return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
 }
+ClockingTool.prototype.findIssueInProject = function(project, issueId) {
+  if (project) {
+    return _.find(project.issues, function(issue) { return issue.id.toString() === issueId.toString() });
+  }
+}
 ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
@@ -99,5 +104,12 @@ ClockingTool.prototype.searchIssues = function(query) {
   });
 }
 ClockingTool.prototype.selectIssue = function(issueId) {
-
+  $(this.container + " .search-results").hide();
+  var projectId = $('#project_id').val();
+  var selectedProject = this.findProject(projectId);
+  var issue = this.findIssueInProject(selectedProject, issueId);
+  if (issue) {
+    $('#issue_search').val(issue.subject);
+    $('#time_entry_issue_id').val(issue.id);
+  }
 }

@@ -258,4 +258,34 @@ describe("ClockingTool", function() {
 
     });
   });
+
+  describe("selectIssue()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+      $('#issue_search').val('evil');
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+      $('.search-results').show();
+
+    });
+
+    it("should close the search results", function() {
+      expect($('.search-results')).toBeVisible();
+      clockingTool.selectIssue(983);
+      expect($('.search-results')).toBeHidden();
+    });
+
+    it("should fill in the issue search with the issue subject", function() {
+      clockingTool.selectIssue(983);
+      expect($('#issue_search')).toHaveValue("Multi-channelled maximized instruction set");
+    });
+
+    it("should populate the form issue id", function() {
+      clockingTool.selectIssue(983);
+      expect($('#time_entry_issue_id')).toHaveValue('983');
+    });
+  });
 });
