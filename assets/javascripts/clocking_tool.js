@@ -36,6 +36,9 @@ ClockingTool.prototype.setupEventBindings = function() {
   $('#issue_search').keyup(function() {
     clockingTool.issueChange();
   });
+  $('a.issue-search-result').live('click', function() {
+    clockingTool.selectIssue($(this).data('issueId'));
+  });
 }
 ClockingTool.prototype.addActivity = function() {
   $(this.container + " #time_entry_activity_id").append("<option value=''>Activity</option>");
@@ -79,8 +82,8 @@ ClockingTool.prototype.issueChange = function() {
     var issueIdString = "<span class='issue-id'>#" + issue.id + "</span>";
     var issueString = "<span class='issue-subject'>" + issue.subject + "</span>";
     var projectString = "<span class='project-name'>" + selectedProject.name; + "</span>";
-
-    var searchItem = $("<li>").html(issueIdString + issueString + projectString).attr("data-issue-id", issue.id);
+    var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#'>" + issueIdString + issueString + projectString + "</a>";
+    var searchItem = $("<li>").html(link);
 
     searchContainer.find("ul").append(searchItem);
   });
@@ -94,4 +97,7 @@ ClockingTool.prototype.searchIssues = function(query) {
   return _.filter(selectedProject.issues, function (issue) {
     return issue.searchData.match(queryRegex);
   });
+}
+ClockingTool.prototype.selectIssue = function(issueId) {
+
 }

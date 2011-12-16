@@ -219,7 +219,14 @@ describe("ClockingTool", function() {
       expect($('.search-results ul li').length).toEqual(59);
     });
 
-    xit("should bind to the search results's click to select an issue");
+    it("should bind to the search results's click to select an issue", function() {
+      clockingTool.issueChange();
+      spyOn(clockingTool, 'selectIssue');
+
+      $('.search-results li a:first').click();
+
+      expect(clockingTool.selectIssue).toHaveBeenCalledWith(983);
+    });
   });
 
   describe("searchIssues()", function() {
