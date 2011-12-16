@@ -21,6 +21,14 @@ div.clocking-tool-inner .issue-fields, div.clocking-tool-inner #time_entry_comme
 div.clocking-tool-inner #time_entry_hours { font-size: 40px; text-align:center;float:left; }
 div.clocking-tool-inner a.jump-to-issue { float:right; }
 div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
+div.clocking-tool-inner .search-results { position: absolute; width: 600px; background: white; z-index: 100; margin: -15px 0 0 0; padding: 0; }
+div.clocking-tool-inner .search-results ul { list-style-type: none; margin: 0; padding: 0; max-height: 400px; overflow-y: auto; }
+div.clocking-tool-inner .search-results ul li { padding: 0px; cursor: pointer; border: 1px solid #DDDDDD; }
+div.clocking-tool-inner .search-results ul li:hover { background-color: #ffb; }
+div.clocking-tool-inner .search-results ul li span { border-right: 1px solid #000000; padding-right: 5px; margin-right: 5px; }
+div.clocking-tool-inner .search-results ul li span.issue-id { width: 40px; }
+div.clocking-tool-inner .search-results ul li span.issue-subject { width: 300px; }
+div.clocking-tool-inner .search-results ul li span.project-name { border-right: none; }
 </style>
 </head>
 <body>
@@ -42,6 +50,7 @@ div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
             <input id="issue_search" name="issue_search" type="text" placeholder="--- Issue search ---">
             <img alt="Refresh" class="refresh-data" src="/images/none.png" height="16" width="16">
           </p>
+          <div class="search-results" style="display: none;"></div>
           <p>
             <select id="time_entry_activity_id" name="time_entry[activity_id]">
             </select>

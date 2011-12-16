@@ -119,4 +119,173 @@ describe("ClockingTool", function() {
       expect($('#project_id')).not.toBeDisabled();
     });
   });
+
+  describe("#project_id.change() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+    });
+
+    it("should trigger projectChange()", function() {
+      spyOnEvent($('#project_id'), 'change');
+      spyOn(clockingTool, 'projectChange');
+
+      $('#project_id').val(1).change();
+
+      expect('change').toHaveBeenTriggeredOn($('#project_id'));
+      expect(clockingTool.projectChange).toHaveBeenCalled();
+    });
+  });
+
+  describe("projectChange()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(1);
+    });
+
+    it("should load issues", function() {
+      spyOn(clockingTool, 'getIssues');
+
+      clockingTool.projectChange();
+
+      expect(clockingTool.getIssues).toHaveBeenCalledWith('1');
+    });
+
+    it("should enable the form fields", function() {
+      clockingTool.projectChange();
+
+      expect($('#issue_search')).not.toBeDisabled();
+      expect($('#time_entry_activity_id')).not.toBeDisabled();
+      expect($('#time_entry_hours')).not.toBeDisabled();
+      expect($('#time_entry_spent_on')).not.toBeDisabled();
+      expect($('#time_entry_comments')).not.toBeDisabled();
+      
+    });
+  });
+
+  describe("#issue_search.keyup() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(1);
+    });
+
+    it("should trigger issueChange()", function() {
+      spyOnEvent($('#issue_search'), 'keyup');
+      spyOn(clockingTool, 'issueChange');
+
+      $('#issue_search').keyup();
+
+      expect('keyup').toHaveBeenTriggeredOn($('#issue_search'));
+      expect(clockingTool.issueChange).toHaveBeenCalled();
+    });
+  });
+
+  describe("issueChange()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+      $('#issue_search').val('evil');
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+    });
+
+    it("should search the project's issue", function() {
+      spyOn(clockingTool, 'searchIssues')
+      $('#issue_search').val('search term');
+
+      clockingTool.issueChange();
+
+      expect(clockingTool.searchIssues).toHaveBeenCalledWith('search term');
+    });
+
+    it("should display a search results box", function() {
+      clockingTool.issueChange();
+
+      expect($('#clocking-tool')).toContain('.search-results');
+      expect($('.search-results')).toBeVisible();
+    });
+
+    it("should populate the search results with the issues", function() {
+      clockingTool.issueChange();
+      expect($('.search-results')).toContain("ul");
+      expect($('.search-results ul li').length).toEqual(59);
+    });
+
+    it("should bind to the search results's click to select an issue", function() {
+      clockingTool.issueChange();
+      spyOn(clockingTool, 'selectIssue');
+
+      $('.search-results li a:first').click();
+
+      expect(clockingTool.selectIssue).toHaveBeenCalledWith(983);
+    });
+  });
+
+  describe("searchIssues()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+    });
+
+    it("should look for issues with a matching search term", function() {
+      expect(clockingTool.findProject(10).issues.length).toEqual(106); // 106 issues
+      
+      var results = clockingTool.searchIssues("evil");
+
+      expect(results.length).toEqual(59);
+    });
+
+    it("should only search the specific project", function() {
+      var results = clockingTool.searchIssues("evil");
+      var project10 = clockingTool.findProject(10);
+
+      _.each(results, function(issue) {
+        expect(_.indexOf(project10.issues, issue) >= 0)
+      });
+
+    });
+  });
+
+  describe("selectIssue()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      $('#project_id').val(10);
+      $('#issue_search').val('evil');
+      // Adds issues from fixture
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+      $('.search-results').show();
+
+    });
+
+    it("should close the search results", function() {
+      expect($('.search-results')).toBeVisible();
+      clockingTool.selectIssue(983);
+      expect($('.search-results')).toBeHidden();
+    });
+
+    it("should fill in the issue search with the issue subject", function() {
+      clockingTool.selectIssue(983);
+      expect($('#issue_search')).toHaveValue("Multi-channelled maximized instruction set");
+    });
+
+    it("should populate the form issue id", function() {
+      clockingTool.selectIssue(983);
+      expect($('#time_entry_issue_id')).toHaveValue('983');
+    });
+  });
 });
