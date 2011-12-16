@@ -70,14 +70,13 @@ ClockingTool.prototype.projectChange = function() {
 }
 ClockingTool.prototype.issueChange = function() {
   var results = this.searchIssues($('#issue_search').val());
-  var searchContainer = $("<div class='search-results'></div>").html($("<ul>"));
+  var searchContainer = $(this.container + " div.search-results").html($("<ul>"));
 
   _.each(results, function(issue) {
     var issueString = "#" + issue.id + ": " + issue.subject;
     searchContainer.find("ul").append($("<li>").html(issueString).attr("data-issue-id", issue.id));
   });
-
-  $(this.container).append(searchContainer);
+  searchContainer.show();
 }
 ClockingTool.prototype.searchIssues = function(query) {
   var projectId = $('#project_id').val();
