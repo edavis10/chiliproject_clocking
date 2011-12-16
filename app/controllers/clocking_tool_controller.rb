@@ -2,13 +2,21 @@ class ClockingToolController < ApplicationController
   unloadable
   before_filter :find_project_by_project_id
   before_filter :authorize
-  accept_key_auth :issues
+  accept_key_auth :issues, :activities
   
   def issues
     @issues = @project.issues.visible
 
     respond_to do |format|
       format.json { render :json => issues_to_clocking_tool_format(@issues) }
+    end
+  end
+
+  def activities
+    @activities = @project.activities
+
+    respond_to do |format|
+      format.json { render :json => activities_to_clocking_tool_format(@activities) }
     end
   end
 
@@ -38,4 +46,11 @@ class ClockingToolController < ApplicationController
       }
     end
   end
+
+  def activities_to_clocking_tool_format(activities)
+    activities.inject([]) do |acc, activity|
+      acc << {"id" => activity.id, "name" => activity.name}
+    end
+  end
+  
 end
