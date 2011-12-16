@@ -70,12 +70,19 @@ ClockingTool.prototype.projectChange = function() {
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
 }
 ClockingTool.prototype.issueChange = function() {
+  var projectId = $('#project_id').val();
+  var selectedProject = this.findProject(projectId);
   var results = this.searchIssues($('#issue_search').val());
   var searchContainer = $(this.container + " div.search-results").html($("<ul>"));
 
   _.each(results, function(issue) {
-    var issueString = "#" + issue.id + ": " + issue.subject;
-    searchContainer.find("ul").append($("<li>").html(issueString).attr("data-issue-id", issue.id));
+    var issueIdString = "<span class='issue-id'>#" + issue.id + "</span>";
+    var issueString = "<span class='issue-subject'>" + issue.subject + "</span>";
+    var projectString = "<span class='project-name'>" + selectedProject.name; + "</span>";
+
+    var searchItem = $("<li>").html(issueIdString + issueString + projectString).attr("data-issue-id", issue.id);
+
+    searchContainer.find("ul").append(searchItem);
   });
   searchContainer.show();
 }
