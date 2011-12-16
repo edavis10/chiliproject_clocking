@@ -48,12 +48,6 @@ describe("ClockingTool", function() {
       expect($('.form-container #time_entry_spent_on')).toHaveValue(formatDateToISO(today));
     });
 
-    it("should add a blank option to the Activity field", function() {
-      expect($('.form-container #time_entry_activity_id option').length).toEqual(1);
-      expect($('.form-container #time_entry_activity_id option:first')).toHaveValue('');
-      expect($('.form-container #time_entry_activity_id option:first')).toHaveText('Activity');
-    });
-
     it("should populate the message with a welcome message", function() {
       expect($('.message-box')).toHaveText('Hi demo user, please clock your time below');
     });
@@ -152,6 +146,14 @@ describe("ClockingTool", function() {
       clockingTool.projectChange();
 
       expect(clockingTool.getIssues).toHaveBeenCalledWith('1');
+    });
+
+    it("should load activities", function() {
+      spyOn(clockingTool, 'getActivities');
+
+      clockingTool.projectChange();
+
+      expect(clockingTool.getActivities).toHaveBeenCalledWith('1');
     });
 
     it("should enable the form fields", function() {

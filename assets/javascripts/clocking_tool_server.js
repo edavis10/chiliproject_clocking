@@ -21,6 +21,17 @@ ClockingTool.prototype.getIssues = function(projectId) {
   });
 }
 
+ClockingTool.prototype.getActivities = function(projectId) {
+  var clockingTool = this;
+
+  $.ajax({
+    url: this.urlBuilder('clocking_tool/activities.json', 'project_id=' + projectId),
+    success: function(data) {
+      clockingTool.processActivitiesFromServer(projectId, data);
+    }
+  });
+}
+
 ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   var clockingTool = this;
 
@@ -57,5 +68,24 @@ ClockingTool.prototype.addIssue = function(projectId, issue) {
 
   if (projectPosition >= 0) {
     this.projects[projectPosition].issues.push(issue);
+  }
+}
+
+ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonData) {
+  var clockingTool = this;
+
+  _.each(jsonData, function(activity) {
+    clockingTool.addActivity(projectId, activity);
+  });
+  this.loadActivitiesInForm();
+}
+
+ClockingTool.prototype.addActivity = function(projectId, activity) {
+  var project = this.findProject(projectId);
+  
+  var projectPosition = _.indexOf(this.projects, project);
+
+  if (projectPosition >= 0) {
+    this.projects[projectPosition].activities.push(activity);
   }
 }
