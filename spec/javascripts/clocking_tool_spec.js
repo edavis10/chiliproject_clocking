@@ -153,6 +153,17 @@ describe("ClockingTool", function() {
 
       expect(clockingTool.getIssues).toHaveBeenCalledWith('1');
     });
+
+    it("should enable the form fields", function() {
+      clockingTool.projectChange();
+
+      expect($('#issue_search')).not.toBeDisabled();
+      expect($('#time_entry_activity_id')).not.toBeDisabled();
+      expect($('#time_entry_hours')).not.toBeDisabled();
+      expect($('#time_entry_spent_on')).not.toBeDisabled();
+      expect($('#time_entry_comments')).not.toBeDisabled();
+      
+    });
   });
 
   describe("#issue_search.keyup() event", function() {

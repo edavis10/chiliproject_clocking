@@ -67,6 +67,7 @@ ClockingTool.prototype.findProject = function(projectId) {
 }
 ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
+  $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
 }
 ClockingTool.prototype.issueChange = function() {
   var results = this.searchIssues($('#issue_search').val());
