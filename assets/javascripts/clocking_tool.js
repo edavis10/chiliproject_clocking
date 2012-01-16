@@ -38,6 +38,12 @@ ClockingTool.prototype.setupEventBindings = function() {
   $('a.issue-search-result').live('click', function() {
     clockingTool.selectIssue($(this).data('issueId'));
   });
+  $(this.container + ' form').live('submit', function(event) {
+    event.stopPropagation();
+    clockingTool.save();
+    return false;
+  });
+
 }
 ClockingTool.prototype.addWelcomeMessage = function() {
   $(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
@@ -122,4 +128,8 @@ ClockingTool.prototype.selectIssue = function(issueId) {
     $('#issue_search').val(issue.subject);
     $('#time_entry_issue_id').val(issue.id);
   }
+}
+ClockingTool.prototype.save = function() {
+  $('.form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...');
+  
 }

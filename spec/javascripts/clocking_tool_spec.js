@@ -290,4 +290,26 @@ describe("ClockingTool", function() {
       expect($('#time_entry_issue_id')).toHaveValue('983');
     });
   });
+
+  describe("form submission", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+    });
+
+    it("should disable the form", function() {
+      $('.form-container form').submit();
+
+      expect($('.form-container form input[type=submit]')).toBeDisabled();
+    });
+
+    it("should change the submit button value to 'Saving...'", function() {
+      $('.form-container form').submit();
+
+      expect($('.form-container form input[type=submit]')).toHaveValue("Saving...");
+    });
+
+    xit("should connect to the server via ajax");
+  });
 });
