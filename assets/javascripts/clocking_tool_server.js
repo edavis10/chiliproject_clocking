@@ -24,6 +24,11 @@ ClockingTool.prototype.getIssues = function(projectId) {
 }
 
 ClockingTool.prototype.getActivities = function(projectId) {
+  if (this.projectCacheInvalid(projectId)) {
+    this.serverGetActivities(projectId);
+  }
+}
+ClockingTool.prototype.serverGetActivities = function(projectId) {
   var clockingTool = this;
 
   $.ajax({

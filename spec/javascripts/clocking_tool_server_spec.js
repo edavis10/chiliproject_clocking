@@ -119,6 +119,18 @@ describe("ClockingTool server functions", function() {
 
       expect(clockingTool.processActivitiesFromServer).toHaveBeenCalled();
     });
+
+    it("should not connect to the server if loadedAt is within the past 24 hours", function() {
+      // Fake out the first request
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      // Now a request that hits the cache
+      spyOn(clockingTool, 'serverGetActivities');
+      clockingTool.getActivities(10);
+
+      expect(clockingTool.serverGetActivities).not.toHaveBeenCalled();
+    });
   });
 
   describe("processActivitiesFromServer()", function() {
