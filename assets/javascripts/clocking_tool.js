@@ -9,6 +9,7 @@ function ClockingTool(configuration) {
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
+  this.getCachingFromStorage();
 }
 // Add some stub data during development
 ClockingTool.prototype.addStubData = function() {
@@ -167,4 +168,13 @@ ClockingTool.prototype.updateProjectLoadedAt = function(projectId) {
   if (projectPosition >= 0) {
     this.projects[projectPosition].loadedAt = (new Date).toString();
   }
+}
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.getCachingFromStorage = function() {
+  var caching = localStorage.getItem("caching");
+  if (caching) {
+    this.caching = JSON.parse(caching);
+  }
+
 }

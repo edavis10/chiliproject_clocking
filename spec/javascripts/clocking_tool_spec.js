@@ -11,6 +11,8 @@ describe("ClockingTool", function() {
     //    setFixtures(sandbox({id: "clocking-tool"}))
 
     jasmine.Ajax.useMock();
+
+    localStorage.removeItem("caching");
   });
 
   describe("constructor", function() {
@@ -321,5 +323,24 @@ describe("ClockingTool", function() {
     });
 
     xit("should connect to the server via ajax");
+  });
+
+  describe("getCachingFromStorage()", function() {
+    describe("with nothing stored", function() {
+      it("should do nothing to the caching object", function() {
+        clockingTool.getCachingFromStorage();
+        expect(clockingTool.caching).toEqual({"projects": ""});
+      });
+    });
+
+    describe("with something stored", function() {
+      it("should load the stored object into the instance", function() {
+        localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+
+        clockingTool.getCachingFromStorage();
+
+        expect(clockingTool.caching).toEqual({"projects": "some string"});
+      });
+    });
   });
 });
