@@ -85,7 +85,7 @@ describe("ClockingTool server functions", function() {
       expect(currentProject.issues.length).toEqual(106); // 106 issues
     });
 
-    it("should updated the loadedAt property on the proejct", function() {
+    it("should updated the loadedAt property on the project", function() {
       var year = (new Date).getFullYear();
 
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
@@ -133,6 +133,17 @@ describe("ClockingTool server functions", function() {
 
       currentProject = clockingTool.findProject(10);
       expect(currentProject.activities.length).toEqual(3);
+    });
+
+    it("should updated the loadedAt property on the project", function() {
+      var year = (new Date).getFullYear();
+
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
+
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
     });
 
     it("should load the activities into the form", function() {

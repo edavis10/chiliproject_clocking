@@ -96,6 +96,7 @@ ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonDat
   _.each(jsonData, function(activity) {
     clockingTool.addActivity(projectId, activity);
   });
+  this.updateProjectLoadedAt(projectId);
   this.loadActivitiesInForm();
 }
 
