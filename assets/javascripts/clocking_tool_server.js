@@ -13,12 +13,14 @@ ClockingTool.prototype.getProjects = function() {
 ClockingTool.prototype.getIssues = function(projectId) {
   var clockingTool = this;
 
-  $.ajax({
-    url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
-    success: function(data) {
-      clockingTool.processIssuesFromServer(projectId, data);
-    }
-  });
+  if (this.projectCacheInvalid(projectId)) {
+    $.ajax({
+      url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
+      success: function(data) {
+        clockingTool.processIssuesFromServer(projectId, data);
+      }
+    });
+  }
 }
 
 ClockingTool.prototype.getActivities = function(projectId) {
@@ -133,5 +135,20 @@ ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {
     }
     this.saveFailed(message);
 
+  }
+}
+
+ClockingTool.prototype.projectCacheInvalid = function(projectId) {
+  var project = this.findProject(projectId);
+  if (project && project.loadedAt && project.loadedAt != "") {
+    // Dates are in millaseconds for each comparision (since UNIX time)
+    var lastLoad = Date.parse(project.loadedAt);
+    var millisecondInHour = 3600000;
+    var cacheDuration = millisecondInHour * 24;
+
+    return Date.now() > (lastLoad + cacheDuration);
+  } else {
+    // No cache
+    return true;
   }
 }
