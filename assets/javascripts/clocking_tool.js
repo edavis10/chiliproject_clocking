@@ -145,7 +145,6 @@ ClockingTool.prototype.save = function() {
       "comments":$(this.container + ' .form-container form #time_entry_comments').val()
     }
   };
-  console.log(timeEntry);
   this.saveTimeEntry(timeEntry);
 }
 ClockingTool.prototype.saveSuccessful = function() {
