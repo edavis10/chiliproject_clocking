@@ -25,6 +25,7 @@ ClockingTool.prototype.draw = function() {
   this.addWelcomeMessage();
   this.disableFormFields();
   this.setupEventBindings();
+  this.getProjects();
 }
 // Sets up all the event bindings on the tool's widget
 ClockingTool.prototype.setupEventBindings = function() {
