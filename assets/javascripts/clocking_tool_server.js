@@ -74,6 +74,7 @@ ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
   _.each(jsonData, function(issue) {
     clockingTool.addIssue(projectId, issue);
   });
+  this.updateProjectLoadedAt(projectId);
   this.loadIssuesInForm();
 }
 

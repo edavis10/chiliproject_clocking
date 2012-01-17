@@ -72,6 +72,17 @@ describe("ClockingTool server functions", function() {
       expect(currentProject.issues.length).toEqual(106); // 106 issues
     });
 
+    it("should updated the loadedAt property on the proejct", function() {
+      var year = (new Date).getFullYear();
+
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
+    });
+
     it("should enable the issue field on the form", function() {
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
 

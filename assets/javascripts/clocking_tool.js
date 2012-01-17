@@ -158,3 +158,11 @@ ClockingTool.prototype.saveFailed = function(message) {
   this.changeMessage(message);
   $(this.container + " .header .message-box").addClass('flash').addClass('error');
 }
+ClockingTool.prototype.updateProjectLoadedAt = function(projectId) {
+  var project = this.findProject(projectId);
+  var projectPosition = _.indexOf(this.projects, project);
+
+  if (projectPosition >= 0) {
+    this.projects[projectPosition].loadedAt = (new Date).toString();
+  }
+}
