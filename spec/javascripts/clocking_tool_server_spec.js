@@ -120,4 +120,154 @@ describe("ClockingTool server functions", function() {
       
     });
   });
+
+  // NOTE: Ajax mocking
+  describe("saveTimeEntry()", function() {
+    it("should submit the time entries to the server", function() {
+      spyOn(clockingTool, 'processTimeEntrySaveResponse');
+      var data = {
+        "project_id": 10,
+        "time_entry": {
+          "hours": 1,
+          "issue_id": 2,
+          "activity_id": 3,
+          "spent_on": "2010-01-01",
+          "comments": "stuff"
+        }}
+      clockingTool.saveTimeEntry(data);
+
+      request = mostRecentAjaxRequest();
+      request.response(TestResponses.saveTimeEntry.project10.success);
+
+      expect(clockingTool.processTimeEntrySaveResponse).toHaveBeenCalled();
+    });
+
+    it("should submit the time entries to the server and handle invalid data", function() {
+      spyOn(clockingTool, 'processTimeEntrySaveResponse');
+      // No hours
+      var data = {
+        "project_id": 10,
+        "time_entry": {
+          "issue_id": 2,
+          "activity_id": 3,
+          "spent_on": "2010-01-01",
+          "comments": "stuff"
+        }}
+      clockingTool.saveTimeEntry(data);
+
+      request = mostRecentAjaxRequest();
+      request.response(TestResponses.saveTimeEntry.project10.invalid);
+
+      expect(clockingTool.processTimeEntrySaveResponse).toHaveBeenCalled();
+    });
+
+    it("should submit the time entries to the server and handle unauthorized requests", function() {
+      spyOn(clockingTool, 'processTimeEntrySaveResponse');
+      var data = {
+        "project_id": 10,
+        "time_entry": {
+          "hours": 1,
+          "issue_id": 2,
+          "activity_id": 3,
+          "spent_on": "2010-01-01",
+          "comments": "stuff"
+        }}
+      clockingTool.saveTimeEntry(data);
+
+      request = mostRecentAjaxRequest();
+      request.response(TestResponses.saveTimeEntry.project10.unauthorized);
+
+      expect(clockingTool.processTimeEntrySaveResponse).toHaveBeenCalled();
+    });
+
+
+  });
+
+
+  describe("processTimeEntrySaveResponse()", function() {
+    beforeEach(function() {
+//      spyOn(clockingTool, 'loadActivitiesInForm');
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      $('.form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...'); // Submit button
+
+    });
+
+    describe("with successful save", function() {
+      it("should clear the hours and comments", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
+
+        expect($('.form-container form input#time_entry_hours')).toHaveValue("");
+        expect($('.form-container form input#time_entry_comments')).toHaveValue("");
+        expect($('.form-container form input[type=submit]')).toHaveValue("Save");
+
+      });
+
+      it("should enable the form", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
+
+        expect($('.form-container form input[type=submit]')).not.toBeDisabled();
+      });
+
+      it("should update the message box", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
+
+        expect($('.message-box')).toHaveText('Time entry saved');
+      });
+    });
+
+    describe("with an invalid save", function() {
+      it("should enable the form", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.invalid);
+
+        expect($('.form-container form input[type=submit]')).not.toBeDisabled();
+      });
+      
+      it("should not clear the form", function() {
+        $('#time_entry_comments').val('This is a comment');
+        $('#time_entry_hours').val('10');
+
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.invalid);
+
+        expect($('.form-container form input#time_entry_hours')).toHaveValue("10");
+        expect($('.form-container form input#time_entry_comments')).toHaveValue("This is a comment");
+
+      });
+
+      it("should update the message box with the errors", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.invalid);
+
+        expect($('.message-box')).toHaveText("Error saving time: hours can't be blank");
+        expect($('.message-box')).toHaveClass("error");
+        expect($('.message-box')).toHaveClass("flash");
+      });
+    });
+
+    describe("with an unauthorized save", function() {
+      it("should enable the form", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.unauthorized);
+
+        expect($('.form-container form input[type=submit]')).not.toBeDisabled();
+      });
+
+      it("should update the message box with the errors", function() {
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.unauthorized);
+
+        expect($('.message-box')).toHaveText("Error saving time: You are not authorized to access this page.");
+        expect($('.message-box')).toHaveClass("error");
+        expect($('.message-box')).toHaveClass("flash");
+      });
+
+      it("should not clear the form", function() {
+        $('#time_entry_comments').val('This is a comment');
+        $('#time_entry_hours').val('10');
+
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.unauthorized);
+
+        expect($('.form-container form input#time_entry_hours')).toHaveValue("10");
+        expect($('.form-container form input#time_entry_comments')).toHaveValue("This is a comment");
+
+      });
+    });
+  });
+
 });

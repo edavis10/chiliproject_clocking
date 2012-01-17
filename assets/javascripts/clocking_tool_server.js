@@ -32,6 +32,22 @@ ClockingTool.prototype.getActivities = function(projectId) {
   });
 }
 
+ClockingTool.prototype.saveTimeEntry = function(data) {
+  var clockingTool = this;
+
+  $.ajax({
+    url: this.urlBuilder("projects/" + data.project_id + "/time_entries.json",''),
+    type: "POST",
+    data: data,
+    success: function(data, textStatus, jqXHR) {
+      clockingTool.processTimeEntrySaveResponse(jqXHR);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      clockingTool.processTimeEntrySaveResponse(jqXHR);
+    }
+  });
+}
+
 ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   var clockingTool = this;
 
@@ -87,5 +103,34 @@ ClockingTool.prototype.addActivity = function(projectId, activity) {
 
   if (projectPosition >= 0) {
     this.projects[projectPosition].activities.push(activity);
+  }
+}
+
+ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {
+
+  if (response.status == 200 || response.status == 201) {
+    this.saveSuccessful();
+  } else if (response.status == 403) {
+    var message = "Error saving time: " + $.parseJSON(response.responseText).message;
+    this.saveFailed(message);
+  } else {
+    var message = "Error saving time: ";
+    var errors = $.parseJSON(response.responseText);
+    if (errors.errors) {
+      var errorMessages = _.reduce(errors.errors, function(memo, errorMessage) {
+        if (errorMessage instanceof Array) {
+          // Array of [field, message]
+          memo.push(errorMessage.join(' '));
+        } else {
+          // Flat string
+          memo.push(errormessage);
+        }
+        return memo;
+      }, []);
+
+      message += errorMessages.join(', ');
+    }
+    this.saveFailed(message);
+
   }
 }
