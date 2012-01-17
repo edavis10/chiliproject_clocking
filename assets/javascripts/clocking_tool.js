@@ -38,9 +38,18 @@ ClockingTool.prototype.setupEventBindings = function() {
   $('a.issue-search-result').live('click', function() {
     clockingTool.selectIssue($(this).data('issueId'));
   });
+  $(this.container + ' form').live('submit', function(event) {
+    event.stopPropagation();
+    clockingTool.save();
+    return false;
+  });
+
 }
 ClockingTool.prototype.addWelcomeMessage = function() {
   $(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
+}
+ClockingTool.prototype.changeMessage = function(message) {
+  $(this.container + " .header .message-box").html(message);
 }
 ClockingTool.prototype.disableFormFields = function() {
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
@@ -122,4 +131,30 @@ ClockingTool.prototype.selectIssue = function(issueId) {
     $('#issue_search').val(issue.subject);
     $('#time_entry_issue_id').val(issue.id);
   }
+}
+ClockingTool.prototype.save = function() {
+  $(this.container + ' .form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...');
+
+  var timeEntry = {
+    "project_id": $(this.container + ' .form-container form #project_id').val(),
+    "time_entry": {
+      "hours": $(this.container + ' .form-container form #time_entry_hours').val(),
+      "issue_id": $(this.container + ' .form-container form #time_entry_issue_id').val(),
+      "activity_id": $(this.container + ' .form-container form #time_entry_activity_id').val(),
+      "spent_on": $(this.container + ' .form-container form #time_entry_spent_on').val(),
+      "comments":$(this.container + ' .form-container form #time_entry_comments').val()
+    }
+  };
+  this.saveTimeEntry(timeEntry);
+}
+ClockingTool.prototype.saveSuccessful = function() {
+  $(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  $(this.container).find('#time_entry_hours, #time_entry_comments').val('');
+  this.changeMessage("Time entry saved");
+  $(this.container + " .header .message-box").removeClass('flash').removeClass('error');
+}
+ClockingTool.prototype.saveFailed = function(message) {
+  $(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.changeMessage(message);
+  $(this.container + " .header .message-box").addClass('flash').addClass('error');
 }

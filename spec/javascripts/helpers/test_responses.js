@@ -13,6 +13,22 @@ var TestResponses = {
       }
     }
   },
+  saveTimeEntry: {
+    project10: {
+      success: {
+        status: 201,
+        responseText: JSON.stringify({})
+      },
+      invalid: {
+        status: 422,
+        responseText: JSON.stringify({"errors": [ ["hours", "can't be blank"] ]})
+      },
+      unauthorized: {
+        status: 403,
+        responseText: JSON.stringify({"message": "You are not authorized to access this page."})
+      }
+    }
+  },
   issues: {
     project10: {
       success: {
