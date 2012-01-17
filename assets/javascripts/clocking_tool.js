@@ -5,6 +5,7 @@ function ClockingTool(configuration) {
   this.rootUrl = '/';
   this.currentUserName = '';
   this.apiKey = '';
+  this.caching = {"projects": ''};
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];

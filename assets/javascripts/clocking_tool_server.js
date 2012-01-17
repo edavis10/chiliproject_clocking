@@ -66,6 +66,7 @@ ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   _.each(jsonData.projects, function(project) {
     clockingTool.addProject(project.id, project.name);
   });
+  this.caching.projects = (new Date).toString();
   this.loadProjectsInForm();
 }
 
