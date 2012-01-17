@@ -67,11 +67,10 @@ describe("ClockingTool server functions", function() {
       clockingTool.updateProjectLoadedAt(10);
 
       // Now a request that hits the cache
-      spyOn(clockingTool, 'processIssuesFromServer');
+      spyOn(clockingTool, 'serverGetIssues');
       clockingTool.getIssues(10);
-      request = mostRecentAjaxRequest(); // Used to trigger any ajax calls
 
-      expect(clockingTool.processIssuesFromServer).not.toHaveBeenCalled();
+      expect(clockingTool.serverGetIssues).not.toHaveBeenCalled();
     });
   });
 

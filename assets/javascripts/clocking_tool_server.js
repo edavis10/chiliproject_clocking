@@ -11,16 +11,20 @@ ClockingTool.prototype.getProjects = function() {
 }
 
 ClockingTool.prototype.getIssues = function(projectId) {
+  if (this.projectCacheInvalid(projectId)) {
+    this.serverGetIssues(projectId);
+  }
+}
+
+ClockingTool.prototype.serverGetIssues = function(projectId) {
   var clockingTool = this;
 
-  if (this.projectCacheInvalid(projectId)) {
-    $.ajax({
-      url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
-      success: function(data) {
-        clockingTool.processIssuesFromServer(projectId, data);
-      }
-    });
-  }
+  $.ajax({
+    url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
+    success: function(data) {
+      clockingTool.processIssuesFromServer(projectId, data);
+    }
+  });
 }
 
 ClockingTool.prototype.getActivities = function(projectId) {
