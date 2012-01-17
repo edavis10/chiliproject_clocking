@@ -30,6 +30,17 @@ describe("ClockingTool server functions", function() {
 
       expect(clockingTool.processProjectsFromServer).toHaveBeenCalled();
     });
+
+    it("should not connect to the server if the projects were cached within the past 24 hours", function() {
+      // Fake out the first request
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
+
+      // Now a request that hits the cache
+      spyOn(clockingTool, 'serverGetProjects');
+      clockingTool.getProjects();
+
+      expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
+    });
   });
 
   describe("processProjectsFromServer()", function(){
