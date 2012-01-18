@@ -68,8 +68,10 @@ ClockingTool.prototype.saveTimeEntry = function(data) {
 ClockingTool.prototype.getActivities = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
     this.serverGetActivities(projectId);
+  } else {
+    this.getProjectsFromStorage();
+    this.loadActivitiesInForm();
   }
-  this.getProjectsFromStorage();
 }
 
 ClockingTool.prototype.addActivity = function(projectId, activity) {
@@ -104,6 +106,7 @@ ClockingTool.prototype.getCachingFromStorage = function() {
 
 // TODO: handle browser without localStorage
 ClockingTool.prototype.setCachingInStorage = function() {
+  console.log("Storing caching key");
   localStorage.setItem("caching", JSON.stringify(this.caching));
 }
 
@@ -119,6 +122,7 @@ ClockingTool.prototype.getProjectsFromStorage = function() {
 }
 // TODO: handle browser without localStorage
 ClockingTool.prototype.setProjectsInStorage = function() {
+  console.log("Storing projects");
   localStorage.setItem("projects", JSON.stringify(this.projects));
 }
 
@@ -315,19 +319,22 @@ ClockingTool.prototype.addIssue = function(projectId, issue) {
 ClockingTool.prototype.getIssues = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
     this.serverGetIssues(projectId);
+  } else {
+    this.getProjectsFromStorage();
+    this.loadIssuesInForm();
   }
-  this.getProjectsFromStorage();
 }
 
 
 /** Project module **/
 ClockingTool.prototype.getProjects = function() {
   if (this.projectListCacheInvalid()) {
-    console.log('project cache invalid');
     this.serverGetProjects();
+  } else {
+    this.getProjectsFromStorage();
+    this.loadProjectsInForm();
   }
-  this.getProjectsFromStorage();
-  this.loadProjectsInForm();
+
 }
 
 ClockingTool.prototype.findProject = function(projectId) {
@@ -357,6 +364,7 @@ ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   this.setProjectsInStorage();
   this.caching.projects = (new Date).toString();
   this.setCachingInStorage();
+  this.loadProjectsInForm();
 }
 
 ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
@@ -367,6 +375,7 @@ ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
   });
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Issues are embedded in projects
+  this.loadIssuesInForm();
 }
 
 ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonData) {
@@ -377,6 +386,7 @@ ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonDat
   });
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Activities are embedded in projects
+  this.loadActivitiesInForm();
 }
 
 ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {
