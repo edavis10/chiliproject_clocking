@@ -67,8 +67,10 @@ ClockingTool.prototype.saveTimeEntry = function(data) {
 
 ClockingTool.prototype.getActivities = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
+    console.log("Project cache invalid");
     this.serverGetActivities(projectId);
   } else {
+    console.log("Project cache valid");
     this.getProjectsFromStorage();
     this.loadActivitiesInForm();
   }
@@ -324,8 +326,10 @@ ClockingTool.prototype.addIssue = function(projectId, issue) {
 
 ClockingTool.prototype.getIssues = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
+    console.log("Project cache invalid");
     this.serverGetIssues(projectId);
   } else {
+    console.log("Project cache valid");
     this.getProjectsFromStorage();
     this.loadIssuesInForm();
   }
@@ -335,8 +339,10 @@ ClockingTool.prototype.getIssues = function(projectId) {
 /** Project module **/
 ClockingTool.prototype.getProjects = function() {
   if (this.projectListCacheInvalid()) {
+    console.log("Project list cache invalid");
     this.serverGetProjects();
   } else {
+    console.log("Project list cache valid");
     this.getProjectsFromStorage();
     this.loadProjectsInForm();
   }
