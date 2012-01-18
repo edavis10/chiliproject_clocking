@@ -8,3 +8,4 @@ Redmine::Plugin.register :chiliproject_clocking do
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 end
+require 'chiliproject_clocking/hooks/view_layouts_base_html_head_hook'
