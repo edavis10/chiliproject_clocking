@@ -9,12 +9,12 @@
 <%= heads_for_theme %>
 <%= call_hook :view_layouts_base_html_head %>
 
-<script type="text/javascript" src="javascripts/underscore-min.js"></script>
-<script type="text/javascript" src="javascripts/jquery.js"></script>
-<script type="text/javascript" src="javascripts/jquery.tmpl.min.js"></script>
-<script type="text/javascript" src="javascripts/helpers.js"></script>
-<script type="text/javascript" src="javascripts/clocking_tool.js"></script>
-<script type="text/javascript" src="javascripts/clocking_tool_server.js"></script>
+<%= javascript_include_tag('underscore-min.js', :plugin => 'chiliproject_clocking') %>
+<%= javascript_include_tag('jquery.js', :plugin => 'chiliproject_clocking') %>
+<%= javascript_include_tag('jquery.tmpl.min.js', :plugin => 'chiliproject_clocking') %>
+<%= javascript_include_tag('helpers.js', :plugin => 'chiliproject_clocking') %>
+<%= javascript_include_tag('clocking_tool.js', :plugin => 'chiliproject_clocking') %>
+
 <style type="text/css">
 /* TODO: set height dynamically, set width dynamically. */
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
