@@ -14,14 +14,6 @@ function ClockingTool(configuration) {
 }
 
 /** Ajax module **/
-// Sent the CSRF token with any ajax requests
-jQuery(document).ajaxSend(function(e, xhr, options) {
-  var token = jQuery("meta[name='csrf-token']").attr("content");
-  if (token) {
-    xhr.setRequestHeader("X-CSRF-Token", token);
-  }
-});
-
 ClockingTool.prototype.serverGetProjects = function() {
   var clockingTool = this;
 

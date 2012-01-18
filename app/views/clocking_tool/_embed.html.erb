@@ -8,6 +8,14 @@ var clockingConfig = {
 
 var clockingTool = new ClockingTool(clockingConfig);
 
+// Sent the CSRF token with any ajax requests
+jQuery(document).ajaxSend(function(e, xhr, options) {
+  var token = jQuery("meta[name='csrf-token']").attr("content");
+  if (token) {
+    xhr.setRequestHeader("X-CSRF-Token", token);
+  }
+});
+
 jQuery(document).ready(function() {
   jQuery('#more-menu').after('<li class="clocking-tool-trigger"><a href="#">C</a></li>');
   clockingTool.draw();
