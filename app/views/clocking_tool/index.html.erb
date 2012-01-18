@@ -10,64 +10,12 @@
 <%= call_hook :view_layouts_base_html_head %>
 </head>
 <body>
-  <div id="clocking-tool"></div>
-  <script type="text/x-jquery-tmpl" id="clocking-tool-template">
-    <div class="clocking-tool-inner">
-      <div class="header">
-        <div class="message-box"></div>
-        <div class="popout"></div>
-        <div class="ajax-loading" style="display:none;"></div>
-      </div>
-      <div class="form-container">
-        <form action="${ formUrl }" class="" method="post">
-          <p>
-            <select id="project_id" name="project_id">
-            </select>
-          </p>
-          <p class="issue-fields">
-            <input id="time_entry_issue_id" name="time_entry[issue_id]" type="hidden">
-            <input id="issue_search" name="issue_search" type="text" placeholder="--- Issue search ---">
-            <img alt="Refresh" class="refresh-data" src="images/arrow_refresh.png" height="16" width="16">
-          </p>
-          <div class="search-results" style="display: none;"></div>
-          <p>
-            <select id="time_entry_activity_id" name="time_entry[activity_id]">
-            </select>
-          </p>
-          <p class="hours-section">
-            <input id="time_entry_hours" name="time_entry[hours]" size="3" type="text" placeholder="0:00">
-            <input id="time_entry_spent_on" name="time_entry[spent_on]" size="10" type="text" value="${ today }">
-            <img alt="Calendar" class="calendar-trigger" id="time_entry_spent_on_trigger" src="/images/calendar.png?1323882096" height="16" width="16" style="float: right;"><br>
-            <a class="formatting-help" href="#{ helpUrl }">Formatting Help</a>
-          </p>
-          <p style="clear:left;">
-            <input id="time_entry_comments" name="time_entry[comments]" type="text" placeholder="--- Describe what you did here.---">
-          </p>
-
-          <p>
-            <input name="commit" type="submit" value="Save">
-            <a class="jump-to-issue" href="#{ issueUrl }">Go to this issue...</a>
-          </p>
-        </form>
-
-      </div>
-      <div class="recent-container">
-        <h3>Recent Issues</h3>
-        <ul class="recent-issues">
-        </ul>
-      </div>
-    </div>
-  </script>
+  <%= render :partial => 'clocking_tool/embed' %>
   <script type="text/javascript">
-    var clockingConfig = {
-      createUrl: '<%= time_entries_path(:format => 'json') %>',
-      rootUrl: '<%= home_path %>',
-      currentUserName: "<%= h(User.current.name) %>",
-      apiKey: '<%= h(User.current.api_key) %>'
-    };
-    var clockingTool = new ClockingTool(clockingConfig);
-    clockingTool.draw();
-    clockingTool.getProjects();
+    jQuery(document).ready(function() {
+      jQuery('#clocking-tool').removeClass('embed').show();
+      clockingTool.getProjects();
+    });
   </script>
 </body>
 </html>

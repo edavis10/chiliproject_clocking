@@ -23,3 +23,8 @@ div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loadi
 div.clocking-tool-inner .refresh-data { float: right; }
 div.clocking-tool-inner .hours-section { padding-bottom: 15px; }
 div.clocking-tool-inner .formatting-help { margin-left: 10px; }
+
+/* Follow rules only happens when embedded */
+#clocking-tool.embed { position: absolute; top: 23px; right: 20px; }
+#clocking-tool.embed p { margin: 12px 0; }
+#clocking-tool.embed div.clocking-tool-inner .header .popout { top: -35px; }

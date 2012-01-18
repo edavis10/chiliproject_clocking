@@ -14,7 +14,6 @@ function ClockingTool(configuration) {
 }
 
 /** Ajax module **/
-
 ClockingTool.prototype.serverGetProjects = function() {
   var clockingTool = this;
 
