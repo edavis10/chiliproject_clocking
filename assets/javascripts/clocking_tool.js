@@ -177,6 +177,8 @@ ClockingTool.prototype.projectChange = function() {
   this.getIssues($('#project_id').val());
   this.getActivities($('#project_id').val());
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
+  this.loadIssuesInForm();
+  this.loadActivitiesInForm();
 }
 
 ClockingTool.prototype.issueChange = function() {
@@ -354,7 +356,6 @@ ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
   });
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Issues are embedded in projects
-  this.loadIssuesInForm();
 }
 
 ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonData) {
@@ -365,7 +366,6 @@ ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonDat
   });
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Activities are embedded in projects
-  this.loadActivitiesInForm();
 }
 
 ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {

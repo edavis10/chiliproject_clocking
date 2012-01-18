@@ -157,16 +157,6 @@ describe("ClockingTool server functions", function() {
       currentProject = clockingTool.findProject(10);
       expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
     });
-
-    it("should enable the issue field on the form", function() {
-      clockingTool.addProject(10, "Balanced 24/7 paradigm");
-
-      expect($('#issue_search')).toBeDisabled();
-      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
-
-      expect($('#issue_search')).not.toBeDisabled();
-      
-    });
   });
 
   // NOTE: Ajax mocking
@@ -242,15 +232,6 @@ describe("ClockingTool server functions", function() {
 
       currentProject = clockingTool.findProject(10);
       expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
-    });
-
-    it("should load the activities into the form", function() {
-      clockingTool.addProject(10, "Balanced 24/7 paradigm");
-
-      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
-
-      expect(clockingTool.loadActivitiesInForm).toHaveBeenCalled();
-      
     });
   });
 

@@ -168,6 +168,7 @@ describe("ClockingTool", function() {
       expect($('#time_entry_comments')).not.toBeDisabled();
       
     });
+
   });
 
   describe("#issue_search.keyup() event", function() {
