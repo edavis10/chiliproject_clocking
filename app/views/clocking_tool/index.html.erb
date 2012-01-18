@@ -1,5 +1,14 @@
 <html>
 <head>
+<title>Clocking Tool</title>
+<%= csrf_meta_tag %>
+<%= favicon %>
+<%= stylesheet_link_tag 'application', :media => 'all' %>
+<%= stylesheet_link_tag 'rtl', :media => 'all' if l(:direction) == 'rtl' %>
+<%= javascript_heads %>
+<%= heads_for_theme %>
+<%= call_hook :view_layouts_base_html_head %>
+
 <script type="text/javascript" src="javascripts/underscore-min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.js"></script>
 <script type="text/javascript" src="javascripts/jquery.tmpl.min.js"></script>

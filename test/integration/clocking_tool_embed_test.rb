@@ -30,7 +30,11 @@ class ClockingToolEmbedTest < ActionController::IntegrationTest
       assert has_css?('script', :text => /draw/)
     end
     
-    should "include the base layout's header section to reuse CSS and JavaScript"
+    should "include the base layout's header section to reuse CSS and JavaScript" do
+      assert has_css?('link[href*=application]') # contains substring match
+      assert has_css?('script[src*=application]') # contains substring match
+
+    end
 
   end
 end
