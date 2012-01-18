@@ -23,7 +23,12 @@ class ClockingToolEmbedTest < ActionController::IntegrationTest
     
     should "include the clocking tool javascript" do
       puts page.body
-      assert has_css?('script[src*=clocking_tool]') # contains substring match
+      # contains substring match
+      assert has_css?('script[src*=underscore-min]')
+      assert has_css?('script[src*=jquery]')
+      assert has_css?('script[src*=tmpl]') # jquery.tmpl.min
+      assert has_css?('script[src*=helpers]')
+      assert has_css?('script[src*=clocking_tool]')
     end
     
     should "draw the clocking tool" do
@@ -33,7 +38,6 @@ class ClockingToolEmbedTest < ActionController::IntegrationTest
     should "include the base layout's header section to reuse CSS and JavaScript" do
       assert has_css?('link[href*=application]') # contains substring match
       assert has_css?('script[src*=application]') # contains substring match
-
     end
 
   end
