@@ -10,6 +10,9 @@ describe("ClockingTool server functions", function() {
   var request;
 
   beforeEach(function() {
+    localStorage.removeItem("caching");
+    localStorage.removeItem("projects");
+
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     clockingTool.draw();
@@ -30,6 +33,40 @@ describe("ClockingTool server functions", function() {
 
       expect(clockingTool.processProjectsFromServer).toHaveBeenCalled();
     });
+
+    it("should not connect to the server if the projects were cached within the past 24 hours", function() {
+      // Fake out the first request
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
+
+      // Now a request that hits the cache
+      spyOn(clockingTool, 'serverGetProjects');
+      clockingTool.getProjects();
+
+      expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
+    });
+
+    it("should load projects from the local storage if present", function() {
+      // Make sure the cache is used 
+      clockingTool.caching.projects = (new Date).toString();
+
+      var projectData = JSON.stringify($.parseJSON(TestResponses.projects.success.responseText).projects);
+      localStorage.setItem("projects", projectData);
+
+      // Mock the Ajax call in case it's fired
+      spyOn(clockingTool, 'serverGetProjects');
+      clockingTool.getProjects();
+
+      expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
+      expect(clockingTool.projects.length).toEqual(10);
+    });
+
+    it("should load the project data into the form", function() {
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
+
+      clockingTool.getProjects();
+
+      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
+    });
   });
 
   describe("processProjectsFromServer()", function(){
@@ -41,10 +78,12 @@ describe("ClockingTool server functions", function() {
       expect(clockingTool.projects).toContain({id: 10, name: "Balanced 24/7 paradigm", loadedAt: "", activities: [], issues: []});
     });
 
-    it("should load the project data into the form", function() {
+    it("should update the projectsLoadedAt property", function() {
+      var year = (new Date).getFullYear();
+
       clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
 
-      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
+      expect(clockingTool.caching.projects).toMatch(new RegExp(year.toString())); // Match at least the year
     });
   });
 
@@ -60,6 +99,42 @@ describe("ClockingTool server functions", function() {
 
       expect(clockingTool.processIssuesFromServer).toHaveBeenCalled();
     });
+
+    it("should not connect to the server if loadedAt is within the past 24 hours", function() {
+      // Fake out the first request
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      // Now a request that hits the cache
+      spyOn(clockingTool, 'serverGetIssues');
+      clockingTool.getIssues(10);
+
+      expect(clockingTool.serverGetIssues).not.toHaveBeenCalled();
+    });
+
+    it("should load issues from the local storage if present", function() {
+      // Make sure the cache is used 
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      clockingTool.caching.projects = (new Date).toString();
+      var issueData = JSON.parse(TestResponses.issues.project10.success.responseText);
+      var projectData = {
+        "id":10,
+        "name": "Balanced 24/7 paradigm",
+        "issues": issueData
+      }
+
+      localStorage.setItem("projects", JSON.stringify([projectData]));
+
+      // Mock the Ajax call in case it's fired
+      spyOn(clockingTool, 'serverGetIssues');
+      clockingTool.getIssues(10);
+
+      expect(clockingTool.serverGetIssues).not.toHaveBeenCalled();
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.issues.length).toEqual(106);
+    });
   });
 
   describe("processIssuesFromServer()", function() {
@@ -72,14 +147,15 @@ describe("ClockingTool server functions", function() {
       expect(currentProject.issues.length).toEqual(106); // 106 issues
     });
 
-    it("should enable the issue field on the form", function() {
+    it("should updated the loadedAt property on the project", function() {
+      var year = (new Date).getFullYear();
+
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
 
-      expect($('#issue_search')).toBeDisabled();
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
 
-      expect($('#issue_search')).not.toBeDisabled();
-      
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
     });
   });
 
@@ -94,6 +170,42 @@ describe("ClockingTool server functions", function() {
       request.response(TestResponses.activities.project10.success);
 
       expect(clockingTool.processActivitiesFromServer).toHaveBeenCalled();
+    });
+
+    it("should not connect to the server if loadedAt is within the past 24 hours", function() {
+      // Fake out the first request
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      // Now a request that hits the cache
+      spyOn(clockingTool, 'serverGetActivities');
+      clockingTool.getActivities(10);
+
+      expect(clockingTool.serverGetActivities).not.toHaveBeenCalled();
+    });
+
+    it("should load activities from the local storage if present", function() {
+      // Make sure the cache is used 
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      clockingTool.caching.projects = (new Date).toString();
+      var activityData = JSON.parse(TestResponses.activities.project10.success.responseText);
+      var projectData = {
+        "id":10,
+        "name": "Balanced 24/7 paradigm",
+        "activities": activityData
+      }
+
+      localStorage.setItem("projects", JSON.stringify([projectData]));
+
+      // Mock the Ajax call in case it's fired
+      spyOn(clockingTool, 'serverGetActivities');
+      clockingTool.getActivities(10);
+
+      expect(clockingTool.serverGetActivities).not.toHaveBeenCalled();
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.activities.length).toEqual(3);
     });
   });
 
@@ -111,13 +223,15 @@ describe("ClockingTool server functions", function() {
       expect(currentProject.activities.length).toEqual(3);
     });
 
-    it("should load the activities into the form", function() {
+    it("should updated the loadedAt property on the project", function() {
+      var year = (new Date).getFullYear();
+
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
 
       clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
 
-      expect(clockingTool.loadActivitiesInForm).toHaveBeenCalled();
-      
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.loadedAt).toMatch(new RegExp(year.toString())); // Match at least the year
     });
   });
 

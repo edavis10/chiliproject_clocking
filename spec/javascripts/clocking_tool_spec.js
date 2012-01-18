@@ -6,11 +6,14 @@ describe("ClockingTool", function() {
   }
 
   beforeEach(function() {
+    localStorage.removeItem("caching");
+    localStorage.removeItem("projects");
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
 
     jasmine.Ajax.useMock();
+
   });
 
   describe("constructor", function() {
@@ -64,7 +67,6 @@ describe("ClockingTool", function() {
 
     xit("should add event handling for the popup element");
     xit("should clear out the 'Go to issue' link");
-    xit("should contact the server for the project data");
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });
@@ -164,6 +166,58 @@ describe("ClockingTool", function() {
       expect($('#time_entry_hours')).not.toBeDisabled();
       expect($('#time_entry_spent_on')).not.toBeDisabled();
       expect($('#time_entry_comments')).not.toBeDisabled();
+      
+    });
+
+    it("should clear the issue search field", function() {
+      $('#issue_search').val("previous search");
+
+      clockingTool.projectChange();
+      
+      expect($('#issue_search').val()).toEqual('');
+    });
+
+    it("should clear the issue search field", function() {
+      $('#time_entry_activity_id').val("-1");
+
+      clockingTool.projectChange();
+      
+      expect($('#time_entry_activity_id').val()).toEqual('');
+    });
+
+    describe("with the empty project selected", function() {
+      beforeEach(function() {
+        $('#project_id').val("");
+      });
+      
+      it("should not enable the fields", function() {
+        clockingTool.projectChange();
+
+        expect($('#issue_search')).toBeDisabled();
+        expect($('#time_entry_activity_id')).toBeDisabled();
+        expect($('#time_entry_hours')).toBeDisabled();
+        expect($('#time_entry_spent_on')).toBeDisabled();
+        expect($('#time_entry_comments')).toBeDisabled();
+
+        expect($('#project_id')).not.toBeDisabled();
+
+      });
+
+      it("should not try to load the issues", function() {
+        spyOn(clockingTool, 'getIssues');
+
+        clockingTool.projectChange();
+
+        expect(clockingTool.getIssues).not.toHaveBeenCalled();
+      });
+
+      it("should not try to load the activities", function() {
+        spyOn(clockingTool, 'getActivities');
+
+        clockingTool.projectChange();
+
+        expect(clockingTool.getActivities).not.toHaveBeenCalled();
+      });
       
     });
   });
@@ -311,5 +365,78 @@ describe("ClockingTool", function() {
     });
 
     xit("should connect to the server via ajax");
+  });
+
+  describe("getCachingFromStorage()", function() {
+    describe("with nothing stored", function() {
+      it("should do nothing to the caching object", function() {
+        clockingTool.getCachingFromStorage();
+        expect(clockingTool.caching).toEqual({"projects": ""});
+      });
+    });
+
+    describe("with something stored", function() {
+      it("should load the stored object into the instance", function() {
+        localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+
+        clockingTool.getCachingFromStorage();
+
+        expect(clockingTool.caching).toEqual({"projects": "some string"});
+      });
+    });
+  });
+
+  describe(".refesh-data.click() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+      localStorage.setItem("projects", JSON.stringify(["{'id': '1'}"]));
+    });
+
+    it("should trigger refreshData()", function() {
+      spyOnEvent($('.refresh-data'), 'click');
+      spyOn(clockingTool, 'refreshData');
+
+      $('.refresh-data').click();
+
+      expect('click').toHaveBeenTriggeredOn($('.refresh-data'));
+      expect(clockingTool.refreshData).toHaveBeenCalled();
+    });
+  });
+
+  describe("refreshData()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+      localStorage.setItem("projects", JSON.stringify(["{'id': '1'}"]));
+      spyOn(clockingTool, 'getProjects'); // Block "ajax" requests when reloading data
+    });
+
+    it("should clear the caching item in the storage", function() {
+      clockingTool.refreshData();
+      expect(localStorage.caching).toEqual(undefined);
+    });
+
+    it("should reset the projects item in the storage", function() {
+      clockingTool.refreshData();
+      expect(clockingTool.getProjects).toHaveBeenCalled();
+    });
+
+    it("should clear the projects out of the object cache", function() {
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
+
+      clockingTool.refreshData();
+
+      expect(clockingTool.projects).toEqual([]);
+    });
+
+    it("should clear the caching out of the object cache", function() {
+      clockingTool.caching.projects = (new Date).toString();
+
+      clockingTool.refreshData();
+
+      expect(clockingTool.caching.projects).toEqual("");
+    });
   });
 });
