@@ -169,6 +169,21 @@ describe("ClockingTool", function() {
       
     });
 
+    it("should clear the issue search field", function() {
+      $('#issue_search').val("previous search");
+
+      clockingTool.projectChange();
+      
+      expect($('#issue_search').val()).toEqual('');
+    });
+
+    it("should clear the issue search field", function() {
+      $('#time_entry_activity_id').val("-1");
+
+      clockingTool.projectChange();
+      
+      expect($('#time_entry_activity_id').val()).toEqual('');
+    });
   });
 
   describe("#issue_search.keyup() event", function() {

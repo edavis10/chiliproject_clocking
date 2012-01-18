@@ -174,6 +174,9 @@ ClockingTool.prototype.setupEventBindings = function() {
 }
 
 ClockingTool.prototype.projectChange = function() {
+  $(this.container).find('#issue_search').val('');
+  $(this.container).find('#time_entry_activity_id').val('');
+
   this.getIssues($('#project_id').val());
   this.getActivities($('#project_id').val());
   $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
