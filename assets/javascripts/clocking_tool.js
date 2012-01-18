@@ -96,7 +96,7 @@ ClockingTool.prototype.updateProjectLoadedAt = function(projectId) {
 ClockingTool.prototype.getCachingFromStorage = function() {
   var caching = localStorage.getItem("caching");
   if (caching) {
-    console.log("loading caching from storage");
+    console.log("Loading caching from storage");
     this.caching = JSON.parse(caching);
   }
 
@@ -112,6 +112,7 @@ ClockingTool.prototype.getProjectsFromStorage = function() {
   var storage = localStorage.getItem("projects");
 
   if (storage) {
+    console.log("Loading projects from storage");
     this.projects = JSON.parse(storage);
   }
 
