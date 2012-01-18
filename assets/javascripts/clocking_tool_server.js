@@ -20,6 +20,7 @@ ClockingTool.prototype.getIssues = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
     this.serverGetIssues(projectId);
   }
+  this.getProjectsFromStorage();
 }
 
 ClockingTool.prototype.serverGetIssues = function(projectId) {
@@ -95,6 +96,7 @@ ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
     clockingTool.addIssue(projectId, issue);
   });
   this.updateProjectLoadedAt(projectId);
+  this.setProjectsInStorage(); // Issues are embedded in projects
   this.loadIssuesInForm();
 }
 
