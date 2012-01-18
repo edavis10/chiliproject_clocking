@@ -92,10 +92,10 @@ div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loadi
   </script>
   <script type="text/javascript">
     var clockingConfig = {
-    createUrl: '/time_entries.json',
-    rootUrl: '/',
-    currentUserName: "Test user",
-    apiKey: '5d319712650b4e30c7e3162064263bae4902ce8c'
+      createUrl: '<%= time_entries_path(:format => 'json') %>',
+      rootUrl: '<%= home_path %>',
+      currentUserName: "<%= h(User.current.name) %>",
+      apiKey: '<%= h(User.current.api_key) %>'
     };
     var clockingTool = new ClockingTool(clockingConfig);
     clockingTool.draw();
