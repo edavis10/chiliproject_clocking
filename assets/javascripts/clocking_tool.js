@@ -96,9 +96,15 @@ ClockingTool.prototype.updateProjectLoadedAt = function(projectId) {
 ClockingTool.prototype.getCachingFromStorage = function() {
   var caching = localStorage.getItem("caching");
   if (caching) {
+    console.log("loading caching from storage");
     this.caching = JSON.parse(caching);
   }
 
+}
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.setCachingInStorage = function() {
+  localStorage.setItem("caching", JSON.stringify(this.caching));
 }
 
 // TODO: handle browser without localStorage
@@ -303,6 +309,7 @@ ClockingTool.prototype.getIssues = function(projectId) {
 /** Project module **/
 ClockingTool.prototype.getProjects = function() {
   if (this.projectListCacheInvalid()) {
+    console.log('project cache invalid');
     this.serverGetProjects();
   }
   this.getProjectsFromStorage();
@@ -334,6 +341,7 @@ ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   });
   this.setProjectsInStorage();
   this.caching.projects = (new Date).toString();
+  this.setCachingInStorage();
   this.loadProjectsInForm();
 }
 
