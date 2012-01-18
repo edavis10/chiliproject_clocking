@@ -13,6 +13,7 @@
 <%= javascript_include_tag('jquery.js', :plugin => 'chiliproject_clocking') %>
 <%= javascript_include_tag('jquery.tmpl.min.js', :plugin => 'chiliproject_clocking') %>
 <%= javascript_include_tag('helpers.js', :plugin => 'chiliproject_clocking') %>
+<%= javascript_tag('jQuery.noConflict();') %>
 <%= javascript_include_tag('clocking_tool.js', :plugin => 'chiliproject_clocking') %>
 
 <style type="text/css">
@@ -97,9 +98,12 @@ div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loadi
       currentUserName: "<%= h(User.current.name) %>",
       apiKey: '<%= h(User.current.api_key) %>'
     };
-    var clockingTool = new ClockingTool(clockingConfig);
-    clockingTool.draw();
-    clockingTool.getProjects();
+    // Load Clocking Tool, wrapped in jQuery's $
+    jQuery(document).ready(function($) {
+      var clockingTool = new ClockingTool(clockingConfig);
+      clockingTool.draw();
+      clockingTool.getProjects();
+    })
   </script>
 </body>
 </html>
