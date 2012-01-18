@@ -1,8 +1,12 @@
 class ClockingToolController < ApplicationController
   unloadable
-  before_filter :find_project_by_project_id
-  before_filter :authorize
+  before_filter :find_project_by_project_id, :except => :index
+  before_filter :authorize, :except => :index
   accept_key_auth :issues, :activities
+
+  def index
+    render :action => 'index', :layout => false
+  end
   
   def issues
     @issues = @project.issues.visible

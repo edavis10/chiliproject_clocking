@@ -1,5 +1,6 @@
 // Clocking Tool Application
 function ClockingTool(configuration) {
+  this.j = jQuery;
   this.container = '#clocking-tool';
   this.createUrl = '';
   this.rootUrl = '/';
@@ -17,7 +18,7 @@ function ClockingTool(configuration) {
 ClockingTool.prototype.serverGetProjects = function() {
   var clockingTool = this;
 
-  $.ajax({
+  this.j.ajax({
     url: this.urlBuilder('projects.json',''),
     success: function(data) {
       clockingTool.processProjectsFromServer(data);
@@ -28,7 +29,7 @@ ClockingTool.prototype.serverGetProjects = function() {
 ClockingTool.prototype.serverGetIssues = function(projectId) {
   var clockingTool = this;
 
-  $.ajax({
+  this.j.ajax({
     url: this.urlBuilder('clocking_tool/issues.json', 'project_id=' + projectId),
     success: function(data) {
       clockingTool.processIssuesFromServer(projectId, data);
@@ -39,7 +40,7 @@ ClockingTool.prototype.serverGetIssues = function(projectId) {
 ClockingTool.prototype.serverGetActivities = function(projectId) {
   var clockingTool = this;
 
-  $.ajax({
+  this.j.ajax({
     url: this.urlBuilder('clocking_tool/activities.json', 'project_id=' + projectId),
     success: function(data) {
       clockingTool.processActivitiesFromServer(projectId, data);
@@ -50,7 +51,7 @@ ClockingTool.prototype.serverGetActivities = function(projectId) {
 ClockingTool.prototype.saveTimeEntry = function(data) {
   var clockingTool = this;
 
-  $.ajax({
+  this.j.ajax({
     url: this.urlBuilder("projects/" + data.project_id + "/time_entries.json",''),
     type: "POST",
     data: data,
@@ -171,58 +172,59 @@ ClockingTool.prototype.refreshData = function() {
 // Sets up all the event bindings on the tool's widget
 ClockingTool.prototype.setupEventBindings = function() {
   var clockingTool = this;
-  $('#project_id').change(function() {
+  this.j('#project_id').change(function() {
     clockingTool.projectChange();
   });
-  $('#issue_search').keyup(function() {
+  this.j('#issue_search').keyup(function() {
     clockingTool.issueChange();
   });
-  $('a.issue-search-result').live('click', function() {
-    clockingTool.selectIssue($(this).data('issueId'));
+  this.j('a.issue-search-result').live('click', function() {
+    clockingTool.selectIssue(clockingTool.j(this).data('issueId'));
   });
-  $(this.container + ' form').live('submit', function(event) {
+  this.j(this.container + ' form').live('submit', function(event) {
     event.stopPropagation();
     clockingTool.save();
     return false;
   });
-  $(this.container + ' .refresh-data').live('click', function() {
+  this.j(this.container + ' .refresh-data').live('click', function() {
     clockingTool.refreshData();
   });
-  $(this.container + " .ajax-loading").ajaxStart(function(){ $(this).show().css('z-index', '9999');  });
-  $(this.container + " .ajax-loading").ajaxStop(function(){ $(this).hide();  });
+  this.j(this.container + " .ajax-loading").ajaxStart(function(){ this.j(this).show().css('z-index', '9999');  });
+  this.j(this.container + " .ajax-loading").ajaxStop(function(){ this.j(this).hide();  });
 
 }
 
 ClockingTool.prototype.projectChange = function() {
-  $(this.container).find('#issue_search').val('');
-  $(this.container).find('#time_entry_activity_id').val('');
+  this.j(this.container).find('#issue_search').val('');
+  this.j(this.container).find('#time_entry_activity_id').val('');
 
-  var projectId = $('#project_id').val();
+  var projectId = this.j('#project_id').val();
   if (projectId) {
     this.getIssues(projectId);
     this.getActivities(projectId);
-    $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
+    this.j(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
     this.loadIssuesInForm();
     this.loadActivitiesInForm();
   } else {
     // Disable fields except project
     this.disableFormFields();
-    $("#project_id").removeAttr('disabled');
+    this.j("#project_id").removeAttr('disabled');
   }
 }
 
 ClockingTool.prototype.issueChange = function() {
-  var projectId = $('#project_id').val();
+  var projectId = this.j('#project_id').val();
   var selectedProject = this.findProject(projectId);
-  var results = this.searchIssues($('#issue_search').val());
-  var searchContainer = $(this.container + " div.search-results").html($("<ul>"));
+  var results = this.searchIssues(this.j('#issue_search').val());
+  var searchContainer = this.j(this.container + " div.search-results").html(this.j("<ul>"));
+  var clockingTool = this;
 
   _.each(results, function(issue) {
     var issueIdString = "<span class='issue-id'>#" + issue.id + "</span>";
     var issueString = "<span class='issue-subject'>" + issue.subject + "</span>";
     var projectString = "<span class='project-name'>" + selectedProject.name; + "</span>";
     var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#'>" + issueIdString + issueString + projectString + "</a>";
-    var searchItem = $("<li>").html(link);
+    var searchItem = clockingTool.j("<li>").html(link);
 
     searchContainer.find("ul").append(searchItem);
   });
@@ -230,7 +232,7 @@ ClockingTool.prototype.issueChange = function() {
 }
 
 ClockingTool.prototype.searchIssues = function(query) {
-  var projectId = $('#project_id').val();
+  var projectId = this.j('#project_id').val();
   var selectedProject = this.findProject(projectId);
   var queryRegex = new RegExp(query, "i");
 
@@ -240,46 +242,46 @@ ClockingTool.prototype.searchIssues = function(query) {
 }
 
 ClockingTool.prototype.selectIssue = function(issueId) {
-  $(this.container + " .search-results").hide();
-  var projectId = $('#project_id').val();
+  this.j(this.container + " .search-results").hide();
+  var projectId = this.j('#project_id').val();
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
   if (issue) {
-    $('#issue_search').val(issue.subject);
-    $('#time_entry_issue_id').val(issue.id);
+    this.j('#issue_search').val(issue.subject);
+    this.j('#time_entry_issue_id').val(issue.id);
   }
 }
 
 ClockingTool.prototype.saveSuccessful = function() {
-  $(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
-  $(this.container).find('#time_entry_hours, #time_entry_comments').val('');
+  this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.j(this.container).find('#time_entry_hours, #time_entry_comments').val('');
   this.changeMessage("Time entry saved");
-  $(this.container + " .header .message-box").removeClass('flash').removeClass('error');
+  this.j(this.container + " .header .message-box").removeClass('flash').removeClass('error');
 }
 
 ClockingTool.prototype.saveFailed = function(message) {
-  $(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
   this.changeMessage(message);
-  $(this.container + " .header .message-box").addClass('flash').addClass('error');
+  this.j(this.container + " .header .message-box").addClass('flash').addClass('error');
 }
 
 /** Form module **/
 ClockingTool.prototype.disableFormFields = function() {
-  $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
+  this.j(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
 
 }
 
 ClockingTool.prototype.save = function() {
-  $(this.container + ' .form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...');
+  this.j(this.container + ' .form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...');
 
   var timeEntry = {
-    "project_id": $(this.container + ' .form-container form #project_id').val(),
+    "project_id": this.j(this.container + ' .form-container form #project_id').val(),
     "time_entry": {
-      "hours": $(this.container + ' .form-container form #time_entry_hours').val(),
-      "issue_id": $(this.container + ' .form-container form #time_entry_issue_id').val(),
-      "activity_id": $(this.container + ' .form-container form #time_entry_activity_id').val(),
-      "spent_on": $(this.container + ' .form-container form #time_entry_spent_on').val(),
-      "comments":$(this.container + ' .form-container form #time_entry_comments').val()
+      "hours": this.j(this.container + ' .form-container form #time_entry_hours').val(),
+      "issue_id": this.j(this.container + ' .form-container form #time_entry_issue_id').val(),
+      "activity_id": this.j(this.container + ' .form-container form #time_entry_activity_id').val(),
+      "spent_on": this.j(this.container + ' .form-container form #time_entry_spent_on').val(),
+      "comments":this.j(this.container + ' .form-container form #time_entry_comments').val()
     }
   };
   this.saveTimeEntry(timeEntry);
@@ -287,28 +289,28 @@ ClockingTool.prototype.save = function() {
 
 // TODO: test
 ClockingTool.prototype.loadProjectsInForm = function() {
-  var options =  $("<option value=''>Project</option>");
+  var options =  this.j("<option value=''>Project</option>");
   _.each(this.projects, function(project) {
     options = options.add("<option value='" + project.id + "'>" + project.name + "</option>");
   });
-  $(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
+  this.j(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
 }
 
 ClockingTool.prototype.loadIssuesInForm = function() {
   // Issues are not shown, only the search field is
-  $(this.container + ' #issue_search').removeAttr('disabled');
+  this.j(this.container + ' #issue_search').removeAttr('disabled');
 }
 
 ClockingTool.prototype.loadActivitiesInForm = function() {
-  var projectId = $('#project_id').val() || '';
+  var projectId = this.j('#project_id').val() || '';
   var selectedProject = this.findProject(projectId);
 
   if (selectedProject) {
-    var options =  $("<option value=''>Activity</option>");
+    var options =  this.j("<option value=''>Activity</option>");
     _.each(selectedProject.activities, function(activity) {
       options = options.add("<option value='" + activity.id + "'>" + activity.name + "</option>");
     });
-    $(this.container + ' #time_entry_activity_id').empty().append(options).removeAttr('disabled');
+    this.j(this.container + ' #time_entry_activity_id').empty().append(options).removeAttr('disabled');
   }
   
 }
@@ -413,11 +415,11 @@ ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {
   if (response.status == 200 || response.status == 201) {
     this.saveSuccessful();
   } else if (response.status == 403) {
-    var message = "Error saving time: " + $.parseJSON(response.responseText).message;
+    var message = "Error saving time: " + this.j.parseJSON(response.responseText).message;
     this.saveFailed(message);
   } else {
     var message = "Error saving time: ";
-    var errors = $.parseJSON(response.responseText);
+    var errors = this.j.parseJSON(response.responseText);
     if (errors.errors) {
       var errorMessages = _.reduce(errors.errors, function(memo, errorMessage) {
         if (errorMessage instanceof Array) {
@@ -442,7 +444,7 @@ ClockingTool.prototype.draw = function() {
   var today = new Date();
   todayString = formatDateToISO(today);
 
-  $('#clocking-tool-template').tmpl({
+  this.j('#clocking-tool-template').tmpl({
     formUrl: this.createUrl,
     today: todayString
   }).appendTo(this.container);
@@ -453,18 +455,18 @@ ClockingTool.prototype.draw = function() {
 }
 
 ClockingTool.prototype.addWelcomeMessage = function() {
-  $(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
+  this.j(this.container + " .header .message-box").html("Hi " + this.currentUserName + ", please clock your time below");
 }
 
 ClockingTool.prototype.changeMessage = function(message) {
-  $(this.container + " .header .message-box").html(message);
+  this.j(this.container + " .header .message-box").html(message);
 }
 
 /** Utilities **/
 
 // Add some stub data during development
 ClockingTool.prototype.addStubData = function() {
-  $(this.container + " .header .popout").html("[O]");
+  this.j(this.container + " .header .popout").html("[O]");
 }
 
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
