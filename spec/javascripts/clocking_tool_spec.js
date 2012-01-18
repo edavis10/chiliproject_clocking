@@ -349,4 +349,43 @@ describe("ClockingTool", function() {
       });
     });
   });
+
+  describe(".refesh-data.click() event", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+      localStorage.setItem("projects", JSON.stringify(["{'id': '1'}"]));
+    });
+
+    it("should trigger refreshData()", function() {
+      spyOnEvent($('.refresh-data'), 'click');
+      spyOn(clockingTool, 'refreshData');
+
+      $('.refresh-data').click();
+
+      expect('click').toHaveBeenTriggeredOn($('.refresh-data'));
+      expect(clockingTool.refreshData).toHaveBeenCalled();
+    });
+  });
+
+  describe("refreshData()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
+      localStorage.setItem("projects", JSON.stringify(["{'id': '1'}"]));
+    });
+
+    it("should clear the caching item in the storage", function() {
+      clockingTool.refreshData();
+      expect(localStorage.caching).toEqual(undefined);
+    });
+
+    it("should reset the projects item in the storage", function() {
+      spyOn(clockingTool, 'getProjects');
+
+      clockingTool.refreshData();
+
+      expect(clockingTool.getProjects).toHaveBeenCalled();
+    });
+  });
 });

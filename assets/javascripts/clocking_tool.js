@@ -152,6 +152,12 @@ ClockingTool.prototype.projectCacheInvalid = function(projectId) {
   }
 }
 
+ClockingTool.prototype.refreshData = function() {
+  console.log("Clearing storage");
+  localStorage.clear();
+  this.getProjects();
+}
+
 /** Event module **/
 // Sets up all the event bindings on the tool's widget
 ClockingTool.prototype.setupEventBindings = function() {
@@ -170,7 +176,9 @@ ClockingTool.prototype.setupEventBindings = function() {
     clockingTool.save();
     return false;
   });
-
+  $(this.container + ' .refresh-data').live('click', function() {
+    clockingTool.refreshData();
+  });
 }
 
 ClockingTool.prototype.projectChange = function() {
