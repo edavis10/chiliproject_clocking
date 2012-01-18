@@ -186,6 +186,9 @@ ClockingTool.prototype.setupEventBindings = function() {
   $(this.container + ' .refresh-data').live('click', function() {
     clockingTool.refreshData();
   });
+  $(this.container + " .ajax-loading").ajaxStart(function(){ $(this).show().css('z-index', '9999');  });
+  $(this.container + " .ajax-loading").ajaxStop(function(){ $(this).hide();  });
+
 }
 
 ClockingTool.prototype.projectChange = function() {
