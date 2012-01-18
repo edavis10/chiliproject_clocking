@@ -14,8 +14,8 @@
 /* TODO: set height dynamically, set width dynamically. */
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
 div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
-div.clocking-tool-inner .header .message-box { background: #DDDDDD; margin: 5px; padding: 5px; width: auto; }
-div.clocking-tool-inner .header .popout { float: right; position: relative; left: -10px; top: -30px; }
+div.clocking-tool-inner .header .message-box { background: #EEEEEE; margin: 5px; padding: 5px; width: auto; border: 1px solid #DDD; width: 90%; }
+div.clocking-tool-inner .header .popout { float: right; position: relative; left: -5px; top: -31px; background: #277D94; padding: 5px; color: white; border: 1px solid #000; }
 div.clocking-tool-inner .form-container { float: left; margin: 0 5px;}
 div.clocking-tool-inner .recent-container {float: right; width: 50%; }
 div.clocking-tool-inner .recent-container ul {padding-left: 0; list-style: none; background: #DDDDDD; }
@@ -33,7 +33,7 @@ div.clocking-tool-inner .search-results ul li span { border-right: 1px solid #00
 div.clocking-tool-inner .search-results ul li span.issue-id { width: 40px; }
 div.clocking-tool-inner .search-results ul li span.issue-subject { width: 300px; }
 div.clocking-tool-inner .search-results ul li span.project-name { border-right: none; }
-div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loading.gif); width: 16px; height: 16px; position: relative; float: right; left: -10px; top: -30px; }
+div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loading.gif); width: 16px; height: 16px; position: relative; float: right; left: -10px; top: -25px; }
 </style>
 </head>
 <body>
@@ -46,7 +46,7 @@ div.clocking-tool-inner .ajax-loading { background-image: url(../../images/loadi
         <div class="ajax-loading" style="display:none;"></div>
       </div>
       <div class="form-container">
-        <form action="${ formUrl }" class="tabular" method="post">
+        <form action="${ formUrl }" class="" method="post">
           <p>
             <select id="project_id" name="project_id">
             </select>
