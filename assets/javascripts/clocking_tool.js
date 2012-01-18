@@ -197,11 +197,18 @@ ClockingTool.prototype.projectChange = function() {
   $(this.container).find('#issue_search').val('');
   $(this.container).find('#time_entry_activity_id').val('');
 
-  this.getIssues($('#project_id').val());
-  this.getActivities($('#project_id').val());
-  $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
-  this.loadIssuesInForm();
-  this.loadActivitiesInForm();
+  var projectId = $('#project_id').val();
+  if (projectId) {
+    this.getIssues(projectId);
+    this.getActivities(projectId);
+    $(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
+    this.loadIssuesInForm();
+    this.loadActivitiesInForm();
+  } else {
+    // Disable fields except project
+    this.disableFormFields();
+    $("#project_id").removeAttr('disabled');
+  }
 }
 
 ClockingTool.prototype.issueChange = function() {

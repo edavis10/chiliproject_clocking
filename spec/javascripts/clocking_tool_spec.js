@@ -184,6 +184,42 @@ describe("ClockingTool", function() {
       
       expect($('#time_entry_activity_id').val()).toEqual('');
     });
+
+    describe("with the empty project selected", function() {
+      beforeEach(function() {
+        $('#project_id').val("");
+      });
+      
+      it("should not enable the fields", function() {
+        clockingTool.projectChange();
+
+        expect($('#issue_search')).toBeDisabled();
+        expect($('#time_entry_activity_id')).toBeDisabled();
+        expect($('#time_entry_hours')).toBeDisabled();
+        expect($('#time_entry_spent_on')).toBeDisabled();
+        expect($('#time_entry_comments')).toBeDisabled();
+
+        expect($('#project_id')).not.toBeDisabled();
+
+      });
+
+      it("should not try to load the issues", function() {
+        spyOn(clockingTool, 'getIssues');
+
+        clockingTool.projectChange();
+
+        expect(clockingTool.getIssues).not.toHaveBeenCalled();
+      });
+
+      it("should not try to load the activities", function() {
+        spyOn(clockingTool, 'getActivities');
+
+        clockingTool.projectChange();
+
+        expect(clockingTool.getActivities).not.toHaveBeenCalled();
+      });
+      
+    });
   });
 
   describe("#issue_search.keyup() event", function() {
