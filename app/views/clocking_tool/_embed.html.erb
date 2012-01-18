@@ -1,0 +1,25 @@
+<script type="text/javascript">
+var clockingConfig = {
+  createUrl: '<%= time_entries_path(:format => 'json') %>',
+  rootUrl: '<%= home_path %>',
+  currentUserName: "<%= h(User.current.name) %>",
+  apiKey: '<%= h(User.current.api_key) %>'
+};
+
+var clockingTool = new ClockingTool(clockingConfig);
+
+jQuery(document).ready(function() {
+  jQuery('#more-menu').after('<li class="clocking-tool-trigger"><a href="#">C</a></li>');
+  clockingTool.draw();
+
+  jQuery('.clocking-tool-trigger').live('click', function() {
+    clockingTool.getProjects();
+    jQuery('#clocking-tool').toggle();
+  });
+});
+</script>
+
+<div id="clocking-tool" class="embed" style="display: none;"></div>
+
+<%= render :partial => 'clocking_tool/template' %>
+        

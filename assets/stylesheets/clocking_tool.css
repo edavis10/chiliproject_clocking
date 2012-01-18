@@ -1,4 +1,7 @@
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
+/* Follow rule only happens when embedded */
+#clocking-tool.embed { position: absolute; top: 23px; right: 20px; }
+
 div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
 div.clocking-tool-inner .header .message-box { background: #EEEEEE; margin: 5px; padding: 5px; width: auto; border: 1px solid #DDD; width: 90%; }
 div.clocking-tool-inner .header .popout { float: right; position: relative; left: -5px; top: -31px; background: #277D94; padding: 5px; color: white; border: 1px solid #000; }

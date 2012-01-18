@@ -9,3 +9,4 @@ Redmine::Plugin.register :chiliproject_clocking do
   author_url 'http://example.com/about'
 end
 require 'chiliproject_clocking/hooks/view_layouts_base_html_head_hook'
+require 'chiliproject_clocking/hooks/view_layouts_base_body_bottom_hook'
