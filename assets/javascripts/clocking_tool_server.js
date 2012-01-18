@@ -3,6 +3,7 @@ ClockingTool.prototype.getProjects = function() {
   if (this.projectListCacheInvalid()) {
     this.serverGetProjects();
   }
+  this.getProjectsFromStorage();
 }
 ClockingTool.prototype.serverGetProjects = function() {
   var clockingTool = this;
@@ -66,11 +67,13 @@ ClockingTool.prototype.saveTimeEntry = function(data) {
 
 ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   var clockingTool = this;
+  this.projects = [];
 
   // TODO: check total_count, limit, and offset for > 100 projects
   _.each(jsonData.projects, function(project) {
     clockingTool.addProject(project.id, project.name);
   });
+  this.setProjectsInStorage();
   this.caching.projects = (new Date).toString();
   this.loadProjectsInForm();
 }

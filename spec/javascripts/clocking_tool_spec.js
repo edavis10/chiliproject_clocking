@@ -6,13 +6,14 @@ describe("ClockingTool", function() {
   }
 
   beforeEach(function() {
+    localStorage.removeItem("caching");
+    localStorage.removeItem("projects");
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
 
     jasmine.Ajax.useMock();
 
-    localStorage.removeItem("caching");
   });
 
   describe("constructor", function() {

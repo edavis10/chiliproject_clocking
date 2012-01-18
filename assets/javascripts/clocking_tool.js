@@ -178,3 +178,17 @@ ClockingTool.prototype.getCachingFromStorage = function() {
   }
 
 }
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.getProjectsFromStorage = function() {
+  var storage = localStorage.getItem("projects");
+
+  if (storage) {
+    this.projects = JSON.parse(storage);
+  }
+
+}
+// TODO: handle browser without localStorage
+ClockingTool.prototype.setProjectsInStorage = function() {
+  localStorage.setItem("projects", JSON.stringify(this.projects));
+}

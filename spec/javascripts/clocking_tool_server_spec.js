@@ -10,6 +10,9 @@ describe("ClockingTool server functions", function() {
   var request;
 
   beforeEach(function() {
+    localStorage.removeItem("caching");
+    localStorage.removeItem("projects");
+
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     clockingTool.draw();
@@ -40,6 +43,21 @@ describe("ClockingTool server functions", function() {
       clockingTool.getProjects();
 
       expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
+    });
+
+    it("should load projects from the local storage if present", function() {
+      // Make sure the cache is used 
+      clockingTool.caching.projects = (new Date).toString();
+
+      var projectData = JSON.stringify($.parseJSON(TestResponses.projects.success.responseText).projects);
+      localStorage.setItem("projects", projectData);
+
+      // Mock the Ajax call in case it's fired
+      spyOn(clockingTool, 'serverGetProjects');
+      clockingTool.getProjects();
+
+      expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
+      expect(clockingTool.projects.length).toEqual(10);
     });
   });
 
