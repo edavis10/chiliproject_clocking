@@ -191,6 +191,30 @@ describe("ClockingTool server functions", function() {
 
       expect(clockingTool.serverGetActivities).not.toHaveBeenCalled();
     });
+
+    it("should load activities from the local storage if present", function() {
+      // Make sure the cache is used 
+      clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.updateProjectLoadedAt(10);
+
+      clockingTool.caching.projects = (new Date).toString();
+      var activityData = JSON.parse(TestResponses.activities.project10.success.responseText);
+      var projectData = {
+        "id":10,
+        "name": "Balanced 24/7 paradigm",
+        "activities": activityData
+      }
+
+      localStorage.setItem("projects", JSON.stringify([projectData]));
+
+      // Mock the Ajax call in case it's fired
+      spyOn(clockingTool, 'serverGetActivities');
+      clockingTool.getActivities(10);
+
+      expect(clockingTool.serverGetActivities).not.toHaveBeenCalled();
+      currentProject = clockingTool.findProject(10);
+      expect(currentProject.activities.length).toEqual(3);
+    });
   });
 
   describe("processActivitiesFromServer()", function() {

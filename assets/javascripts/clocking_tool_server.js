@@ -38,6 +38,7 @@ ClockingTool.prototype.getActivities = function(projectId) {
   if (this.projectCacheInvalid(projectId)) {
     this.serverGetActivities(projectId);
   }
+  this.getProjectsFromStorage();
 }
 ClockingTool.prototype.serverGetActivities = function(projectId) {
   var clockingTool = this;
@@ -117,6 +118,7 @@ ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonDat
     clockingTool.addActivity(projectId, activity);
   });
   this.updateProjectLoadedAt(projectId);
+  this.setProjectsInStorage(); // Activities are embedded in projects
   this.loadActivitiesInForm();
 }
 
