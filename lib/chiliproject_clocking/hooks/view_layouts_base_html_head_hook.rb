@@ -7,7 +7,8 @@ module ChiliprojectClocking
           javascript_include_tag('jquery.tmpl.min.js', :plugin => 'chiliproject_clocking') +
           javascript_include_tag('helpers.js', :plugin => 'chiliproject_clocking') +
           javascript_tag('jQuery.noConflict();') +
-          javascript_include_tag('clocking_tool.js', :plugin => 'chiliproject_clocking')
+          javascript_include_tag('clocking_tool.js', :plugin => 'chiliproject_clocking') +
+          stylesheet_link_tag('clocking_tool', :plugin => 'chiliproject_clocking')
 
       end
     end
