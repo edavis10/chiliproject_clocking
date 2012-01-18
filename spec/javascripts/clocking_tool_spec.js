@@ -67,17 +67,6 @@ describe("ClockingTool", function() {
 
     xit("should add event handling for the popup element");
     xit("should clear out the 'Go to issue' link");
-
-    // NOTE: Ajax mocking
-    it("should load the projects", function() {
-      clockingTool.draw();
-
-      request = mostRecentAjaxRequest();
-      request.response(TestResponses.projects.success);
-
-      expect(clockingTool.projects.length).toEqual(10);
-    });
-
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });

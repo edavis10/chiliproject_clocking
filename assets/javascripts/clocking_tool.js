@@ -313,6 +313,7 @@ ClockingTool.prototype.getProjects = function() {
     this.serverGetProjects();
   }
   this.getProjectsFromStorage();
+  this.loadProjectsInForm();
 }
 
 ClockingTool.prototype.findProject = function(projectId) {
@@ -342,7 +343,6 @@ ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
   this.setProjectsInStorage();
   this.caching.projects = (new Date).toString();
   this.setCachingInStorage();
-  this.loadProjectsInForm();
 }
 
 ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
@@ -409,7 +409,6 @@ ClockingTool.prototype.draw = function() {
   this.addWelcomeMessage();
   this.disableFormFields();
   this.setupEventBindings();
-  this.getProjects();
 }
 
 ClockingTool.prototype.addWelcomeMessage = function() {

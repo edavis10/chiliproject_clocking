@@ -59,6 +59,14 @@ describe("ClockingTool server functions", function() {
       expect(clockingTool.serverGetProjects).not.toHaveBeenCalled();
       expect(clockingTool.projects.length).toEqual(10);
     });
+
+    it("should load the project data into the form", function() {
+      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
+
+      clockingTool.getProjects();
+
+      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
+    });
   });
 
   describe("processProjectsFromServer()", function(){
@@ -76,12 +84,6 @@ describe("ClockingTool server functions", function() {
       clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
 
       expect(clockingTool.caching.projects).toMatch(new RegExp(year.toString())); // Match at least the year
-    });
-
-    it("should load the project data into the form", function() {
-      clockingTool.processProjectsFromServer($.parseJSON(TestResponses.projects.success.responseText));
-
-      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
     });
   });
 
