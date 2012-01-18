@@ -373,6 +373,7 @@ describe("ClockingTool", function() {
       clockingTool.draw();
       localStorage.setItem("caching", JSON.stringify({"projects": "some string"}));
       localStorage.setItem("projects", JSON.stringify(["{'id': '1'}"]));
+      spyOn(clockingTool, 'getProjects'); // Block "ajax" requests when reloading data
     });
 
     it("should clear the caching item in the storage", function() {
@@ -381,11 +382,25 @@ describe("ClockingTool", function() {
     });
 
     it("should reset the projects item in the storage", function() {
-      spyOn(clockingTool, 'getProjects');
+      clockingTool.refreshData();
+      expect(clockingTool.getProjects).toHaveBeenCalled();
+    });
+
+    it("should clear the projects out of the object cache", function() {
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(10, "Project10");
 
       clockingTool.refreshData();
 
-      expect(clockingTool.getProjects).toHaveBeenCalled();
+      expect(clockingTool.projects).toEqual([]);
+    });
+
+    it("should clear the caching out of the object cache", function() {
+      clockingTool.caching.projects = (new Date).toString();
+
+      clockingTool.refreshData();
+
+      expect(clockingTool.caching.projects).toEqual("");
     });
   });
 });

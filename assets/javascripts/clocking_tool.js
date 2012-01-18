@@ -159,6 +159,8 @@ ClockingTool.prototype.projectCacheInvalid = function(projectId) {
 ClockingTool.prototype.refreshData = function() {
   console.log("Clearing storage");
   localStorage.clear();
+  this.projects = [];
+  this.caching.projects = '';
   this.getProjects();
 }
 
