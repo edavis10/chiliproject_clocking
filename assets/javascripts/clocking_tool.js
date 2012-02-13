@@ -9,6 +9,7 @@ function ClockingTool(configuration) {
   this.caching = {"projects": ''};
   this.helpUrl = '/help/wiki_syntax.html';
   this.images = { refresh: '', loading: ''}
+  this.embedded = false;
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
@@ -250,6 +251,7 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   if (issue) {
     this.j('.issue_search').val(issue.subject);
     this.j('.time_entry_issue_id').val(issue.id);
+    this.showGoToIssue(issueId);
   }
 }
 
@@ -458,6 +460,7 @@ ClockingTool.prototype.draw = function() {
   this.addPopupLink();
   this.addStubData();
   this.addWelcomeMessage();
+  this.hideGoToIssue();
   this.disableFormFields();
   this.setupEventBindings();
 }
@@ -490,6 +493,19 @@ ClockingTool.prototype.addPopupLink = function() {
   this.j(this.container + " .header .popout").html(popupLink);
 }
 
+ClockingTool.prototype.showGoToIssue = function(issueId) {
+  var target = this.embedded ? '' : '_blank';
+
+  this.j(this.container + " .jump-to-issue").
+    attr('href', this.rootUrl + 'issues/' + issueId).
+    attr('target', target).
+    show();
+}
+
+ClockingTool.prototype.hideGoToIssue = function() {
+  this.j(this.container + " .jump-to-issue").hide();
+}
+
 /** Utilities **/
 
 // Add some stub data during development
@@ -499,4 +515,3 @@ ClockingTool.prototype.addStubData = function() {
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
-

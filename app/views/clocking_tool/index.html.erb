@@ -16,7 +16,7 @@ body { min-width: 400px; }
 
 </head>
 <body>
-  <%= render :partial => 'clocking_tool/embed' %>
+  <%= render :partial => 'clocking_tool/embed', :locals => {:embedded => false } %>
   <script type="text/javascript">
     jQuery(document).ready(function() {
       jQuery('#clocking-tool').removeClass('embed').show();

@@ -71,7 +71,11 @@ describe("ClockingTool", function() {
 
 
     xit("should add event handling for the popup element");
-    xit("should clear out the 'Go to issue' link");
+
+    it("should hide the 'Go to issue' link", function() {
+      expect($('.jump-to-issue')).toBeHidden();
+    });
+
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });
@@ -348,6 +352,20 @@ describe("ClockingTool", function() {
       clockingTool.selectIssue(983);
       expect($('.time_entry_issue_id')).toHaveValue('983');
     });
+
+    it("should show the 'Go to issue' link", function() {
+      expect($('.jump-to-issue')).toBeHidden();
+
+      clockingTool.selectIssue(983);
+
+      expect($('.jump-to-issue')).not.toBeHidden();
+    });
+
+    it("should set the link for the 'Go to issue' link", function() {
+      clockingTool.selectIssue(983);
+
+      expect($('.jump-to-issue')).toHaveAttr('href', '/issues/983');
+    });
   });
 
   describe("form submission", function() {
@@ -442,6 +460,39 @@ describe("ClockingTool", function() {
       clockingTool.refreshData();
 
       expect(clockingTool.caching.projects).toEqual("");
+    });
+  });
+
+  describe("showGoToIssue()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+    });
+
+    it("should set href to the issue", function() {
+      clockingTool.showGoToIssue('983');
+      expect($('.jump-to-issue')).toHaveAttr('href', '/issues/983');
+    });
+
+    describe("with an embedded form", function() {
+
+      it("should open the current issue using the same window", function() {
+        clockingTool.embedded = true;
+
+        clockingTool.showGoToIssue('983');
+
+        expect($('.jump-to-issue')).toHaveAttr('target', '');
+      });
+    });
+
+    describe("with a popup form (non-embedded)", function() {
+      it("should open the current issue in a new window", function() {
+        clockingTool.embedded = false;
+
+        clockingTool.showGoToIssue('983');
+
+        expect($('.jump-to-issue')).toHaveAttr('target', '_blank');
+      });
+
     });
   });
 });
