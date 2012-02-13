@@ -7,6 +7,7 @@ function ClockingTool(configuration) {
   this.currentUserName = '';
   this.apiKey = '';
   this.caching = {"projects": ''};
+  this.helpUrl = '/help/wiki_syntax.html';
   this.images = { refresh: '', loading: ''}
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
@@ -450,7 +451,8 @@ ClockingTool.prototype.draw = function() {
     formUrl: this.createUrl,
     today: todayString,
     refreshImage: this.images.refresh,
-    randomId: randomId
+    randomId: randomId,
+    helpUrl: this.helpUrl
   }).appendTo(this.container);
   this.calendarPopup(randomId);
   this.addPopupLink();

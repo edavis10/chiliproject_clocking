@@ -7,7 +7,8 @@ var clockingConfig = {
   images: {
     refresh: '<%= image_path("arrow_refresh.png", :plugin => 'chiliproject_clocking') %>',
     loading: '<%= image_path("loading.gif") %>'
-  }
+  },
+  helpUrl: '<%= url_for(:controller => 'help', :action => 'wiki_syntax') %>'
 };
 
 var clockingTool = new ClockingTool(clockingConfig);
