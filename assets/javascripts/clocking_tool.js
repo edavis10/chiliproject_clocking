@@ -443,17 +443,31 @@ ClockingTool.prototype.processTimeEntrySaveResponse = function(response) {
 ClockingTool.prototype.draw = function() {
   var today = new Date();
   todayString = formatDateToISO(today);
+  // Some elements and third party JavaScript requires ids (Calendar popup)
+  var randomId = Math.floor(Math.random() * 10000);
 
   this.j('#clocking-tool-template').tmpl({
     formUrl: this.createUrl,
     today: todayString,
-    refreshImage: this.images.refresh
+    refreshImage: this.images.refresh,
+    randomId: randomId
   }).appendTo(this.container);
+  this.calendarPopup(randomId);
   this.addPopupLink();
   this.addStubData();
   this.addWelcomeMessage();
   this.disableFormFields();
   this.setupEventBindings();
+}
+
+ClockingTool.prototype.calendarPopup = function(randomId) {
+  if (typeof Calendar != "undefined") {
+    Calendar.setup({
+      inputField : 'time_entry_spent_on_' + randomId,
+      ifFormat : '%Y-%m-%d',
+      button : 'time_entry_spent_on_' + randomId + '_trigger'
+    });
+  }
 }
 
 ClockingTool.prototype.addWelcomeMessage = function() {

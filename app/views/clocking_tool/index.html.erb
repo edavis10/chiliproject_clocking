@@ -6,7 +6,9 @@
 <%= stylesheet_link_tag 'application', :media => 'all' %>
 <%= stylesheet_link_tag 'rtl', :media => 'all' if l(:direction) == 'rtl' %>
 <%= javascript_heads %>
+<% include_calendar_headers_tags %>
 <%= heads_for_theme %>
+<%= yield :header_tags -%>
 <%= call_hook :view_layouts_base_html_head %>
 <style type="text/css">
 body { min-width: 400px; }
