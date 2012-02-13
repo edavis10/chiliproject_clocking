@@ -48,7 +48,7 @@ describe("ClockingTool", function() {
 
     it("should populate the field of spent on with today's date (YYYY-mm-dd format)", function() {
       today = new Date();
-      expect($('.form-container #time_entry_spent_on')).toHaveValue(formatDateToISO(today));
+      expect($('.form-container .time_entry_spent_on')).toHaveValue(formatDateToISO(today));
     });
 
     it("should populate the message with a welcome message", function() {
@@ -56,12 +56,12 @@ describe("ClockingTool", function() {
     });
 
     it("should disable the fields", function() {
-      expect($('#project_id')).toBeDisabled();
-      expect($('#issue_search')).toBeDisabled();
-      expect($('#time_entry_activity_id')).toBeDisabled();
-      expect($('#time_entry_hours')).toBeDisabled();
-      expect($('#time_entry_spent_on')).toBeDisabled();
-      expect($('#time_entry_comments')).toBeDisabled();
+      expect($('.project_id')).toBeDisabled();
+      expect($('.issue_search')).toBeDisabled();
+      expect($('.time_entry_activity_id')).toBeDisabled();
+      expect($('.time_entry_hours')).toBeDisabled();
+      expect($('.time_entry_spent_on')).toBeDisabled();
+      expect($('.time_entry_comments')).toBeDisabled();
     });
 
 
@@ -79,9 +79,9 @@ describe("ClockingTool", function() {
     it("should add the default option", function() {
       clockingTool.loadProjectsInForm();
 
-      expect($('.form-container #project_id option').length).toEqual(1);
-      expect($('.form-container #project_id option:first')).toHaveValue('');
-      expect($('.form-container #project_id option:first')).toHaveText('Project');
+      expect($('.form-container .project_id option').length).toEqual(1);
+      expect($('.form-container .project_id option:first')).toHaveValue('');
+      expect($('.form-container .project_id option:first')).toHaveText('Project');
 
     });
     it("should add an option for each project", function() {
@@ -90,11 +90,11 @@ describe("ClockingTool", function() {
 
       clockingTool.loadProjectsInForm();
 
-      expect($('.form-container #project_id option').length).toEqual(3);
-      expect($('.form-container #project_id option:nth(1)')).toHaveValue('1');
-      expect($('.form-container #project_id option:nth(1)')).toHaveText('Project1');
-      expect($('.form-container #project_id option:nth(2)')).toHaveValue('2');
-      expect($('.form-container #project_id option:nth(2)')).toHaveText('Project2');
+      expect($('.form-container .project_id option').length).toEqual(3);
+      expect($('.form-container .project_id option:nth(1)')).toHaveValue('1');
+      expect($('.form-container .project_id option:nth(1)')).toHaveText('Project1');
+      expect($('.form-container .project_id option:nth(2)')).toHaveValue('2');
+      expect($('.form-container .project_id option:nth(2)')).toHaveText('Project2');
 
     });
 
@@ -103,32 +103,32 @@ describe("ClockingTool", function() {
       clockingTool.addProject(2, "Project2");
 
       clockingTool.loadProjectsInForm();
-      expect($('.form-container #project_id option').length).toEqual(3);
+      expect($('.form-container .project_id option').length).toEqual(3);
 
       clockingTool.loadProjectsInForm();
-      expect($('.form-container #project_id option').length).toEqual(3);
+      expect($('.form-container .project_id option').length).toEqual(3);
     });
 
     it("should enable the project field", function() {
-      expect($('#project_id')).toBeDisabled();
+      expect($('.project_id')).toBeDisabled();
       clockingTool.loadProjectsInForm();
-      expect($('#project_id')).not.toBeDisabled();
+      expect($('.project_id')).not.toBeDisabled();
     });
   });
 
-  describe("#project_id.change() event", function() {
+  describe(".project_id.change() event", function() {
     beforeEach(function() {
       clockingTool.draw();
       clockingTool.addProject(1, "Project1");
     });
 
     it("should trigger projectChange()", function() {
-      spyOnEvent($('#project_id'), 'change');
+      spyOnEvent($('.project_id'), 'change');
       spyOn(clockingTool, 'projectChange');
 
-      $('#project_id').val(1).change();
+      $('.project_id').val(1).change();
 
-      expect('change').toHaveBeenTriggeredOn($('#project_id'));
+      expect('change').toHaveBeenTriggeredOn($('.project_id'));
       expect(clockingTool.projectChange).toHaveBeenCalled();
     });
   });
@@ -139,7 +139,7 @@ describe("ClockingTool", function() {
       clockingTool.addProject(1, "Project1");
       clockingTool.addProject(2, "Project2");
       clockingTool.loadProjectsInForm();
-      $('#project_id').val(1);
+      $('.project_id').val(1);
     });
 
     it("should load issues", function() {
@@ -161,45 +161,45 @@ describe("ClockingTool", function() {
     it("should enable the form fields", function() {
       clockingTool.projectChange();
 
-      expect($('#issue_search')).not.toBeDisabled();
-      expect($('#time_entry_activity_id')).not.toBeDisabled();
-      expect($('#time_entry_hours')).not.toBeDisabled();
-      expect($('#time_entry_spent_on')).not.toBeDisabled();
-      expect($('#time_entry_comments')).not.toBeDisabled();
+      expect($('.issue_search')).not.toBeDisabled();
+      expect($('.time_entry_activity_id')).not.toBeDisabled();
+      expect($('.time_entry_hours')).not.toBeDisabled();
+      expect($('.time_entry_spent_on')).not.toBeDisabled();
+      expect($('.time_entry_comments')).not.toBeDisabled();
       
     });
 
     it("should clear the issue search field", function() {
-      $('#issue_search').val("previous search");
+      $('.issue_search').val("previous search");
 
       clockingTool.projectChange();
       
-      expect($('#issue_search').val()).toEqual('');
+      expect($('.issue_search').val()).toEqual('');
     });
 
     it("should clear the issue search field", function() {
-      $('#time_entry_activity_id').val("-1");
+      $('.time_entry_activity_id').val("-1");
 
       clockingTool.projectChange();
       
-      expect($('#time_entry_activity_id').val()).toEqual('');
+      expect($('.time_entry_activity_id').val()).toEqual('');
     });
 
     describe("with the empty project selected", function() {
       beforeEach(function() {
-        $('#project_id').val("");
+        $('.project_id').val("");
       });
       
       it("should not enable the fields", function() {
         clockingTool.projectChange();
 
-        expect($('#issue_search')).toBeDisabled();
-        expect($('#time_entry_activity_id')).toBeDisabled();
-        expect($('#time_entry_hours')).toBeDisabled();
-        expect($('#time_entry_spent_on')).toBeDisabled();
-        expect($('#time_entry_comments')).toBeDisabled();
+        expect($('.issue_search')).toBeDisabled();
+        expect($('.time_entry_activity_id')).toBeDisabled();
+        expect($('.time_entry_hours')).toBeDisabled();
+        expect($('.time_entry_spent_on')).toBeDisabled();
+        expect($('.time_entry_comments')).toBeDisabled();
 
-        expect($('#project_id')).not.toBeDisabled();
+        expect($('.project_id')).not.toBeDisabled();
 
       });
 
@@ -222,21 +222,21 @@ describe("ClockingTool", function() {
     });
   });
 
-  describe("#issue_search.keyup() event", function() {
+  describe(".issue_search.keyup() event", function() {
     beforeEach(function() {
       clockingTool.draw();
       clockingTool.addProject(1, "Project1");
       clockingTool.loadProjectsInForm();
-      $('#project_id').val(1);
+      $('.project_id').val(1);
     });
 
     it("should trigger issueChange()", function() {
-      spyOnEvent($('#issue_search'), 'keyup');
+      spyOnEvent($('.issue_search'), 'keyup');
       spyOn(clockingTool, 'issueChange');
 
-      $('#issue_search').keyup();
+      $('.issue_search').keyup();
 
-      expect('keyup').toHaveBeenTriggeredOn($('#issue_search'));
+      expect('keyup').toHaveBeenTriggeredOn($('.issue_search'));
       expect(clockingTool.issueChange).toHaveBeenCalled();
     });
   });
@@ -247,15 +247,15 @@ describe("ClockingTool", function() {
       clockingTool.addProject(1, "Project1");
       clockingTool.addProject(10, "Project10");
       clockingTool.loadProjectsInForm();
-      $('#project_id').val(10);
-      $('#issue_search').val('evil');
+      $('.project_id').val(10);
+      $('.issue_search').val('evil');
       // Adds issues from fixture
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
     });
 
     it("should search the project's issue", function() {
       spyOn(clockingTool, 'searchIssues')
-      $('#issue_search').val('search term');
+      $('.issue_search').val('search term');
 
       clockingTool.issueChange();
 
@@ -291,7 +291,7 @@ describe("ClockingTool", function() {
       clockingTool.addProject(1, "Project1");
       clockingTool.addProject(10, "Project10");
       clockingTool.loadProjectsInForm();
-      $('#project_id').val(10);
+      $('.project_id').val(10);
       // Adds issues from fixture
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
     });
@@ -320,8 +320,8 @@ describe("ClockingTool", function() {
       clockingTool.draw();
       clockingTool.addProject(10, "Project10");
       clockingTool.loadProjectsInForm();
-      $('#project_id').val(10);
-      $('#issue_search').val('evil');
+      $('.project_id').val(10);
+      $('.issue_search').val('evil');
       // Adds issues from fixture
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
       $('.search-results').show();
@@ -336,12 +336,12 @@ describe("ClockingTool", function() {
 
     it("should fill in the issue search with the issue subject", function() {
       clockingTool.selectIssue(983);
-      expect($('#issue_search')).toHaveValue("Multi-channelled maximized instruction set");
+      expect($('.issue_search')).toHaveValue("Multi-channelled maximized instruction set");
     });
 
     it("should populate the form issue id", function() {
       clockingTool.selectIssue(983);
-      expect($('#time_entry_issue_id')).toHaveValue('983');
+      expect($('.time_entry_issue_id')).toHaveValue('983');
     });
   });
 

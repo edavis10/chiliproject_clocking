@@ -65,7 +65,7 @@ describe("ClockingTool server functions", function() {
 
       clockingTool.getProjects();
 
-      expect($('#project_id option').length).toEqual(11); // 10 + 1 "blank"
+      expect($('.project_id option').length).toEqual(11); // 10 + 1 "blank"
     });
   });
 
@@ -310,8 +310,8 @@ describe("ClockingTool server functions", function() {
       it("should clear the hours and comments", function() {
         clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
 
-        expect($('.form-container form input#time_entry_hours')).toHaveValue("");
-        expect($('.form-container form input#time_entry_comments')).toHaveValue("");
+        expect($('.form-container form input.time_entry_hours')).toHaveValue("");
+        expect($('.form-container form input.time_entry_comments')).toHaveValue("");
         expect($('.form-container form input[type=submit]')).toHaveValue("Save");
 
       });
@@ -337,13 +337,13 @@ describe("ClockingTool server functions", function() {
       });
       
       it("should not clear the form", function() {
-        $('#time_entry_comments').val('This is a comment');
-        $('#time_entry_hours').val('10');
+        $('.time_entry_comments').val('This is a comment');
+        $('.time_entry_hours').val('10');
 
         clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.invalid);
 
-        expect($('.form-container form input#time_entry_hours')).toHaveValue("10");
-        expect($('.form-container form input#time_entry_comments')).toHaveValue("This is a comment");
+        expect($('.form-container form input.time_entry_hours')).toHaveValue("10");
+        expect($('.form-container form input.time_entry_comments')).toHaveValue("This is a comment");
 
       });
 
@@ -372,13 +372,13 @@ describe("ClockingTool server functions", function() {
       });
 
       it("should not clear the form", function() {
-        $('#time_entry_comments').val('This is a comment');
-        $('#time_entry_hours').val('10');
+        $('.time_entry_comments').val('This is a comment');
+        $('.time_entry_hours').val('10');
 
         clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.unauthorized);
 
-        expect($('.form-container form input#time_entry_hours')).toHaveValue("10");
-        expect($('.form-container form input#time_entry_comments')).toHaveValue("This is a comment");
+        expect($('.form-container form input.time_entry_hours')).toHaveValue("10");
+        expect($('.form-container form input.time_entry_comments')).toHaveValue("This is a comment");
 
       });
     });
