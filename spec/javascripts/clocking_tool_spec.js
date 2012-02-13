@@ -71,7 +71,11 @@ describe("ClockingTool", function() {
 
 
     xit("should add event handling for the popup element");
-    xit("should clear out the 'Go to issue' link");
+
+    it("should hide the 'Go to issue' link", function() {
+      expect($('.jump-to-issue')).toBeHidden();
+    });
+
     xit("should populate the recent issues");
     xit("should draw pretty stuff");
   });
@@ -347,6 +351,14 @@ describe("ClockingTool", function() {
     it("should populate the form issue id", function() {
       clockingTool.selectIssue(983);
       expect($('.time_entry_issue_id')).toHaveValue('983');
+    });
+
+    it("should show the 'Go to issue' link", function() {
+      expect($('.jump-to-issue')).toBeHidden();
+
+      clockingTool.selectIssue(983);
+
+      expect($('.jump-to-issue')).not.toBeHidden();
     });
   });
 

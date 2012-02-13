@@ -250,6 +250,7 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   if (issue) {
     this.j('.issue_search').val(issue.subject);
     this.j('.time_entry_issue_id').val(issue.id);
+    this.showGoToIssue();
   }
 }
 
@@ -458,6 +459,7 @@ ClockingTool.prototype.draw = function() {
   this.addPopupLink();
   this.addStubData();
   this.addWelcomeMessage();
+  this.hideGoToIssue();
   this.disableFormFields();
   this.setupEventBindings();
 }
@@ -488,6 +490,14 @@ ClockingTool.prototype.addPopupLink = function() {
     attr("target", "_blank").
     attr('onclick',"window.open('" + popupUrl + "', '', 'resizable=yes, location=no, width=600, height=400, menubar=no, status=no, scrollbars=yes'); return false;");
   this.j(this.container + " .header .popout").html(popupLink);
+}
+
+ClockingTool.prototype.showGoToIssue = function() {
+  this.j(this.container + " .jump-to-issue").show();
+}
+
+ClockingTool.prototype.hideGoToIssue = function() {
+  this.j(this.container + " .jump-to-issue").hide();
 }
 
 /** Utilities **/
