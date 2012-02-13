@@ -447,6 +447,7 @@ ClockingTool.prototype.draw = function() {
     formUrl: this.createUrl,
     today: todayString
   }).appendTo(this.container);
+  this.addPopupLink();
   this.addStubData();
   this.addWelcomeMessage();
   this.disableFormFields();
@@ -461,11 +462,20 @@ ClockingTool.prototype.changeMessage = function(message) {
   this.j(this.container + " .header .message-box").html(message);
 }
 
+ClockingTool.prototype.addPopupLink = function() {
+  var popupUrl = this.rootUrl + 'clocking_tool';
+  var popupLink = this.j("<a>").
+    html("[O]").
+    attr("href", popupUrl).
+    attr("target", "_blank").
+    attr('onclick',"window.open('" + popupUrl + "', '', 'resizable=yes, location=no, width=600, height=400, menubar=no, status=no, scrollbars=yes'); return false;");
+  this.j(this.container + " .header .popout").html(popupLink);
+}
+
 /** Utilities **/
 
 // Add some stub data during development
 ClockingTool.prototype.addStubData = function() {
-  this.j(this.container + " .header .popout").html("[O]");
 }
 
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
