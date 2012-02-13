@@ -251,7 +251,7 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   if (issue) {
     this.j('.issue_search').val(issue.subject);
     this.j('.time_entry_issue_id').val(issue.id);
-    this.showGoToIssue();
+    this.showGoToIssue(issueId);
   }
 }
 
@@ -493,8 +493,13 @@ ClockingTool.prototype.addPopupLink = function() {
   this.j(this.container + " .header .popout").html(popupLink);
 }
 
-ClockingTool.prototype.showGoToIssue = function() {
-  this.j(this.container + " .jump-to-issue").show();
+ClockingTool.prototype.showGoToIssue = function(issueId) {
+  var target = this.embedded ? '' : '_blank';
+
+  this.j(this.container + " .jump-to-issue").
+    attr('href', this.rootUrl + 'issues/' + issueId).
+    attr('target', target).
+    show();
 }
 
 ClockingTool.prototype.hideGoToIssue = function() {
@@ -510,4 +515,3 @@ ClockingTool.prototype.addStubData = function() {
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
-

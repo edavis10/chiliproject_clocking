@@ -360,6 +360,12 @@ describe("ClockingTool", function() {
 
       expect($('.jump-to-issue')).not.toBeHidden();
     });
+
+    it("should set the link for the 'Go to issue' link", function() {
+      clockingTool.selectIssue(983);
+
+      expect($('.jump-to-issue')).toHaveAttr('href', '/issues/983');
+    });
   });
 
   describe("form submission", function() {
@@ -454,6 +460,39 @@ describe("ClockingTool", function() {
       clockingTool.refreshData();
 
       expect(clockingTool.caching.projects).toEqual("");
+    });
+  });
+
+  describe("showGoToIssue()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+    });
+
+    it("should set href to the issue", function() {
+      clockingTool.showGoToIssue('983');
+      expect($('.jump-to-issue')).toHaveAttr('href', '/issues/983');
+    });
+
+    describe("with an embedded form", function() {
+
+      it("should open the current issue using the same window", function() {
+        clockingTool.embedded = true;
+
+        clockingTool.showGoToIssue('983');
+
+        expect($('.jump-to-issue')).toHaveAttr('target', '');
+      });
+    });
+
+    describe("with a popup form (non-embedded)", function() {
+      it("should open the current issue in a new window", function() {
+        clockingTool.embedded = false;
+
+        clockingTool.showGoToIssue('983');
+
+        expect($('.jump-to-issue')).toHaveAttr('target', '_blank');
+      });
+
     });
   });
 });
