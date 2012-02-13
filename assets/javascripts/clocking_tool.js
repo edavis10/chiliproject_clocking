@@ -171,10 +171,10 @@ ClockingTool.prototype.refreshData = function() {
 // Sets up all the event bindings on the tool's widget
 ClockingTool.prototype.setupEventBindings = function() {
   var clockingTool = this;
-  this.j('#project_id').change(function() {
+  this.j('.project_id').change(function() {
     clockingTool.projectChange();
   });
-  this.j('#issue_search').keyup(function() {
+  this.j('.issue_search').keyup(function() {
     clockingTool.issueChange();
   });
   this.j('a.issue-search-result').live('click', function() {
@@ -194,27 +194,27 @@ ClockingTool.prototype.setupEventBindings = function() {
 }
 
 ClockingTool.prototype.projectChange = function() {
-  this.j(this.container).find('#issue_search').val('');
-  this.j(this.container).find('#time_entry_activity_id').val('');
+  this.j(this.container).find('.issue_search').val('');
+  this.j(this.container).find('.time_entry_activity_id').val('');
 
-  var projectId = this.j('#project_id').val();
+  var projectId = this.j('.project_id').val();
   if (projectId) {
     this.getIssues(projectId);
     this.getActivities(projectId);
-    this.j(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').removeAttr('disabled');
+    this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').removeAttr('disabled');
     this.loadIssuesInForm();
     this.loadActivitiesInForm();
   } else {
     // Disable fields except project
     this.disableFormFields();
-    this.j("#project_id").removeAttr('disabled');
+    this.j(".project_id").removeAttr('disabled');
   }
 }
 
 ClockingTool.prototype.issueChange = function() {
-  var projectId = this.j('#project_id').val();
+  var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
-  var results = this.searchIssues(this.j('#issue_search').val());
+  var results = this.searchIssues(this.j('.issue_search').val());
   var searchContainer = this.j(this.container + " div.search-results").html(this.j("<ul>"));
   var clockingTool = this;
 
@@ -231,7 +231,7 @@ ClockingTool.prototype.issueChange = function() {
 }
 
 ClockingTool.prototype.searchIssues = function(query) {
-  var projectId = this.j('#project_id').val();
+  var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
   var queryRegex = new RegExp(query, "i");
 
@@ -242,18 +242,18 @@ ClockingTool.prototype.searchIssues = function(query) {
 
 ClockingTool.prototype.selectIssue = function(issueId) {
   this.j(this.container + " .search-results").hide();
-  var projectId = this.j('#project_id').val();
+  var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
   if (issue) {
-    this.j('#issue_search').val(issue.subject);
-    this.j('#time_entry_issue_id').val(issue.id);
+    this.j('.issue_search').val(issue.subject);
+    this.j('.time_entry_issue_id').val(issue.id);
   }
 }
 
 ClockingTool.prototype.saveSuccessful = function() {
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
-  this.j(this.container).find('#time_entry_hours, #time_entry_comments').val('');
+  this.j(this.container).find('.time_entry_hours, .time_entry_comments').val('');
   this.changeMessage("Time entry saved");
   this.j(this.container + " .header .message-box").removeClass('flash').removeClass('error');
 }
@@ -266,7 +266,7 @@ ClockingTool.prototype.saveFailed = function(message) {
 
 /** Form module **/
 ClockingTool.prototype.disableFormFields = function() {
-  this.j(this.container).find('#project_id, #issue_search, #time_entry_activity_id, #time_entry_hours, #time_entry_spent_on, #time_entry_comments').attr('disabled','disable');
+  this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').attr('disabled','disable');
 
 }
 
@@ -274,13 +274,13 @@ ClockingTool.prototype.save = function() {
   this.j(this.container + ' .form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...');
 
   var timeEntry = {
-    "project_id": this.j(this.container + ' .form-container form #project_id').val(),
+    "project_id": this.j(this.container + ' .form-container form .project_id').val(),
     "time_entry": {
-      "hours": this.j(this.container + ' .form-container form #time_entry_hours').val(),
-      "issue_id": this.j(this.container + ' .form-container form #time_entry_issue_id').val(),
-      "activity_id": this.j(this.container + ' .form-container form #time_entry_activity_id').val(),
-      "spent_on": this.j(this.container + ' .form-container form #time_entry_spent_on').val(),
-      "comments":this.j(this.container + ' .form-container form #time_entry_comments').val()
+      "hours": this.j(this.container + ' .form-container form .time_entry_hours').val(),
+      "issue_id": this.j(this.container + ' .form-container form .time_entry_issue_id').val(),
+      "activity_id": this.j(this.container + ' .form-container form .time_entry_activity_id').val(),
+      "spent_on": this.j(this.container + ' .form-container form .time_entry_spent_on').val(),
+      "comments":this.j(this.container + ' .form-container form .time_entry_comments').val()
     }
   };
   this.saveTimeEntry(timeEntry);
@@ -292,16 +292,16 @@ ClockingTool.prototype.loadProjectsInForm = function() {
   _.each(this.projects, function(project) {
     options = options.add("<option value='" + project.id + "'>" + project.name + "</option>");
   });
-  this.j(this.container + ' #project_id').empty().append(options).removeAttr('disabled');
+  this.j(this.container + ' .project_id').empty().append(options).removeAttr('disabled');
 }
 
 ClockingTool.prototype.loadIssuesInForm = function() {
   // Issues are not shown, only the search field is
-  this.j(this.container + ' #issue_search').removeAttr('disabled');
+  this.j(this.container + ' .issue_search').removeAttr('disabled');
 }
 
 ClockingTool.prototype.loadActivitiesInForm = function() {
-  var projectId = this.j('#project_id').val() || '';
+  var projectId = this.j('.project_id').val() || '';
   var selectedProject = this.findProject(projectId);
 
   if (selectedProject) {
@@ -309,7 +309,7 @@ ClockingTool.prototype.loadActivitiesInForm = function() {
     _.each(selectedProject.activities, function(activity) {
       options = options.add("<option value='" + activity.id + "'>" + activity.name + "</option>");
     });
-    this.j(this.container + ' #time_entry_activity_id').empty().append(options).removeAttr('disabled');
+    this.j(this.container + ' .time_entry_activity_id').empty().append(options).removeAttr('disabled');
   }
   
 }
