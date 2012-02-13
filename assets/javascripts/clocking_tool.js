@@ -7,6 +7,7 @@ function ClockingTool(configuration) {
   this.currentUserName = '';
   this.apiKey = '';
   this.caching = {"projects": ''};
+  this.images = { refresh: '', loading: ''}
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
@@ -445,7 +446,8 @@ ClockingTool.prototype.draw = function() {
 
   this.j('#clocking-tool-template').tmpl({
     formUrl: this.createUrl,
-    today: todayString
+    today: todayString,
+    refreshImage: this.images.refresh
   }).appendTo(this.container);
   this.addPopupLink();
   this.addStubData();

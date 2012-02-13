@@ -3,7 +3,11 @@ var clockingConfig = {
   createUrl: '<%= time_entries_path(:format => 'json') %>',
   rootUrl: '<%= home_path %>',
   currentUserName: "<%= h(User.current.name) %>",
-  apiKey: '<%= h(User.current.api_key) %>'
+  apiKey: '<%= h(User.current.api_key) %>',
+  images: {
+    refresh: '<%= image_path("arrow_refresh.png", :plugin => 'chiliproject_clocking') %>',
+    loading: '<%= image_path("loading.gif") %>'
+  }
 };
 
 var clockingTool = new ClockingTool(clockingConfig);
