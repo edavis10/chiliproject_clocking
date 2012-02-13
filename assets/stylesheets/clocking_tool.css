@@ -8,6 +8,9 @@ div.clocking-tool-inner .header .message-box { margin: 5px; padding: 5px; width:
 .message-box { background: #EEEEEE; border: 1px solid #DDD; }
 div.clocking-tool-inner .header .message-box.flash { padding-left: 30px; }
 div.clocking-tool-inner .header .popout { float: right; position: relative; left: -5px; top: -31px; background: #277D94; padding: 5px; color: white; border: 1px solid #000; }
+div.clocking-tool-inner .header .popout { display: none; } /* Hide by default, embed will override */
+div.clocking-tool-inner .header .popout a { color: white; }
+div.clocking-tool-inner .header .popout a:hover { text-decoration: none; }
 div.clocking-tool-inner .form-container { float: left; margin: 0 5px;}
 div.clocking-tool-inner .recent-container {float: right; width: 50%; position: relative; top: -15px; }
 div.clocking-tool-inner .recent-container ul {padding-left: 0; list-style: none; background: #DDDDDD; }
@@ -33,4 +36,4 @@ div.clocking-tool-inner .formatting-help { margin-left: 10px; }
 /* Follow rules only happens when embedded */
 #clocking-tool.embed { position: absolute; top: 23px; right: 40px; }
 #clocking-tool.embed p { margin: 12px 0; }
-#clocking-tool.embed div.clocking-tool-inner .header .popout { top: -35px; }
+#clocking-tool.embed div.clocking-tool-inner .header .popout { display: block; top: -35px; }

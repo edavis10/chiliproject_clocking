@@ -34,6 +34,11 @@ describe("ClockingTool", function() {
       expect($('#clocking-tool')).toContain('.header .popout');
     });
 
+    it("should link the popout element to the popup version", function() {
+      expect($('#clocking-tool .popout')).toContain('a');
+      expect($('#clocking-tool .popout a')).toHaveAttr('href', clockingTool.rootUrl + 'clocking_tool');
+    });
+
     it("should create the form section elements", function() {
       expect($('#clocking-tool')).toContain('.form-container');
     });

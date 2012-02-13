@@ -8,6 +8,10 @@
 <%= javascript_heads %>
 <%= heads_for_theme %>
 <%= call_hook :view_layouts_base_html_head %>
+<style type="text/css">
+body { min-width: 400px; }
+</style>
+
 </head>
 <body>
   <%= render :partial => 'clocking_tool/embed' %>
