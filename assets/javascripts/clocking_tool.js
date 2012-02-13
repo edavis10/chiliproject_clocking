@@ -255,13 +255,13 @@ ClockingTool.prototype.saveSuccessful = function() {
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
   this.j(this.container).find('.time_entry_hours, .time_entry_comments').val('');
   this.changeMessage("Time entry saved");
-  this.j(this.container + " .header .message-box").removeClass('flash').removeClass('error');
+  this.j(this.container + " .header .message-box").addClass('flash').addClass('notice').removeClass('error');
 }
 
 ClockingTool.prototype.saveFailed = function(message) {
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
   this.changeMessage(message);
-  this.j(this.container + " .header .message-box").addClass('flash').addClass('error');
+  this.j(this.container + " .header .message-box").addClass('flash').addClass('error').removeClass('notice');
 }
 
 /** Form module **/

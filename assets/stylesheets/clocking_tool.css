@@ -1,6 +1,9 @@
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
 div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
-div.clocking-tool-inner .header .message-box { background: #EEEEEE; margin: 5px; padding: 5px; width: auto; border: 1px solid #DDD; width: 90%; }
+div.clocking-tool-inner .header .message-box { margin: 5px; padding: 5px; width: auto; width: 90%; }
+/* For flash messages */
+.message-box { background: #EEEEEE; border: 1px solid #DDD; }
+div.clocking-tool-inner .header .message-box.flash { padding-left: 30px; }
 div.clocking-tool-inner .header .popout { float: right; position: relative; left: -5px; top: -31px; background: #277D94; padding: 5px; color: white; border: 1px solid #000; }
 div.clocking-tool-inner .form-container { float: left; margin: 0 5px;}
 div.clocking-tool-inner .recent-container {float: right; width: 50%; position: relative; top: -15px; }
