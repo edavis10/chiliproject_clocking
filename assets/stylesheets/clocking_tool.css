@@ -1,5 +1,8 @@
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
 div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
+div.clocking-tool-inner { border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; 
+-moz-border-bottom-left-radius: 5px; -moz-border-bottom-right-radius: 5px; 
+-webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; }
 div.clocking-tool-inner .header .message-box { margin: 5px; padding: 5px; width: auto; width: 90%; }
 /* For flash messages */
 .message-box { background: #EEEEEE; border: 1px solid #DDD; }
@@ -28,6 +31,6 @@ div.clocking-tool-inner .hours-section { padding-bottom: 15px; }
 div.clocking-tool-inner .formatting-help { margin-left: 10px; }
 
 /* Follow rules only happens when embedded */
-#clocking-tool.embed { position: absolute; top: 23px; right: 20px; }
+#clocking-tool.embed { position: absolute; top: 23px; right: 40px; }
 #clocking-tool.embed p { margin: 12px 0; }
 #clocking-tool.embed div.clocking-tool-inner .header .popout { top: -35px; }
