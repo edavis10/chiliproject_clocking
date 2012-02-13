@@ -9,6 +9,7 @@ function ClockingTool(configuration) {
   this.caching = {"projects": ''};
   this.helpUrl = '/help/wiki_syntax.html';
   this.images = { refresh: '', loading: ''}
+  this.embedded = false;
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
