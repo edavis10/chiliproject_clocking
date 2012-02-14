@@ -407,7 +407,16 @@ ClockingTool.prototype.getIssues = function(projectId) {
 
 /** Recent issues module **/
 ClockingTool.prototype.addRecentIssue = function(project_id, issue_id) {
-  this.recentIssues.unshift({project_id: project_id.toString(), issue_id: issue_id.toString()});
+  var recentIssue = {project_id: project_id.toString(), issue_id: issue_id.toString()};
+
+  // Remove duplicate recent issue, it will be re-added later at the top
+  this.recentIssues = _.reject(this.recentIssues, function(item) {
+    return (item.project_id.toString() == recentIssue.project_id) &&
+      (item.issue_id.toString() == recentIssue.issue_id);
+  });
+
+  this.recentIssues.unshift(recentIssue);
+
   if (this.recentIssues.length > 20) { this.recentIssues.pop(); }
   this.setRecentIssuesInStorage();
 }

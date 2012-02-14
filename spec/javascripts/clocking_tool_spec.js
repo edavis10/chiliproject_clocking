@@ -534,6 +534,22 @@ describe("ClockingTool", function() {
       expect(clockingTool.recentIssues[0].issue_id).toEqual("983");
     });
 
+    it("should move a duplicate issue to the top", function() {
+      expect(clockingTool.recentIssues.length).toEqual(0);
+
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.addRecentIssue(10, 984);
+      clockingTool.addRecentIssue(10, 985);
+
+      // [985, 984, 983] at this point
+      clockingTool.addRecentIssue(10, 984);
+
+      expect(clockingTool.recentIssues.length).toEqual(3);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("984");
+      expect(clockingTool.recentIssues[1].issue_id).toEqual("985");
+      expect(clockingTool.recentIssues[2].issue_id).toEqual("983");
+    });
+
     it("should remove the oldest entry when there are more than 20 issues (FIFO array)", function() {
       clockingTool.addRecentIssue(10, 1);
       clockingTool.addRecentIssue(10, 2);
