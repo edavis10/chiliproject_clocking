@@ -13,6 +13,7 @@ function ClockingTool(configuration) {
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
+  this.recentIssues = [];
   this.getCachingFromStorage();
 }
 
@@ -350,6 +351,11 @@ ClockingTool.prototype.getIssues = function(projectId) {
   }
 }
 
+/** Recent issues module **/
+ClockingTool.prototype.addRecentIssue = function(project_id, issue_id) {
+  this.recentIssues.push({project_id: project_id, issue_id: issue_id});
+  if (this.recentIssues.length > 20) { this.recentIssues.shift(); }
+}
 
 /** Project module **/
 ClockingTool.prototype.getProjects = function() {

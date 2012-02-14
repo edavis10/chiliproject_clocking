@@ -530,7 +530,50 @@ describe("ClockingTool", function() {
   });
 
   describe("addRecentIssue()", function() {
-    xit("should add a recent issue to the FIFO array");
+    beforeEach(function() {
+      clockingTool.draw();
+    });
+
+    it("should add a recent issue to recentIssues", function() {
+      expect(clockingTool.recentIssues.length).toEqual(0);
+
+      clockingTool.addRecentIssue(10, 983);
+
+      expect(clockingTool.recentIssues.length).toEqual(1);
+      expect(clockingTool.recentIssues[0].project_id).toEqual(10);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual(983);
+    });
+
+    it("should remove the oldest entry when there are more than 20 issues (FIFO array)", function() {
+      clockingTool.addRecentIssue(10, 1);
+      clockingTool.addRecentIssue(10, 2);
+      clockingTool.addRecentIssue(10, 3);
+      clockingTool.addRecentIssue(10, 4);
+      clockingTool.addRecentIssue(10, 5);
+      clockingTool.addRecentIssue(10, 6);
+      clockingTool.addRecentIssue(10, 7);
+      clockingTool.addRecentIssue(10, 8);
+      clockingTool.addRecentIssue(10, 9);
+      clockingTool.addRecentIssue(10, 10);
+
+      clockingTool.addRecentIssue(10, 11);
+      clockingTool.addRecentIssue(10, 12);
+      clockingTool.addRecentIssue(10, 13);
+      clockingTool.addRecentIssue(10, 14);
+      clockingTool.addRecentIssue(10, 15);
+      clockingTool.addRecentIssue(10, 16);
+      clockingTool.addRecentIssue(10, 17);
+      clockingTool.addRecentIssue(10, 18);
+      clockingTool.addRecentIssue(10, 19);
+      clockingTool.addRecentIssue(10, 20);
+
+      clockingTool.addRecentIssue(10, 21); // Should push out first item
+
+      expect(clockingTool.recentIssues.length).toEqual(20);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual(2);
+
+    });
+
     xit("should save the recent issue list into local storage");
   });
 
