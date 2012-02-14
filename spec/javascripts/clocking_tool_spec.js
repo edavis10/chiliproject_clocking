@@ -530,8 +530,8 @@ describe("ClockingTool", function() {
       clockingTool.addRecentIssue(10, 983);
 
       expect(clockingTool.recentIssues.length).toEqual(1);
-      expect(clockingTool.recentIssues[0].project_id).toEqual(10);
-      expect(clockingTool.recentIssues[0].issue_id).toEqual(983);
+      expect(clockingTool.recentIssues[0].project_id).toEqual("10");
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("983");
     });
 
     it("should remove the oldest entry when there are more than 20 issues (FIFO array)", function() {
@@ -561,8 +561,8 @@ describe("ClockingTool", function() {
 
       // [21, 20, 19...2]
       expect(clockingTool.recentIssues.length).toEqual(20);
-      expect(clockingTool.recentIssues[0].issue_id).toEqual(21);
-      expect(clockingTool.recentIssues[19].issue_id).toEqual(2);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("21");
+      expect(clockingTool.recentIssues[19].issue_id).toEqual("2");
 
     });
 
@@ -571,8 +571,8 @@ describe("ClockingTool", function() {
 
       var recentFromStorage = JSON.parse(localStorage.getItem("recentIssues"));
       expect(recentFromStorage.length).toEqual(1);
-      expect(recentFromStorage[0].issue_id).toEqual(1);
-      expect(recentFromStorage[0].project_id).toEqual(10);
+      expect(recentFromStorage[0].issue_id).toEqual("1");
+      expect(recentFromStorage[0].project_id).toEqual("10");
     });
   });
 
