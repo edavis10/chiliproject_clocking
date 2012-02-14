@@ -202,6 +202,10 @@ ClockingTool.prototype.setupEventBindings = function() {
   this.j('a.issue-search-result').live('click', function() {
     clockingTool.selectIssue(clockingTool.j(this).data('issueId'));
   });
+  this.j('a.recent-issue').live('click', function() {
+    clockingTool.fillFormFromRecentIssue(clockingTool.j(this).data('projectId'),
+                                         clockingTool.j(this).data('issueId'));
+  });
   this.j(this.container + ' form').live('submit', function(event) {
     event.stopPropagation();
     clockingTool.save();
@@ -289,6 +293,10 @@ ClockingTool.prototype.saveFailed = function(message) {
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
   this.changeMessage(message);
   this.j(this.container + " .header .message-box").addClass('flash').addClass('error').removeClass('notice');
+}
+
+ClockingTool.prototype.fillFormFromRecentIssue = function(projectId, issueId) {
+
 }
 
 /** Form module **/
@@ -554,7 +562,7 @@ ClockingTool.prototype.showRecentIssues = function() {
 
       if (issue) {
         var resultString = "#" + issue.id + " &gt " + project.name + " &gt " + issue.subject;
-        var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
+        var link = "<a class='recent-issue' data-project-id='" + project.id + "' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
         var searchItem = clockingTool.j("<li>").html(link);
 
         container.append(searchItem);

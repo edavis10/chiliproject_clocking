@@ -596,12 +596,18 @@ describe("ClockingTool", function() {
 
     it("should show the recent issues", function() {
       expect($('.issue-results li').length).toBeLessThan(20);
-      expect($('.issue-results')).toContain('.issue-search-result');
-      expect($('.issue-results .issue-search-result')).
+      expect($('.issue-results')).toContain('.recent-issue');
+      expect($('.issue-results .recent-issue')).
         toHaveText("#983 > Project10 > Multi-channelled maximized instruction set");
     });
 
-    xit("should bind a click event to each recent issue to prepopulate the form");
+    it("should bind a click event to each recent issue to prepopulate the form", function() {
+      spyOn(clockingTool, 'fillFormFromRecentIssue');
+
+      $('.issue-results a.recent-issue:first').click();
+
+      expect(clockingTool.fillFormFromRecentIssue).toHaveBeenCalledWith(10, 983);
+    });
   });
 
   describe("fillFormFromRecentIssue()", function() {
