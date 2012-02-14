@@ -13,6 +13,8 @@ function ClockingTool(configuration) {
   for (var n in arguments[0]) { this[n] = arguments[0][n]; }
 
   this.projects = [];
+  this.recentIssues = [];
+  this.getRecentIssuesFromStorage();
   this.getCachingFromStorage();
 }
 
@@ -131,6 +133,23 @@ ClockingTool.prototype.setProjectsInStorage = function() {
   localStorage.setItem("projects", JSON.stringify(this.projects));
 }
 
+// TODO: handle browser without localStorage
+ClockingTool.prototype.getRecentIssuesFromStorage = function() {
+  var recent = localStorage.getItem("recentIssues");
+  if (recent) {
+    console.log("Loading recentIssues from storage");
+    this.recentIssues = JSON.parse(recent);
+  }
+
+}
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.setRecentIssuesInStorage = function() {
+  console.log("Storing recent issues");
+  localStorage.setItem("recentIssues", JSON.stringify(this.recentIssues));
+}
+
+
 ClockingTool.prototype.projectListCacheInvalid = function() {
   var loadedProjects = this.caching.projects;
 
@@ -183,6 +202,10 @@ ClockingTool.prototype.setupEventBindings = function() {
   this.j('a.issue-search-result').live('click', function() {
     clockingTool.selectIssue(clockingTool.j(this).data('issueId'));
   });
+  this.j('a.recent-issue').live('click', function() {
+    clockingTool.fillFormFromRecentIssue(clockingTool.j(this).data('projectId'),
+                                         clockingTool.j(this).data('issueId'));
+  });
   this.j(this.container + ' form').live('submit', function(event) {
     event.stopPropagation();
     clockingTool.save();
@@ -205,7 +228,7 @@ ClockingTool.prototype.projectChange = function() {
   if (projectId) {
     this.getIssues(projectId);
     this.getActivities(projectId);
-    this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').removeAttr('disabled');
+    this.enableForm();
     this.loadIssuesInForm();
     this.loadActivitiesInForm();
   } else {
@@ -215,21 +238,27 @@ ClockingTool.prototype.projectChange = function() {
   }
 }
 
+ClockingTool.prototype.enableForm = function() {
+  this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').removeAttr('disabled');
+}
+
 ClockingTool.prototype.issueChange = function() {
   var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
-  var results = this.searchIssues(this.j('.issue_search').val());
-  var searchContainer = this.j(this.container + " .issues-container ul.issue-results").empty();
-  var clockingTool = this;
+  if (selectedProject) {
+    var results = this.searchIssues(this.j('.issue_search').val());
+    var searchContainer = this.j(this.container + " .issues-container ul.issue-results").empty();
+    var clockingTool = this;
 
-  _.each(results, function(issue) {
-    var resultString = "#" + issue.id + " &gt " + issue.subject + " &gt " + selectedProject.name;
-    var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
-    var searchItem = clockingTool.j("<li>").html(link);
+    _.each(results, function(issue) {
+      var resultString = "#" + issue.id + " &gt " + issue.subject + " &gt " + selectedProject.name;
+      var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
+      var searchItem = clockingTool.j("<li>").html(link);
 
-    searchContainer.append(searchItem);
-  });
-  searchContainer.addClass('search-results');
+      searchContainer.append(searchItem);
+    });
+    searchContainer.addClass('search-results');
+  }
 }
 
 ClockingTool.prototype.searchIssues = function(query) {
@@ -249,17 +278,23 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
   if (issue) {
-    this.j('.issue_search').val("#" + issue.id + " " + issue.subject);
+    this.fillSearchFieldWithIssue(issue);
     this.j('.time_entry_issue_id').val(issue.id);
     this.showGoToIssue(issueId);
   }
 }
 
 ClockingTool.prototype.saveSuccessful = function() {
-  var projectId = this.j('.project_id').val('');
+  // Extract values before clearing the form
+  var projectId = this.j(this.container).find('.project_id').val();
+  var issueId = this.j(this.container).find('.time_entry_issue_id').val();
+  this.addRecentIssue(projectId, issueId);
+
+  // Clear fields
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.j('.project_id').val('');
   this.projectChange();
-  this.j(this.container).find('.time_entry_hours, .time_entry_comments').val('');
+  this.j(this.container).find('.time_entry_hours, .time_entry_comments, .time_entry_issue_id').val('');
   this.changeMessage("Time entry saved");
   this.j(this.container + " .header .message-box").addClass('flash').addClass('notice').removeClass('error');
 }
@@ -268,6 +303,20 @@ ClockingTool.prototype.saveFailed = function(message) {
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
   this.changeMessage(message);
   this.j(this.container + " .header .message-box").addClass('flash').addClass('error').removeClass('notice');
+}
+
+ClockingTool.prototype.fillFormFromRecentIssue = function(projectId, issueId) {
+  this.enableForm();
+  this.j(this.container + " .project_id").val(projectId);
+  this.j(this.container + " .time_entry_issue_id").val(issueId);
+  this.loadActivitiesInForm();
+  var project = this.findProject(projectId);
+  if (project) {
+    var issue = this.findIssueInProject(project, issueId);
+    if (issue) {
+      this.fillSearchFieldWithIssue(issue);
+    }
+  }
 }
 
 /** Form module **/
@@ -299,6 +348,8 @@ ClockingTool.prototype.loadProjectsInForm = function() {
     options = options.add("<option value='" + project.id + "'>" + project.name + "</option>");
   });
   this.j(this.container + ' .project_id').empty().append(options).removeAttr('disabled');
+  // Once projects are loaded, try showing the recent issues.
+  this.showRecentIssues();
 }
 
 ClockingTool.prototype.loadIssuesInForm = function() {
@@ -319,6 +370,10 @@ ClockingTool.prototype.loadActivitiesInForm = function() {
     this.j(this.container + ' .time_entry_activity_id').empty().append(options).removeAttr('disabled');
   }
   
+}
+
+ClockingTool.prototype.fillSearchFieldWithIssue = function(issue) {
+  this.j('.issue_search').val("#" + issue.id + " " + issue.subject);
 }
 
 /** Issue module **/
@@ -350,6 +405,21 @@ ClockingTool.prototype.getIssues = function(projectId) {
   }
 }
 
+/** Recent issues module **/
+ClockingTool.prototype.addRecentIssue = function(project_id, issue_id) {
+  var recentIssue = {project_id: project_id.toString(), issue_id: issue_id.toString()};
+
+  // Remove duplicate recent issue, it will be re-added later at the top
+  this.recentIssues = _.reject(this.recentIssues, function(item) {
+    return (item.project_id.toString() == recentIssue.project_id) &&
+      (item.issue_id.toString() == recentIssue.issue_id);
+  });
+
+  this.recentIssues.unshift(recentIssue);
+
+  if (this.recentIssues.length > 20) { this.recentIssues.pop(); }
+  this.setRecentIssuesInStorage();
+}
 
 /** Project module **/
 ClockingTool.prototype.getProjects = function() {
@@ -365,7 +435,9 @@ ClockingTool.prototype.getProjects = function() {
 }
 
 ClockingTool.prototype.findProject = function(projectId) {
-  return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
+  if (projectId) {
+    return _.find(this.projects, function(project) { return project.id.toString() === projectId.toString() });
+  }
 }
 
 ClockingTool.prototype.addProject = function(id, name) {
@@ -463,6 +535,7 @@ ClockingTool.prototype.draw = function() {
   this.addPopupLink();
   this.addStubData();
   this.addWelcomeMessage();
+  this.showRecentIssues();
   this.hideGoToIssue();
   this.disableFormFields();
   this.setupEventBindings();
@@ -509,9 +582,28 @@ ClockingTool.prototype.hideGoToIssue = function() {
   this.j(this.container + " .jump-to-issue").hide();
 }
 
+// TODO: might work better as an event. Since this requires projects and issues
+// to be loaded, there are chances that there is missing data not loaded yet
 ClockingTool.prototype.showRecentIssues = function() {
-  // TODO: stubbed for now
-  this.j(this.container + " .issues-container .issue-results").empty();
+  var container = this.j(this.container + " .issues-container ul.issue-results").empty();
+  var clockingTool = this;
+
+  _.each(this.recentIssues, function(recentIssue) {
+    var project = clockingTool.findProject(recentIssue.project_id);
+    if (project) {
+      var issue = clockingTool.findIssueInProject(project, recentIssue.issue_id);
+
+      if (issue) {
+        var resultString = "#" + issue.id + " &gt " + project.name + " &gt " + issue.subject;
+        var link = "<a class='recent-issue' data-project-id='" + project.id + "' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
+        var searchItem = clockingTool.j("<li>").html(link);
+
+        container.append(searchItem);
+      }
+
+    }
+
+  });
 }
 
 /** Utilities **/

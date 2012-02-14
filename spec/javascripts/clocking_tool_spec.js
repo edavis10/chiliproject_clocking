@@ -8,16 +8,13 @@ describe("ClockingTool", function() {
   beforeEach(function() {
     localStorage.removeItem("caching");
     localStorage.removeItem("projects");
+    localStorage.removeItem("recentIssues");
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
 
     jasmine.Ajax.useMock();
 
-  });
-
-  describe("constructor", function() {
-    xit("should allow setting options via a config object");
   });
 
   describe("draw()", function() {
@@ -69,15 +66,10 @@ describe("ClockingTool", function() {
       expect($('.time_entry_comments')).toBeDisabled();
     });
 
-
-    xit("should add event handling for the popup element");
-
     it("should hide the 'Go to issue' link", function() {
       expect($('.jump-to-issue')).toBeHidden();
     });
 
-    xit("should populate the recent issues");
-    xit("should draw pretty stuff");
   });
 
   describe("loadProjectsInForm()", function() {
@@ -419,8 +411,6 @@ describe("ClockingTool", function() {
 
       expect($('.form-container form input[type=submit]')).toHaveValue("Saving...");
     });
-
-    xit("should connect to the server via ajax");
   });
 
   describe("getCachingFromStorage()", function() {
@@ -526,6 +516,159 @@ describe("ClockingTool", function() {
         expect($('.jump-to-issue')).toHaveAttr('target', '_blank');
       });
 
+    });
+  });
+
+  describe("addRecentIssue()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+    });
+
+    it("should add a recent issue to recentIssues", function() {
+      expect(clockingTool.recentIssues.length).toEqual(0);
+
+      clockingTool.addRecentIssue(10, 983);
+
+      expect(clockingTool.recentIssues.length).toEqual(1);
+      expect(clockingTool.recentIssues[0].project_id).toEqual("10");
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("983");
+    });
+
+    it("should move a duplicate issue to the top", function() {
+      expect(clockingTool.recentIssues.length).toEqual(0);
+
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.addRecentIssue(10, 984);
+      clockingTool.addRecentIssue(10, 985);
+
+      // [985, 984, 983] at this point
+      clockingTool.addRecentIssue(10, 984);
+
+      expect(clockingTool.recentIssues.length).toEqual(3);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("984");
+      expect(clockingTool.recentIssues[1].issue_id).toEqual("985");
+      expect(clockingTool.recentIssues[2].issue_id).toEqual("983");
+    });
+
+    it("should remove the oldest entry when there are more than 20 issues (FIFO array)", function() {
+      clockingTool.addRecentIssue(10, 1);
+      clockingTool.addRecentIssue(10, 2);
+      clockingTool.addRecentIssue(10, 3);
+      clockingTool.addRecentIssue(10, 4);
+      clockingTool.addRecentIssue(10, 5);
+      clockingTool.addRecentIssue(10, 6);
+      clockingTool.addRecentIssue(10, 7);
+      clockingTool.addRecentIssue(10, 8);
+      clockingTool.addRecentIssue(10, 9);
+      clockingTool.addRecentIssue(10, 10);
+
+      clockingTool.addRecentIssue(10, 11);
+      clockingTool.addRecentIssue(10, 12);
+      clockingTool.addRecentIssue(10, 13);
+      clockingTool.addRecentIssue(10, 14);
+      clockingTool.addRecentIssue(10, 15);
+      clockingTool.addRecentIssue(10, 16);
+      clockingTool.addRecentIssue(10, 17);
+      clockingTool.addRecentIssue(10, 18);
+      clockingTool.addRecentIssue(10, 19);
+      clockingTool.addRecentIssue(10, 20);
+
+      clockingTool.addRecentIssue(10, 21); // Should push out first item
+
+      // [21, 20, 19...2]
+      expect(clockingTool.recentIssues.length).toEqual(20);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual("21");
+      expect(clockingTool.recentIssues[19].issue_id).toEqual("2");
+
+    });
+
+    it("should save the recent issue list into local storage", function() {
+      clockingTool.addRecentIssue(10, 1);
+
+      var recentFromStorage = JSON.parse(localStorage.getItem("recentIssues"));
+      expect(recentFromStorage.length).toEqual(1);
+      expect(recentFromStorage[0].issue_id).toEqual("1");
+      expect(recentFromStorage[0].project_id).toEqual("10");
+    });
+  });
+
+  describe("showRecentIssues()", function() {
+    beforeEach(function() {
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.addProject(10, "Project10");
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+
+      clockingTool.draw();
+    });
+
+    it("should show the recent issues", function() {
+      expect($('.issue-results li').length).toBeLessThan(20);
+      expect($('.issue-results')).toContain('.recent-issue');
+      expect($('.issue-results .recent-issue')).
+        toHaveText("#983 > Project10 > Multi-channelled maximized instruction set");
+    });
+
+    it("should bind a click event to each recent issue to prepopulate the form", function() {
+      spyOn(clockingTool, 'fillFormFromRecentIssue');
+
+      $('.issue-results a.recent-issue:first').click();
+
+      expect(clockingTool.fillFormFromRecentIssue).toHaveBeenCalledWith(10, 983);
+    });
+  });
+
+  describe("fillFormFromRecentIssue()", function() {
+    beforeEach(function() {
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.draw();
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
+
+    });
+
+    it("should populate the project field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('select.project_id')).toHaveValue('10');
+    });
+
+    it("should populate the issue id", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.time_entry_issue_id')).toHaveValue('983');
+    });
+    
+    it("should populate the search field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.issue_search')).
+        toHaveValue('#983 Multi-channelled maximized instruction set');
+    });
+
+    it("should populate the activity field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.time_entry_activity_id option').length).toEqual(4);
+    });
+
+    it("should enable the form", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.project_id')).not.toBeDisabled();
+      expect($('.issue_search')).not.toBeDisabled();
+      expect($('.time_entry_activity_id')).not.toBeDisabled();
+      expect($('.time_entry_hours')).not.toBeDisabled();
+      expect($('.time_entry_spent_on')).not.toBeDisabled();
+      expect($('.time_entry_comments')).not.toBeDisabled();
+
+    });
+    
+    it("should not run the search results", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.issue-results')).not.toHaveClass("search-results");
     });
   });
 });
