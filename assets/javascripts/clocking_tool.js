@@ -256,7 +256,9 @@ ClockingTool.prototype.selectIssue = function(issueId) {
 }
 
 ClockingTool.prototype.saveSuccessful = function() {
+  var projectId = this.j('.project_id').val('');
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.projectChange();
   this.j(this.container).find('.time_entry_hours, .time_entry_comments').val('');
   this.changeMessage("Time entry saved");
   this.j(this.container + " .header .message-box").addClass('flash').addClass('notice').removeClass('error');
