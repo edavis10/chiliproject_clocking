@@ -218,19 +218,17 @@ ClockingTool.prototype.issueChange = function() {
   var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
   var results = this.searchIssues(this.j('.issue_search').val());
-  var searchContainer = this.j(this.container + " div.search-results").html(this.j("<ul>"));
+  var searchContainer = this.j(this.container + " .issues-container ul.issue-results").empty();
   var clockingTool = this;
 
   _.each(results, function(issue) {
-    var issueIdString = "<span class='issue-id'>#" + issue.id + "</span>";
-    var issueString = "<span class='issue-subject'>" + issue.subject + "</span>";
-    var projectString = "<span class='project-name'>" + selectedProject.name; + "</span>";
-    var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#'>" + issueIdString + issueString + projectString + "</a>";
+    var resultString = "#" + issue.id + " &gt " + issue.subject + " &gt " + selectedProject.name;
+    var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
     var searchItem = clockingTool.j("<li>").html(link);
 
-    searchContainer.find("ul").append(searchItem);
+    searchContainer.append(searchItem);
   });
-  searchContainer.show();
+  searchContainer.addClass('search-results');
 }
 
 ClockingTool.prototype.searchIssues = function(query) {
@@ -244,7 +242,8 @@ ClockingTool.prototype.searchIssues = function(query) {
 }
 
 ClockingTool.prototype.selectIssue = function(issueId) {
-  this.j(this.container + " .search-results").hide();
+  this.j(this.container + " .search-results").removeClass('search-results');
+  this.showRecentIssues();
   var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
@@ -504,6 +503,11 @@ ClockingTool.prototype.showGoToIssue = function(issueId) {
 
 ClockingTool.prototype.hideGoToIssue = function() {
   this.j(this.container + " .jump-to-issue").hide();
+}
+
+ClockingTool.prototype.showRecentIssues = function() {
+  // TODO: stubbed for now
+  this.j(this.container + " .issues-container .issue-results").empty();
 }
 
 /** Utilities **/

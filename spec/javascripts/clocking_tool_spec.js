@@ -43,8 +43,8 @@ describe("ClockingTool", function() {
       expect($('#clocking-tool')).toContain('.form-container');
     });
 
-    it("should create the recent section elements", function() {
-      expect($('#clocking-tool')).toContain('.recent-container');
+    it("should create the issues section elements", function() {
+      expect($('#clocking-tool')).toContain('.issues-container');
     });
 
     it("should populate the form action with the configured url", function() {
@@ -280,8 +280,7 @@ describe("ClockingTool", function() {
 
     it("should populate the search results with the issues", function() {
       clockingTool.issueChange();
-      expect($('.search-results')).toContain("ul");
-      expect($('.search-results ul li').length).toEqual(59);
+      expect($('ul.search-results li').length).toEqual(59);
     });
 
     it("should bind to the search results's click to select an issue", function() {
@@ -333,14 +332,14 @@ describe("ClockingTool", function() {
       $('.issue_search').val('evil');
       // Adds issues from fixture
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
-      $('.search-results').show();
+      clockingTool.issueChange(); // Trigger the search results
 
     });
 
-    it("should close the search results", function() {
+    it("should clear the search results", function() {
       expect($('.search-results')).toBeVisible();
       clockingTool.selectIssue(983);
-      expect($('.search-results')).toBeHidden();
+      expect($('.search-results')).not.toExist();
     });
 
     it("should fill in the issue search with the issue subject", function() {
