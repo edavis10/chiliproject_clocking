@@ -586,7 +586,21 @@ describe("ClockingTool", function() {
   });
 
   describe("showRecentIssues()", function() {
-    xit("should show up to 20 of the recent issues");
+    beforeEach(function() {
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.addProject(10, "Project10");
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+
+      clockingTool.draw();
+    });
+
+    it("should show the recent issues", function() {
+      expect($('.issue-results li').length).toBeLessThan(20);
+      expect($('.issue-results')).toContain('.issue-search-result');
+      expect($('.issue-results .issue-search-result')).
+        toHaveText("#983 > Project10 > Multi-channelled maximized instruction set");
+    });
+
     xit("should bind a click event to each recent issue to prepopulate the form");
   });
 
