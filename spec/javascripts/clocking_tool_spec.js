@@ -17,10 +17,6 @@ describe("ClockingTool", function() {
 
   });
 
-  describe("constructor", function() {
-    xit("should allow setting options via a config object");
-  });
-
   describe("draw()", function() {
     beforeEach(function() {
       clockingTool.draw();
@@ -70,15 +66,10 @@ describe("ClockingTool", function() {
       expect($('.time_entry_comments')).toBeDisabled();
     });
 
-
-    xit("should add event handling for the popup element");
-
     it("should hide the 'Go to issue' link", function() {
       expect($('.jump-to-issue')).toBeHidden();
     });
 
-    xit("should populate the recent issues");
-    xit("should draw pretty stuff");
   });
 
   describe("loadProjectsInForm()", function() {
@@ -420,8 +411,6 @@ describe("ClockingTool", function() {
 
       expect($('.form-container form input[type=submit]')).toHaveValue("Saving...");
     });
-
-    xit("should connect to the server via ajax");
   });
 
   describe("getCachingFromStorage()", function() {
