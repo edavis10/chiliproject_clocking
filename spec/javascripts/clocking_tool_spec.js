@@ -342,9 +342,9 @@ describe("ClockingTool", function() {
       expect($('.search-results')).not.toExist();
     });
 
-    it("should fill in the issue search with the issue subject", function() {
+    it("should fill in the issue search with the issue subject and id", function() {
       clockingTool.selectIssue(983);
-      expect($('.issue_search')).toHaveValue("Multi-channelled maximized instruction set");
+      expect($('.issue_search')).toHaveValue("#983 Multi-channelled maximized instruction set");
     });
 
     it("should populate the form issue id", function() {

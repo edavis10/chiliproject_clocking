@@ -248,7 +248,7 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
   if (issue) {
-    this.j('.issue_search').val(issue.subject);
+    this.j('.issue_search').val("#" + issue.id + " " + issue.subject);
     this.j('.time_entry_issue_id').val(issue.id);
     this.showGoToIssue(issueId);
   }
