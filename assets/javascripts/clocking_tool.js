@@ -407,8 +407,8 @@ ClockingTool.prototype.getIssues = function(projectId) {
 
 /** Recent issues module **/
 ClockingTool.prototype.addRecentIssue = function(project_id, issue_id) {
-  this.recentIssues.push({project_id: project_id, issue_id: issue_id});
-  if (this.recentIssues.length > 20) { this.recentIssues.shift(); }
+  this.recentIssues.unshift({project_id: project_id, issue_id: issue_id});
+  if (this.recentIssues.length > 20) { this.recentIssues.pop(); }
   this.setRecentIssuesInStorage();
 }
 

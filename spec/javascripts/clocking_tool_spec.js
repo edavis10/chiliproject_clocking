@@ -559,8 +559,10 @@ describe("ClockingTool", function() {
 
       clockingTool.addRecentIssue(10, 21); // Should push out first item
 
+      // [21, 20, 19...2]
       expect(clockingTool.recentIssues.length).toEqual(20);
-      expect(clockingTool.recentIssues[0].issue_id).toEqual(2);
+      expect(clockingTool.recentIssues[0].issue_id).toEqual(21);
+      expect(clockingTool.recentIssues[19].issue_id).toEqual(2);
 
     });
 
