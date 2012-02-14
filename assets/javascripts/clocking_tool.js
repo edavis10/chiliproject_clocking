@@ -199,6 +199,7 @@ ClockingTool.prototype.setupEventBindings = function() {
 ClockingTool.prototype.projectChange = function() {
   this.j(this.container).find('.issue_search').val('');
   this.j(this.container).find('.time_entry_activity_id').val('');
+  this.showRecentIssues();
 
   var projectId = this.j('.project_id').val();
   if (projectId) {

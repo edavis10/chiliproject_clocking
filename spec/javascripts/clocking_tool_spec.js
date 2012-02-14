@@ -186,7 +186,15 @@ describe("ClockingTool", function() {
       expect($('.issue_search').val()).toEqual('');
     });
 
-    it("should clear the issue search field", function() {
+    it("should clear any search results", function() {
+      $('.issue-results').append("<li>item</li>");
+
+      clockingTool.projectChange();
+      
+      expect($('.issue-results')).toBeEmpty();
+    });
+
+    it("should clear the activity field", function() {
       $('.time_entry_activity_id').val("-1");
 
       clockingTool.projectChange();
