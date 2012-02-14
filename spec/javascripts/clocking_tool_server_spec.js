@@ -12,6 +12,7 @@ describe("ClockingTool server functions", function() {
   beforeEach(function() {
     localStorage.removeItem("caching");
     localStorage.removeItem("projects");
+    localStorage.removeItem("recentIssues");
 
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
@@ -322,6 +323,7 @@ describe("ClockingTool server functions", function() {
         append("<option value='1'>Activity1</option>").
         val("1");
 
+      $('.form-container form input.time_entry_issue_id').val('100');
     });
 
     describe("with successful save", function() {
@@ -353,7 +355,16 @@ describe("ClockingTool server functions", function() {
         expect($('.message-box')).toHaveText('Time entry saved');
       });
 
-      xit("should add the issue to the recent issues");
+      it("should add the issue to the recent issues", function() {
+        expect(clockingTool.recentIssues).toEqual([]);
+
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
+
+        expect(clockingTool.recentIssues.length).toEqual(1);
+        expect(clockingTool.recentIssues[0].issue_id).toEqual('100');
+        expect(clockingTool.recentIssues[0].project_id).toEqual('10');
+
+      });
     });
 
     describe("with an invalid save", function() {

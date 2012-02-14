@@ -285,10 +285,16 @@ ClockingTool.prototype.selectIssue = function(issueId) {
 }
 
 ClockingTool.prototype.saveSuccessful = function() {
-  var projectId = this.j('.project_id').val('');
+  // Extract values before clearing the form
+  var projectId = this.j(this.container).find('.project_id').val();
+  var issueId = this.j(this.container).find('.time_entry_issue_id').val();
+  this.addRecentIssue(projectId, issueId);
+
+  // Clear fields
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');
+  this.j('.project_id').val('');
   this.projectChange();
-  this.j(this.container).find('.time_entry_hours, .time_entry_comments').val('');
+  this.j(this.container).find('.time_entry_hours, .time_entry_comments, .time_entry_issue_id').val('');
   this.changeMessage("Time entry saved");
   this.j(this.container + " .header .message-box").addClass('flash').addClass('notice').removeClass('error');
 }
