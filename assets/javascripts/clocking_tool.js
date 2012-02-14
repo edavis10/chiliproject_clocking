@@ -14,6 +14,7 @@ function ClockingTool(configuration) {
 
   this.projects = [];
   this.recentIssues = [];
+  this.getRecentIssuesFromStorage();
   this.getCachingFromStorage();
 }
 
@@ -131,6 +132,23 @@ ClockingTool.prototype.setProjectsInStorage = function() {
   console.log("Storing projects");
   localStorage.setItem("projects", JSON.stringify(this.projects));
 }
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.getRecentIssuesFromStorage = function() {
+  var recent = localStorage.getItem("recentIssues");
+  if (recent) {
+    console.log("Loading recentIssues from storage");
+    this.recentIssues = JSON.parse(recent);
+  }
+
+}
+
+// TODO: handle browser without localStorage
+ClockingTool.prototype.setRecentIssuesInStorage = function() {
+  console.log("Storing recent issues");
+  localStorage.setItem("recentIssues", JSON.stringify(this.recentIssues));
+}
+
 
 ClockingTool.prototype.projectListCacheInvalid = function() {
   var loadedProjects = this.caching.projects;
@@ -355,6 +373,7 @@ ClockingTool.prototype.getIssues = function(projectId) {
 ClockingTool.prototype.addRecentIssue = function(project_id, issue_id) {
   this.recentIssues.push({project_id: project_id, issue_id: issue_id});
   if (this.recentIssues.length > 20) { this.recentIssues.shift(); }
+  this.setRecentIssuesInStorage();
 }
 
 /** Project module **/

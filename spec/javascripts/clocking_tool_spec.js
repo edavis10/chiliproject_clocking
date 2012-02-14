@@ -8,6 +8,7 @@ describe("ClockingTool", function() {
   beforeEach(function() {
     localStorage.removeItem("caching");
     localStorage.removeItem("projects");
+    localStorage.removeItem("recentIssues");
     clockingTool = new ClockingTool(configuration);
     loadFixtures('main.html');
     //    setFixtures(sandbox({id: "clocking-tool"}))
@@ -574,7 +575,14 @@ describe("ClockingTool", function() {
 
     });
 
-    xit("should save the recent issue list into local storage");
+    it("should save the recent issue list into local storage", function() {
+      clockingTool.addRecentIssue(10, 1);
+
+      var recentFromStorage = JSON.parse(localStorage.getItem("recentIssues"));
+      expect(recentFromStorage.length).toEqual(1);
+      expect(recentFromStorage[0].issue_id).toEqual(1);
+      expect(recentFromStorage[0].project_id).toEqual(10);
+    });
   });
 
   describe("showRecentIssues()", function() {
