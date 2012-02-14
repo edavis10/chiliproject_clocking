@@ -486,7 +486,7 @@ ClockingTool.prototype.changeMessage = function(message) {
 ClockingTool.prototype.addPopupLink = function() {
   var popupUrl = this.rootUrl + 'clocking_tool';
   var popupLink = this.j("<a>").
-    html("[O]").
+    html("<img src='" +this.images.window + "'>").
     attr("href", popupUrl).
     attr("target", "_blank").
     attr('onclick',"window.open('" + popupUrl + "', '', 'resizable=yes, location=no, width=600, height=400, menubar=no, status=no, scrollbars=yes'); return false;");

@@ -6,6 +6,7 @@ var clockingConfig = {
   apiKey: '<%= h(User.current.api_key) %>',
   images: {
     refresh: '<%= image_path("arrow_refresh.png", :plugin => 'chiliproject_clocking') %>',
+    window: '<%= image_path("window.png", :plugin => 'chiliproject_clocking') %>',
     loading: '<%= image_path("loading.gif") %>'
   },
   embedded: <%= embedded %>,
@@ -23,7 +24,7 @@ jQuery(document).ajaxSend(function(e, xhr, options) {
 });
 
 jQuery(document).ready(function() {
-  jQuery('#more-menu').after('<li class="clocking-tool-trigger"><a href="#">C</a></li>');
+  jQuery('#more-menu').after('<li class="clocking-tool-trigger"><%= link_to(image_tag('clock.png', :plugin => 'chiliproject_clocking'), {:controller => 'clocking_tool', :action => 'index'}, :onclick => "return false") %></li>');
   clockingTool.draw();
 
   jQuery('.clocking-tool-trigger').live('click', function() {
