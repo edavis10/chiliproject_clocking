@@ -352,6 +352,8 @@ describe("ClockingTool server functions", function() {
 
         expect($('.message-box')).toHaveText('Time entry saved');
       });
+
+      xit("should add the issue to the recent issues");
     });
 
     describe("with an invalid save", function() {

@@ -528,4 +528,21 @@ describe("ClockingTool", function() {
 
     });
   });
+
+  describe("addRecentIssue()", function() {
+    xit("should add a recent issue to the FIFO array");
+    xit("should save the recent issue list into local storage");
+  });
+
+  describe("showRecentIssues()", function() {
+    xit("should show up to 20 of the recent issues");
+    xit("should bind a click event to each recent issue to prepopulate the form");
+  });
+
+  describe("fillFormFromRecentIssue()", function() {
+    xit("should populate the project field")
+    xit("should populate the issue id");
+    xit("should populate the search field");
+    xit("should not run the search results");
+  });
 });
