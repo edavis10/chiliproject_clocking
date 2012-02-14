@@ -302,6 +302,7 @@ ClockingTool.prototype.loadProjectsInForm = function() {
 ClockingTool.prototype.loadIssuesInForm = function() {
   // Issues are not shown, only the search field is
   this.j(this.container + ' .issue_search').removeAttr('disabled');
+  this.issueChange();
 }
 
 ClockingTool.prototype.loadActivitiesInForm = function() {

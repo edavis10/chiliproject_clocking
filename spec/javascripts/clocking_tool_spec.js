@@ -207,6 +207,14 @@ describe("ClockingTool", function() {
         $('.project_id').val("");
       });
       
+      it("should clear any search results", function() {
+        $('.issue-results').append("<li>item</li>");
+
+        clockingTool.projectChange();
+      
+        expect($('.issue-results')).toBeEmpty();
+      });
+      
       it("should not enable the fields", function() {
         clockingTool.projectChange();
 
@@ -236,6 +244,24 @@ describe("ClockingTool", function() {
         expect(clockingTool.getActivities).not.toHaveBeenCalled();
       });
       
+    });
+  });
+
+  describe("loadIssuesInForm()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+      clockingTool.loadProjectsInForm();
+      $('.project_id').val(1);
+    });
+
+    it("should run an empty search", function() {
+      spyOn(clockingTool, 'issueChange');
+
+      clockingTool.projectChange();
+
+      expect(clockingTool.issueChange).toHaveBeenCalled();
     });
   });
 
