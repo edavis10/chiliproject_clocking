@@ -43,8 +43,8 @@ describe("ClockingTool", function() {
       expect($('#clocking-tool')).toContain('.form-container');
     });
 
-    it("should create the recent section elements", function() {
-      expect($('#clocking-tool')).toContain('.recent-container');
+    it("should create the issues section elements", function() {
+      expect($('#clocking-tool')).toContain('.issues-container');
     });
 
     it("should populate the form action with the configured url", function() {
@@ -186,7 +186,15 @@ describe("ClockingTool", function() {
       expect($('.issue_search').val()).toEqual('');
     });
 
-    it("should clear the issue search field", function() {
+    it("should clear any search results", function() {
+      $('.issue-results').append("<li>item</li>");
+
+      clockingTool.projectChange();
+      
+      expect($('.issue-results')).toBeEmpty();
+    });
+
+    it("should clear the activity field", function() {
       $('.time_entry_activity_id').val("-1");
 
       clockingTool.projectChange();
@@ -197,6 +205,14 @@ describe("ClockingTool", function() {
     describe("with the empty project selected", function() {
       beforeEach(function() {
         $('.project_id').val("");
+      });
+      
+      it("should clear any search results", function() {
+        $('.issue-results').append("<li>item</li>");
+
+        clockingTool.projectChange();
+      
+        expect($('.issue-results')).toBeEmpty();
       });
       
       it("should not enable the fields", function() {
@@ -228,6 +244,24 @@ describe("ClockingTool", function() {
         expect(clockingTool.getActivities).not.toHaveBeenCalled();
       });
       
+    });
+  });
+
+  describe("loadIssuesInForm()", function() {
+    beforeEach(function() {
+      clockingTool.draw();
+      clockingTool.addProject(1, "Project1");
+      clockingTool.addProject(2, "Project2");
+      clockingTool.loadProjectsInForm();
+      $('.project_id').val(1);
+    });
+
+    it("should run an empty search", function() {
+      spyOn(clockingTool, 'issueChange');
+
+      clockingTool.projectChange();
+
+      expect(clockingTool.issueChange).toHaveBeenCalled();
     });
   });
 
@@ -280,8 +314,7 @@ describe("ClockingTool", function() {
 
     it("should populate the search results with the issues", function() {
       clockingTool.issueChange();
-      expect($('.search-results')).toContain("ul");
-      expect($('.search-results ul li').length).toEqual(59);
+      expect($('ul.search-results li').length).toEqual(59);
     });
 
     it("should bind to the search results's click to select an issue", function() {
@@ -333,19 +366,19 @@ describe("ClockingTool", function() {
       $('.issue_search').val('evil');
       // Adds issues from fixture
       clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
-      $('.search-results').show();
+      clockingTool.issueChange(); // Trigger the search results
 
     });
 
-    it("should close the search results", function() {
+    it("should clear the search results", function() {
       expect($('.search-results')).toBeVisible();
       clockingTool.selectIssue(983);
-      expect($('.search-results')).toBeHidden();
+      expect($('.search-results')).not.toExist();
     });
 
-    it("should fill in the issue search with the issue subject", function() {
+    it("should fill in the issue search with the issue subject and id", function() {
       clockingTool.selectIssue(983);
-      expect($('.issue_search')).toHaveValue("Multi-channelled maximized instruction set");
+      expect($('.issue_search')).toHaveValue("#983 Multi-channelled maximized instruction set");
     });
 
     it("should populate the form issue id", function() {

@@ -89,6 +89,10 @@ describe("ClockingTool server functions", function() {
 
   // NOTE: Ajax mocking
   describe("getIssues()", function() {
+    beforeEach(function() {
+      spyOn(clockingTool, 'issueChange'); // Block empty search
+    });
+
     it("should load issues for the project from the server", function() {
       spyOn(clockingTool, 'processIssuesFromServer');
 
@@ -138,6 +142,10 @@ describe("ClockingTool server functions", function() {
   });
 
   describe("processIssuesFromServer()", function() {
+    beforeEach(function() {
+      spyOn(clockingTool, 'issueChange'); // Block empty search
+    });
+
     it("should store the issues locally inside of the project data", function() {
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
 
