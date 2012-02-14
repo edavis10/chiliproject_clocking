@@ -311,13 +311,30 @@ describe("ClockingTool server functions", function() {
 //      spyOn(clockingTool, 'loadActivitiesInForm');
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
       $('.form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...'); // Submit button
+      $('.form-container form select.project_id').
+        append("<option value=''>Default</option>").
+        append("<option value='10'>Project 10</option>").
+        val("10");
+      clockingTool.projectChange(); // Enable fields
+
+      $('.form-container form select.time_entry_activity_id').
+        append("<option value=''>Default</option>").
+        append("<option value='1'>Activity1</option>").
+        val("1");
 
     });
 
     describe("with successful save", function() {
-      it("should clear the hours and comments", function() {
+      it("should clear the form", function() {
+        expect($('.form-container form select.project_id')).toHaveValue("10");
+        expect($('.form-container form select.time_entry_activity_id')).toHaveValue("1");
+
         clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
 
+        expect($('.form-container form select.project_id')).toHaveValue("");
+        expect($('.form-container form input.time_entry_issue_id')).toHaveValue("");
+        expect($('.form-container form input.issue_search')).toHaveValue("");
+        expect($('.form-container form select.time_entry_activity_id')).toHaveValue("");
         expect($('.form-container form input.time_entry_hours')).toHaveValue("");
         expect($('.form-container form input.time_entry_comments')).toHaveValue("");
         expect($('.form-container form input[type=submit]')).toHaveValue("Save");
