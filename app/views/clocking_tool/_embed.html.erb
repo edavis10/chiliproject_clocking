@@ -29,7 +29,33 @@ jQuery(document).ready(function() {
 
   jQuery('.clocking-tool-trigger').live('click', function() {
     clockingTool.getProjects();
-    jQuery('#clocking-tool').toggle();
+
+    var clockingToolEle = jQuery('#clocking-tool');
+    if (clockingToolEle.hasClass('open')) {
+      // Close tool
+      clockingToolEle.hide().removeClass('open');
+    } else {
+      // Open tool
+      clockingToolEle.show().addClass('open');
+
+      // Use a single fire event on the html element to handle clicks
+      // outside the tool to close the tool
+      //
+      // Adapted from ChiliProject 3.0.0's handleClickEventOnPageToCloseOpenMenu()
+      jQuery('html').one("click", function(htmlEvent) {
+        // Was the trigger clicked?
+        if (jQuery('.clocking-tool-trigger').has(htmlEvent.target).length > 0) {
+          // Clicked on the trigger, let it bubble up (thus close)
+        } else if (clockingToolEle.has(htmlEvent.target).length > 0) {
+          // Clicked on the open tool, let it bubble up
+        } else {
+          // Clicked elsewhere, close tool
+          clockingToolEle.hide().removeClass('open');
+        }
+      });
+
+    }
+      
   });
 });
 </script>
