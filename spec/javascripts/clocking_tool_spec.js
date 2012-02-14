@@ -611,9 +611,57 @@ describe("ClockingTool", function() {
   });
 
   describe("fillFormFromRecentIssue()", function() {
-    xit("should populate the project field")
-    xit("should populate the issue id");
-    xit("should populate the search field");
-    xit("should not run the search results");
+    beforeEach(function() {
+      clockingTool.addRecentIssue(10, 983);
+      clockingTool.draw();
+      clockingTool.addProject(10, "Project10");
+      clockingTool.loadProjectsInForm();
+      clockingTool.processIssuesFromServer(10, $.parseJSON(TestResponses.issues.project10.success.responseText));
+      clockingTool.processActivitiesFromServer(10, $.parseJSON(TestResponses.activities.project10.success.responseText));
+
+    });
+
+    it("should populate the project field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('select.project_id')).toHaveValue('10');
+    });
+
+    it("should populate the issue id", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.time_entry_issue_id')).toHaveValue('983');
+    });
+    
+    it("should populate the search field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.issue_search')).
+        toHaveValue('#983 Multi-channelled maximized instruction set');
+    });
+
+    it("should populate the activity field", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.time_entry_activity_id option').length).toEqual(4);
+    });
+
+    it("should enable the form", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.project_id')).not.toBeDisabled();
+      expect($('.issue_search')).not.toBeDisabled();
+      expect($('.time_entry_activity_id')).not.toBeDisabled();
+      expect($('.time_entry_hours')).not.toBeDisabled();
+      expect($('.time_entry_spent_on')).not.toBeDisabled();
+      expect($('.time_entry_comments')).not.toBeDisabled();
+
+    });
+    
+    it("should not run the search results", function() {
+      clockingTool.fillFormFromRecentIssue(10, 983);
+
+      expect($('.issue-results')).not.toHaveClass("search-results");
+    });
   });
 });

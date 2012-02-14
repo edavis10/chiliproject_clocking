@@ -228,7 +228,7 @@ ClockingTool.prototype.projectChange = function() {
   if (projectId) {
     this.getIssues(projectId);
     this.getActivities(projectId);
-    this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').removeAttr('disabled');
+    this.enableForm();
     this.loadIssuesInForm();
     this.loadActivitiesInForm();
   } else {
@@ -236,6 +236,10 @@ ClockingTool.prototype.projectChange = function() {
     this.disableFormFields();
     this.j(".project_id").removeAttr('disabled');
   }
+}
+
+ClockingTool.prototype.enableForm = function() {
+  this.j(this.container).find('.project_id, .issue_search, .time_entry_activity_id, .time_entry_hours, .time_entry_spent_on, .time_entry_comments').removeAttr('disabled');
 }
 
 ClockingTool.prototype.issueChange = function() {
@@ -274,7 +278,7 @@ ClockingTool.prototype.selectIssue = function(issueId) {
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
   if (issue) {
-    this.j('.issue_search').val("#" + issue.id + " " + issue.subject);
+    this.fillSearchFieldWithIssue(issue);
     this.j('.time_entry_issue_id').val(issue.id);
     this.showGoToIssue(issueId);
   }
@@ -296,7 +300,17 @@ ClockingTool.prototype.saveFailed = function(message) {
 }
 
 ClockingTool.prototype.fillFormFromRecentIssue = function(projectId, issueId) {
-
+  this.enableForm();
+  this.j(this.container + " .project_id").val(projectId);
+  this.j(this.container + " .time_entry_issue_id").val(issueId);
+  this.loadActivitiesInForm();
+  var project = this.findProject(projectId);
+  if (project) {
+    var issue = this.findIssueInProject(project, issueId);
+    if (issue) {
+      this.fillSearchFieldWithIssue(issue);
+    }
+  }
 }
 
 /** Form module **/
@@ -350,6 +364,10 @@ ClockingTool.prototype.loadActivitiesInForm = function() {
     this.j(this.container + ' .time_entry_activity_id').empty().append(options).removeAttr('disabled');
   }
   
+}
+
+ClockingTool.prototype.fillSearchFieldWithIssue = function(issue) {
+  this.j('.issue_search').val("#" + issue.id + " " + issue.subject);
 }
 
 /** Issue module **/
