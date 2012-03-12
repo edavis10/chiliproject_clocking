@@ -18,6 +18,8 @@ div.clocking-tool-inner .issues-container ul li { padding: 2px 0px; border-botto
 div.clocking-tool-inner select { width: 100%; }
 div.clocking-tool-inner .issue-fields, div.clocking-tool-inner .time_entry_comments { width: 100%; }
 div.clocking-tool-inner .time_entry_hours { font-size: 40px; text-align:center;float:left; }
+/* Hide the placeholder on focus */
+div.clocking-tool-inner .time_entry_hours:focus::-webkit-input-placeholder, div.clocking-tool-inner .time_entry_hours:focus::-moz-placeholder { color: #ffffff; }
 div.clocking-tool-inner a.jump-to-issue { float:right; padding: 4px 0; }
 div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
 
