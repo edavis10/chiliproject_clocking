@@ -82,7 +82,7 @@ describe("ClockingTool", function() {
 
       expect($('.form-container .project_id option').length).toEqual(1);
       expect($('.form-container .project_id option:first')).toHaveValue('');
-      expect($('.form-container .project_id option:first')).toHaveText('Project');
+      expect($('.form-container .project_id option:first')).toHaveText('--- Project ---');
 
     });
     it("should add an option for each project", function() {

@@ -343,7 +343,7 @@ ClockingTool.prototype.save = function() {
 
 // TODO: test
 ClockingTool.prototype.loadProjectsInForm = function() {
-  var options =  this.j("<option value=''>Project</option>");
+  var options =  this.j("<option value=''>--- Project ---</option>");
   _.each(this.projects, function(project) {
     options = options.add("<option value='" + project.id + "'>" + project.name + "</option>");
   });
@@ -363,7 +363,7 @@ ClockingTool.prototype.loadActivitiesInForm = function() {
   var selectedProject = this.findProject(projectId);
 
   if (selectedProject) {
-    var options =  this.j("<option value=''>Activity</option>");
+    var options =  this.j("<option value=''>--- Activity --- </option>");
     _.each(selectedProject.activities, function(activity) {
       options = options.add("<option value='" + activity.id + "'>" + activity.name + "</option>");
     });
