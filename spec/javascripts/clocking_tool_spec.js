@@ -605,7 +605,7 @@ describe("ClockingTool", function() {
       expect($('.issue-results li').length).toBeLessThan(20);
       expect($('.issue-results')).toContain('.recent-issue');
       expect($('.issue-results .recent-issue')).
-        toHaveText("#983 > Project10 > Multi-channelled maximized instruction set");
+        toHaveText("Project10 > Multi-channelled maximized instruction set");
     });
 
     it("should bind a click event to each recent issue to prepopulate the form", function() {
