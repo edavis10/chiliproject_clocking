@@ -9,6 +9,8 @@ class ClockingToolIssuesApiTest < ActionController::IntegrationTest
     @issue1 = Issue.generate_for_project!(@project, :subject => 'first')
     @issue2 = Issue.generate_for_project!(@project, :subject => 'second')
     @issue3 = Issue.generate_for_project!(@project, :subject => 'third')
+    @closed_status = IssueStatus.generate!(:is_closed => true)
+    @closed_issue = Issue.generate_for_project!(@project, :subject => 'third', :status => @closed_status)
     
   end
 
@@ -49,6 +51,10 @@ class ClockingToolIssuesApiTest < ActionController::IntegrationTest
         assert @json.first.is_a?(Hash), "Not an issue hash"
         assert @json.second.is_a?(Hash), "Not an issue hash"
         assert @json.third.is_a?(Hash), "Not an issue hash"
+      end
+
+      should "not include the closed issue" do
+        assert @json.none? {|issue| issue["id"].to_s == @closed_issue.reload.id.to_s }
       end
       
       should "have an id" do

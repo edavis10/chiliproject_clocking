@@ -9,7 +9,7 @@ class ClockingToolController < ApplicationController
   end
   
   def issues
-    @issues = @project.issues.visible.all(:order => "#{Issue.table_name}.id desc")
+    @issues = @project.issues.visible.open.all(:order => "#{Issue.table_name}.id desc")
 
     respond_to do |format|
       format.json { render :json => issues_to_clocking_tool_format(@issues) }
