@@ -615,3 +615,12 @@ ClockingTool.prototype.addStubData = function() {
 ClockingTool.prototype.urlBuilder = function(relativeRequestPath, params) {
   return this.rootUrl + relativeRequestPath + "?" + params + "&key=" + this.apiKey;
 }
+
+// Test if localStorage is present and supported in the browser
+if (typeof(localStorage) == 'undefined') {
+  console.log("clocking_tool.js: localStorage not supported, falling back to non-persistant object storage");
+  localStorage = new Object();
+  localStorage.getItem = function(key) { }
+  localStorage.setItem = function(key, value) { }
+  localStorage.clear = function() { }
+}
