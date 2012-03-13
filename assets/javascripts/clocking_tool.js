@@ -23,7 +23,7 @@ ClockingTool.prototype.serverGetProjects = function() {
   var clockingTool = this;
 
   this.j.ajax({
-    url: this.urlBuilder('projects.json',''),
+    url: this.urlBuilder('projects.json','limit=100'),
     success: function(data) {
       clockingTool.processProjectsFromServer(data);
     }
