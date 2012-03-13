@@ -272,8 +272,6 @@ ClockingTool.prototype.searchIssues = function(query) {
 }
 
 ClockingTool.prototype.selectIssue = function(issueId) {
-  this.j(this.container + " .search-results").removeClass('search-results');
-  this.showRecentIssues();
   var projectId = this.j('.project_id').val();
   var selectedProject = this.findProject(projectId);
   var issue = this.findIssueInProject(selectedProject, issueId);
@@ -289,6 +287,10 @@ ClockingTool.prototype.saveSuccessful = function() {
   var projectId = this.j(this.container).find('.project_id').val();
   var issueId = this.j(this.container).find('.time_entry_issue_id').val();
   this.addRecentIssue(projectId, issueId);
+
+  // Hide search results and show recent issues
+  this.j(this.container + " .search-results").removeClass('search-results');
+  this.showRecentIssues();
 
   // Clear fields
   this.j(this.container + ' .form-container form input[type=submit]').removeAttr('disabled').val('Save');

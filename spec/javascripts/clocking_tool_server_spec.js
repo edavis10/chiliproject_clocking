@@ -311,6 +311,7 @@ describe("ClockingTool server functions", function() {
     beforeEach(function() {
 //      spyOn(clockingTool, 'loadActivitiesInForm');
       clockingTool.addProject(10, "Balanced 24/7 paradigm");
+      clockingTool.selectIssue(983);
       $('.form-container form input[type=submit]').attr("disabled", "disabled").val('Saving...'); // Submit button
       $('.form-container form select.project_id').
         append("<option value=''>Default</option>").
@@ -341,6 +342,14 @@ describe("ClockingTool server functions", function() {
         expect($('.form-container form input.time_entry_comments')).toHaveValue("");
         expect($('.form-container form input[type=submit]')).toHaveValue("Save");
 
+      });
+
+      it("should clear the search results", function() {
+        expect($('.search-results')).toBeVisible();
+
+        clockingTool.processTimeEntrySaveResponse(TestResponses.saveTimeEntry.project10.success);
+        
+        expect($('.search-results')).not.toExist();
       });
 
       it("should enable the form", function() {

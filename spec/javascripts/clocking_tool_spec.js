@@ -362,10 +362,10 @@ describe("ClockingTool", function() {
 
     });
 
-    it("should clear the search results", function() {
+    it("should not clear the search results", function() {
       expect($('.search-results')).toBeVisible();
       clockingTool.selectIssue(983);
-      expect($('.search-results')).not.toExist();
+      expect($('.search-results')).toBeVisible();
     });
 
     it("should fill in the issue search with the issue subject and id", function() {
