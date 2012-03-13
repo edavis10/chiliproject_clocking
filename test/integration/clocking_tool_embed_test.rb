@@ -22,7 +22,6 @@ class ClockingToolEmbedTest < ActionController::IntegrationTest
     end
     
     should "include the clocking tool javascript" do
-      puts page.body
       # contains substring match
       assert has_css?('script[src*=underscore-min]')
       assert has_css?('script[src*=jquery]')
