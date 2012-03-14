@@ -1,5 +1,5 @@
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
-div.clocking-tool-inner { border: 10px solid #277D94; background: #FFFFFF; height: 100%; width: 100%; }
+div.clocking-tool-inner { border: 10px solid #fff; background: #FFFFFF; height: 100%; width: 100%; box-shadow:1px 1px 8px #666; -moz-box-shadow:1px 1px 8px #666; -webkit-box-shadow:1px 1px 8px #666; }
 div.clocking-tool-inner { border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; 
 -moz-border-bottom-left-radius: 5px; -moz-border-bottom-right-radius: 5px; 
 -webkit-border-bottom-left-radius: 5px; -webkit-border-bottom-right-radius: 5px; }
@@ -13,8 +13,8 @@ div.clocking-tool-inner .header .popout a { color: white; }
 div.clocking-tool-inner .header .popout a:hover { text-decoration: none; }
 div.clocking-tool-inner .form-container { float: left; margin: 0 5px;}
 div.clocking-tool-inner .issues-container {float: right; width: 50%; position: relative; top: -15px; }
-div.clocking-tool-inner .issues-container ul {padding-left: 0; list-style: none; background: #DDDDDD; height: 206px; }
-div.clocking-tool-inner .issues-container ul li { padding: 2px 5px; border-bottom: 1px solid #BBBBBB; border-top: 1px solid #FFF; white-space: nowrap; overflow-x: hidden; }
+div.clocking-tool-inner .issues-container ul {padding-left: 0; list-style: none; background: #f0f0f0; height: 206px; border: 1px solid #D8D8D8; }
+div.clocking-tool-inner .issues-container ul li { padding: 5px; border-bottom: 1px solid #D8D8D8; border-top: 1px solid #FFF; white-space: normal; overflow-x: hidden; background: #f8f8f8; }
 div.clocking-tool-inner select { width: 100%; }
 div.clocking-tool-inner .issue-fields, div.clocking-tool-inner .time_entry_comments { width: 100%; }
 div.clocking-tool-inner .time_entry_hours { font-size: 40px; text-align:center;float:left; }
@@ -24,6 +24,7 @@ div.clocking-tool-inner a.jump-to-issue { float:right; padding: 4px 0; }
 div.clocking-tool-inner .recent-issues { max-height: 200px; overflow-y: auto; }
 
 div.clocking-tool-inner .issue-results { overflow-y: scroll; height: 100%; }
+div.clocking-tool-inner .issue-results, div.clocking-tool-inner .search-results { height: 206px; box-shadow:inset 0px 0px 3px #666; -moz-box-shadow:inset 0px 0px 3px #666; -webkit-box-shadow:inset 0px 0px 3px #666; background: #f0f0f0; }
 div.clocking-tool-inner .ajax-loading { background-image: url(/images/loading.gif); width: 16px; height: 16px; position: relative; float: right; left: -10px; top: -25px; }
 div.clocking-tool-inner .refresh-data { float: right; }
 div.clocking-tool-inner .hours-section { padding-bottom: 15px; }
