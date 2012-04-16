@@ -154,11 +154,8 @@ ClockingTool.prototype.projectListCacheInvalid = function() {
   var loadedProjects = this.caching.projects;
 
   if (loadedProjects && loadedProjects != "") {
-    // Dates are in millaseconds for each comparision (since UNIX time)
-    var millisecondInHour = 3600000;
-    var cacheDuration = millisecondInHour * 24;
-
-    return Date.now() > (Date.parse(loadedProjects) + cacheDuration);
+    // HOTFIX: don't invalidate the cache automatically.
+    return false;
   } else {
     // No cache
     return true;
