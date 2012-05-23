@@ -24,7 +24,7 @@ jQuery(document).ajaxSend(function(e, xhr, options) {
 });
 
 jQuery(document).ready(function() {
-  jQuery('#more-menu').after('<li class="clocking-tool-trigger"><%= link_to(image_tag('clock.png', :plugin => 'chiliproject_clocking'), {:controller => 'clocking_tool', :action => 'index'}, :onclick => "return false") %></li>');
+  jQuery('#more-menu').after('<li class="clocking-tool-trigger"><%= link_to(l(:clocking_tool), {:controller => 'clocking_tool', :action => 'index'}, :onclick => "return false", :class => 'clocking-tool-menu') %></li>');
   clockingTool.draw();
 
   // Use an event the html element to handle clicks

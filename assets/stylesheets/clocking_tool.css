@@ -1,3 +1,4 @@
+#header li a.clocking-tool-menu { background: url(../images/clock.png) no-repeat 50% 50%; text-indent: -999em; width: 20px; }
 div#clocking-tool { background: #277D94; height: 300px; width: 500px; }
 div.clocking-tool-inner { border: 10px solid #fff; background: #FFFFFF; height: 100%; width: 100%; box-shadow:1px 1px 8px #666; -moz-box-shadow:1px 1px 8px #666; -webkit-box-shadow:1px 1px 8px #666; }
 div.clocking-tool-inner { border-bottom-left-radius: 5px; border-bottom-right-radius: 5px; 
