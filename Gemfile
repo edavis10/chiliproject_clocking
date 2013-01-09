@@ -3,7 +3,6 @@ group :development do
 end
 
 group :test do
-  gem 'capybara'
   gem 'redmine_plugin_support'
   gem 'jasmine'
 end
