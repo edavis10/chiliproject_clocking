@@ -4,5 +4,5 @@ end
 
 group :test do
   gem 'redmine_plugin_support'
-  gem 'jasmine'
+  gem 'jasmine', '1.1.2'
 end
