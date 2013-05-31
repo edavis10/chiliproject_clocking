@@ -249,7 +249,7 @@ ClockingTool.prototype.issueChange = function() {
     var clockingTool = this;
 
     _.each(results, function(issue) {
-      var resultString = "" + issue.id + " &gt " + issue.subject;
+      var resultString = "#" + issue.id + " &gt " + issue.subject;
       var link = "<a class='issue-search-result' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
       var searchItem = clockingTool.j("<li>").html(link);
 
@@ -592,7 +592,7 @@ ClockingTool.prototype.showRecentIssues = function() {
       var issue = clockingTool.findIssueInProject(project, recentIssue.issue_id);
 
       if (issue) {
-        var resultString = project.name + " &gt " + issue.id + " " + issue.subject;
+        var resultString = project.name + " &gt #" + issue.id + " " + issue.subject;
         var link = "<a class='recent-issue' data-project-id='" + project.id + "' data-issue-id='"+issue.id+"' href='#' title='" + resultString + "'>" + resultString + "</a>";
         var searchItem = clockingTool.j("<li>").html(link);
 
