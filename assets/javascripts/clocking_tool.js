@@ -81,14 +81,15 @@ ClockingTool.prototype.getActivities = function(projectId) {
   }
 }
 
-ClockingTool.prototype.addActivity = function(projectId, activity) {
+ClockingTool.prototype.addActivities = function(projectId, activities) {
   var project = this.findProject(projectId);
-  
+
   var projectPosition = _.indexOf(this.projects, project);
 
   if (projectPosition >= 0) {
-    this.projects[projectPosition].activities.push(activity);
+    this.projects[projectPosition].activities = activities;
   }
+
 }
 
 /** Caching module **/
@@ -382,13 +383,13 @@ ClockingTool.prototype.findIssueInProject = function(project, issueId) {
   }
 }
 
-ClockingTool.prototype.addIssue = function(projectId, issue) {
+ClockingTool.prototype.addIssues = function(projectId, issues) {
   var project = this.findProject(projectId);
 
   var projectPosition = _.indexOf(this.projects, project);
 
   if (projectPosition >= 0) {
-    this.projects[projectPosition].issues.push(issue);
+    this.projects[projectPosition].issues = issues;
   }
 }
 
@@ -468,9 +469,8 @@ ClockingTool.prototype.processProjectsFromServer = function(jsonData) {
 ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
   var clockingTool = this;
 
-  _.each(jsonData, function(issue) {
-    clockingTool.addIssue(projectId, issue);
-  });
+  clockingTool.addIssues(projectId, jsonData);
+
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Issues are embedded in projects
   this.loadIssuesInForm();
@@ -479,9 +479,8 @@ ClockingTool.prototype.processIssuesFromServer = function(projectId, jsonData) {
 ClockingTool.prototype.processActivitiesFromServer = function(projectId, jsonData) {
   var clockingTool = this;
 
-  _.each(jsonData, function(activity) {
-    clockingTool.addActivity(projectId, activity);
-  });
+  clockingTool.addActivities(projectId, jsonData);
+
   this.updateProjectLoadedAt(projectId);
   this.setProjectsInStorage(); // Activities are embedded in projects
   this.loadActivitiesInForm();
